@@ -1,11 +1,12 @@
-= SkyFireEMU 4.0.6a -- General information =
+= DarkCore 0.6a -- General information =
 
 Copyright (C) MaNGOS      (http://www.getmangos.com)
 Copyright (C) TrinityCore (http://www.trinitycore.org)
 Copyright (C) Cactus      (http://www.cactusemu.com)
 Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
+Copyright (C) DarkCore    (http://www.darkpeninsula.eu)
 
-  SkyFireEMU is free software; you can redistribute it and/or modify
+  DarkCore is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
@@ -29,8 +30,8 @@ Copyright (C) SkyFireEMU  (http://www.projectskyfire.org)
   file, but you are not obligated to do so.  If you do not wish to do
   so, delete this exception statement from your version.
 
-SkyFireEMU is a World of Warcraft game server emulator. It is derived
-from TrinityCore & MaNGOS, the Massive Network Game Object Server, and is based on the
+DarkCore is a World of Warcraft game server emulator. It is derived
+from SkyFireEMU, TrinityCore & MaNGOS, and is based on the
 code of that project.
 
 For further information on the TrinityCore project, please visit the
@@ -45,11 +46,14 @@ project website at http://www.cactusemu.com/.
 For further information on the SkyFireEMU project, please visit the
 project website at http://www.projectskyfire.org/.
 
+For further information on the DarkCore project, please visit the
+project website at http://www.project.darkpeninsula.eu/.
+
 SQL files to create the database can be found in the database directory. Files
 to update your database from an older revision/version can be found in the
 database/updates directory.
 
-See http://wiki.projectskyfire.org/ for installation instructions on Linux.
+See http://http://wiki.darkpeninsula.eu/ for installation instructions on Linux.
 
-Our Bug Tracker is located here.
-http://www.projectskyfire.org/bugtracker/
+Our Bug Tracker can be found in our GitHub repository:
+https://github.com/Darkpeninsula/DarkCore/issues

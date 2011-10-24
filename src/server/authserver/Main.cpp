@@ -167,13 +167,15 @@ extern int main(int argc, char **argv)
     sLog->Initialize();
 
     sLog->outString("%s (realm-daemon)", _FULLVERSION);
-    sLog->outString("   ______  __  __  __  __  ______ __  ______  ______ ");
-    sLog->outString("  /\\  ___\\/\\ \\/ / /\\ \\_\\ \\/\\  ___/\\ \\/\\  == \\/\\  ___\\ ");
-    sLog->outString("  \\ \\___  \\ \\  _'-\\ \\____ \\ \\  __\\ \\ \\ \\  __<\\ \\  __\\ ");
-    sLog->outString("   \\/\\_____\\ \\_\\ \\_\\/\\_____\\ \\_\\  \\ \\_\\ \\_\\ \\_\\ \\_____\\ ");
-    sLog->outString("    \\/_____/\\/_/\\/_/\\/_____/\\/_/   \\/_/\\/_/ /_/\\/_____/ ");
-    sLog->outString("  Project SkyFireEmu 2011(c) Open-sourced Game Emulation ");
-    sLog->outString("           <http://www.projectskyfire.org/> ");
+    sLog->outString("   ____                     __         ____                           ");
+    sLog->outString("  /\\  _`\\                  /\\ \\      /\\   _`\\                         ");
+    sLog->outString("  \\ \\ \\/\\ \\     __     _ __\\ \\ \\/'\\  \\ \\ \\/\\_\\    ___   _ __    __   ");
+    sLog->outString("   \\ \\ \\ \\ \\  /'__`\\  /\\`'__\\ \\ , <   \\ \\ \\/_/_  / __`\\/\\`'__\\/'__`\\ ");
+    sLog->outString("    \\ \\ \\_\\ \\/\\ \\_\\ \\_\\ \\ \\/ \\ \\ \\\\`\\  \\ \\ \\_\\ \\/\\ \\_\\ \\ \\ \\//\\  __/ ");
+    sLog->outString("     \\ \\____/\\ \\__/ \\_\\\\ \\_\\  \\ \\_\\ \\_  \\ \\____/\\ \\____/\\ \\_\\\\ \\____\\ ");
+    sLog->outString("      \\/___/  \\/__/\\/_/ \\/_/   \\/_/\\/_/  \\/___/  \\/___/  \\/_/ \\/____/ ");
+    sLog->outString("       Dark Peninsula Massive Game Object Server, Ver. 0.6 (Pre-Alpha) ");
+    sLog->outString("           <http://www.darkpeninsula.eu/> ");
     sLog->outString("<Ctrl-C> to stop.\n");
 
     sLog->outDetail("%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
