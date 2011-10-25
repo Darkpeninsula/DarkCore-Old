@@ -126,10 +126,10 @@ int Master::Run()
     BigNumber seed1;
     seed1.SetRand(16 * 8);
 
-    sLog->outString("%s (worldserver-daemon)", _FULLVERSION);
+    sLog->outString("%s (realm-daemon)", _FULLVERSION);
     sLog->outString("<Ctrl-C> to stop.\n");
     sLog->outString(" ");
-	sLog->outString(" ");
+    sLog->outString(" ");
     sLog->outString("######                     ####      ######                            ");
     sLog->outString("#    ##   ######  #######  #  #     ##    ##  ######  #######   ###### ");
     sLog->outString("#  #  ##  #    ## #     ## #  ####  #  ##  # ##    ## #     ## ##    ##");
@@ -138,11 +138,11 @@ int Master::Run()
     sLog->outString("#  #  ## #  ##  # #  #     #  #  ## #  ##  # #  ##  # #  #     #  #####");
     sLog->outString("#    ##  ##     # #  #     #  ##  # ##    ## ##    ## #  #     ##    # ");
     sLog->outString("######    ####### ####     ########  ######   ######  ####      ###### ");
-	sLog->outString(" ");
+    sLog->outString(" ");
     sLog->outString("    Dark Peninsula Massive Game Object Server, Ver. 0.6 (Pre-Alpha)    ");
     sLog->outString("                    <http://www.darkpeninsula.eu/>                     ");
     sLog->outString(" ");
-	sLog->outString(" ");
+    sLog->outString(" ");
 
 #ifdef USE_SFMT_FOR_RNG
     sLog->outString("\n");

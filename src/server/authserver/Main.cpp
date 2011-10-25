@@ -169,7 +169,7 @@ extern int main(int argc, char **argv)
     sLog->outString("%s (realm-daemon)", _FULLVERSION);
     sLog->outString("<Ctrl-C> to stop.\n");
     sLog->outString(" ");
-	sLog->outString(" ");
+    sLog->outString(" ");
     sLog->outString("######                     ####      ######                            ");
     sLog->outString("#    ##   ######  #######  #  #     ##    ##  ######  #######   ###### ");
     sLog->outString("#  #  ##  #    ## #     ## #  ####  #  ##  # ##    ## #     ## ##    ##");
@@ -178,11 +178,11 @@ extern int main(int argc, char **argv)
     sLog->outString("#  #  ## #  ##  # #  #     #  #  ## #  ##  # #  ##  # #  #     #  #####");
     sLog->outString("#    ##  ##     # #  #     #  ##  # ##    ## ##    ## #  #     ##    # ");
     sLog->outString("######    ####### ####     ########  ######   ######  ####      ###### ");
-	sLog->outString(" ");
+    sLog->outString(" ");
     sLog->outString("    Dark Peninsula Massive Game Object Server, Ver. 0.6 (Pre-Alpha)    ");
     sLog->outString("                    <http://www.darkpeninsula.eu/>                     ");
     sLog->outString(" ");
-	sLog->outString(" ");
+    sLog->outString(" ");
 
     sLog->outDetail("%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
 
