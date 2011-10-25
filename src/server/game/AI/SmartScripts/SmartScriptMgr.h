@@ -19,8 +19,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_SMARTSCRIPTMGR_H
-#define TRINITY_SMARTSCRIPTMGR_H
+#ifndef DARKCORE_SMARTSCRIPTMGR_H
+#define DARKCORE_SMARTSCRIPTMGR_H
 
 #include "Common.h"
 #include "Creature.h"

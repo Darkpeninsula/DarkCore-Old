@@ -70,8 +70,8 @@ void WaypointMgr::Load()
         float y = fields[3].GetFloat();
         float z = fields[4].GetFloat();
 
-        Trinity::NormalizeMapCoord(x);
-        Trinity::NormalizeMapCoord(y);
+        DarkCore::NormalizeMapCoord(x);
+        DarkCore::NormalizeMapCoord(y);
 
         wp->id = fields[1].GetUInt32();
         wp->x = x;
@@ -117,8 +117,8 @@ void WaypointMgr::ReloadPath(uint32 id)
         float y = fields[2].GetFloat();
         float z = fields[3].GetFloat();
 
-        Trinity::NormalizeMapCoord(x);
-        Trinity::NormalizeMapCoord(y);
+        DarkCore::NormalizeMapCoord(x);
+        DarkCore::NormalizeMapCoord(y);
 
         wp->id = fields[0].GetUInt32();
         wp->x = x;

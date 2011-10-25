@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_TOTEM_H
-#define TRINITYCORE_TOTEM_H
+#ifndef DARKCORE_TOTEM_H
+#define DARKCORE_TOTEM_H
 
 #include "TemporarySummon.h"
 

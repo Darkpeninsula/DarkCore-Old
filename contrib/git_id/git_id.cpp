@@ -56,8 +56,8 @@
 #define NUM_DATABASES 3
 
 char remotes[NUM_REMOTES][MAX_REMOTE] = {
-    "git@github.com:SkyFire/SkyFireEMU.git",
-    "git://github.com/SkyFire/SkyFireEMU.git"        // used for fetch if present
+    "git@github.com:Darkpeninsula/DarkCore.git",
+    "git://github.com/Darkpeninsula/DarkCore.git"        // used for fetch if present
 };
 
 char remote_branch[MAX_REMOTE] = "master";

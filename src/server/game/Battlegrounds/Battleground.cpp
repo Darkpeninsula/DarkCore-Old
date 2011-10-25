@@ -39,7 +39,7 @@
 #include "SpellAuraEffects.h"
 #include "Util.h"
 
-namespace Trinity
+namespace DarkCore
 {
     class BattlegroundChatBuilder
     {
@@ -49,7 +49,7 @@ namespace Trinity
 
             void operator()(WorldPacket& data, LocaleConstant loc_idx)
             {
-                char const* text = sObjectMgr->GetSkyFireString(_textId, loc_idx);
+                char const* text = sObjectMgr->GetDarkCoreString(_textId, loc_idx);
                 if (_args)
                 {
                     // we need copy va_list before use or original va_list will corrupted
@@ -95,9 +95,9 @@ namespace Trinity
 
             void operator()(WorldPacket& data, LocaleConstant loc_idx)
             {
-                char const* text = sObjectMgr->GetSkyFireString(_textId, loc_idx);
-                char const* arg1str = _arg1 ? sObjectMgr->GetSkyFireString(_arg1, loc_idx) : "";
-                char const* arg2str = _arg2 ? sObjectMgr->GetSkyFireString(_arg2, loc_idx) : "";
+                char const* text = sObjectMgr->GetDarkCoreString(_textId, loc_idx);
+                char const* arg1str = _arg1 ? sObjectMgr->GetDarkCoreString(_arg1, loc_idx) : "";
+                char const* arg2str = _arg2 ? sObjectMgr->GetDarkCoreString(_arg2, loc_idx) : "";
 
                 char str[2048];
                 snprintf(str, 2048, text, arg1str, arg2str);
@@ -121,7 +121,7 @@ namespace Trinity
             int32 _arg1;
             int32 _arg2;
     };
-}                                                           // namespace Trinity
+}                                                           // namespace DarkCore
 
 template<class Do>
 void Battleground::BroadcastWorker(Do& _do)
@@ -866,7 +866,7 @@ uint32 Battleground::GetBonusHonorFromKill(uint32 kills) const
 {
     //variable kills means how many honorable kills you scored (so we need kills * honor_for_one_kill)
     uint32 maxLevel = std::min(GetMaxLevel(), 80U);
-    return Trinity::Honor::hk_honor_at_level(maxLevel, float(kills));
+    return DarkCore::Honor::hk_honor_at_level(maxLevel, float(kills));
 }
 
 uint32 Battleground::GetBattlemasterEntry() const
@@ -1604,8 +1604,8 @@ bool Battleground::AddSpiritGuide(uint32 type, float x, float y, float z, float 
 
 void Battleground::SendMessageToAll(int32 entry, ChatMsg type, Player const* source)
 {
-    Trinity::BattlegroundChatBuilder bg_builder(type, entry, source);
-    Trinity::LocalizedPacketDo<Trinity::BattlegroundChatBuilder> bg_do(bg_builder);
+    DarkCore::BattlegroundChatBuilder bg_builder(type, entry, source);
+    DarkCore::LocalizedPacketDo<DarkCore::BattlegroundChatBuilder> bg_do(bg_builder);
     BroadcastWorker(bg_do);
 }
 
@@ -1614,8 +1614,8 @@ void Battleground::PSendMessageToAll(int32 entry, ChatMsg type, Player const* so
     va_list ap;
     va_start(ap, source);
 
-    Trinity::BattlegroundChatBuilder bg_builder(type, entry, source, &ap);
-    Trinity::LocalizedPacketDo<Trinity::BattlegroundChatBuilder> bg_do(bg_builder);
+    DarkCore::BattlegroundChatBuilder bg_builder(type, entry, source, &ap);
+    DarkCore::LocalizedPacketDo<DarkCore::BattlegroundChatBuilder> bg_do(bg_builder);
     BroadcastWorker(bg_do);
 
     va_end(ap);
@@ -1623,7 +1623,7 @@ void Battleground::PSendMessageToAll(int32 entry, ChatMsg type, Player const* so
 
 void Battleground::SendWarningToAll(int32 entry, ...)
 {
-    const char *format = sObjectMgr->GetSkyFireStringForDBCLocale(entry);
+    const char *format = sObjectMgr->GetDarkCoreStringForDBCLocale(entry);
 
     char str[1024];
     va_list ap;
@@ -1652,8 +1652,8 @@ void Battleground::SendWarningToAll(int32 entry, ...)
 
 void Battleground::SendMessage2ToAll(int32 entry, ChatMsg type, Player const* source, int32 arg1, int32 arg2)
 {
-    Trinity::Battleground2ChatBuilder bg_builder(type, entry, source, arg1, arg2);
-    Trinity::LocalizedPacketDo<Trinity::Battleground2ChatBuilder> bg_do(bg_builder);
+    DarkCore::Battleground2ChatBuilder bg_builder(type, entry, source, arg1, arg2);
+    DarkCore::LocalizedPacketDo<DarkCore::Battleground2ChatBuilder> bg_do(bg_builder);
     BroadcastWorker(bg_do);
 }
 
@@ -1665,10 +1665,10 @@ void Battleground::EndNow()
 }
 
 // To be removed
-const char* Battleground::GetSkyFireString(int32 entry)
+const char* Battleground::GetDarkCoreString(int32 entry)
 {
     // FIXME: now we have different DBC locales and need localized message for each target client
-    return sObjectMgr->GetSkyFireStringForDBCLocale(entry);
+    return sObjectMgr->GetDarkCoreStringForDBCLocale(entry);
 }
 
 // IMPORTANT NOTICE:
@@ -1896,7 +1896,7 @@ void Battleground::RewardXPAtKill(Player* plr, Player* victim)
             if (!member_with_max_level || member_with_max_level->getLevel() < member->getLevel())
                 member_with_max_level = member;
 
-            uint32 gray_level = Trinity::XP::GetGrayLevel(member->getLevel());
+            uint32 gray_level = DarkCore::XP::GetGrayLevel(member->getLevel());
             if (victim->getLevel() > gray_level && (!not_gray_member_with_max_level
                 || not_gray_member_with_max_level->getLevel() < member->getLevel()))
                 not_gray_member_with_max_level = member;
@@ -1904,7 +1904,7 @@ void Battleground::RewardXPAtKill(Player* plr, Player* victim)
 
         if (member_with_max_level)
         {
-            xp = !not_gray_member_with_max_level ? 0 : Trinity::XP::Gain(not_gray_member_with_max_level, victim);
+            xp = !not_gray_member_with_max_level ? 0 : DarkCore::XP::Gain(not_gray_member_with_max_level, victim);
 
             if (!xp)
                 return;
@@ -1941,7 +1941,7 @@ void Battleground::RewardXPAtKill(Player* plr, Player* victim)
     }
     else//should be always in a raid group while in any BG, but you never know...
     {
-        xp = Trinity::XP::Gain(plr, victim);
+        xp = DarkCore::XP::Gain(plr, victim);
 
         if (!xp)
             return;

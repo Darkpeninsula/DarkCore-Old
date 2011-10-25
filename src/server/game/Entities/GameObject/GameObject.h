@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_GAMEOBJECT_H
-#define TRINITYCORE_GAMEOBJECT_H
+#ifndef DARKCORE_GAMEOBJECT_H
+#define DARKCORE_GAMEOBJECT_H
 
 #include "Common.h"
 #include "SharedDefines.h"

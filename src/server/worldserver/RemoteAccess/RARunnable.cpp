@@ -21,7 +21,7 @@
  */
 
 /** \file
-    \ingroup Trinityd
+    \ingroup DarkCored
  */
 
 #include "Common.h"
@@ -78,11 +78,11 @@ void RARunnable::run()
 
     if (acceptor.open(listen_addr, m_Reactor) == -1)
     {
-        sLog->outError("Trinity RA can not bind to port %d on %s", raport, stringip.c_str());
+        sLog->outError("DarkCore RA can not bind to port %d on %s", raport, stringip.c_str());
         return;
     }
 
-    sLog->outString("Starting Trinity RA on port %d on %s", raport, stringip.c_str());
+    sLog->outString("Starting DarkCore RA on port %d on %s", raport, stringip.c_str());
 
     while (!World::IsStopped())
     {
@@ -94,5 +94,5 @@ void RARunnable::run()
             break;
     }
 
-    sLog->outStaticDebug("Trinity RA thread exiting");
+    sLog->outStaticDebug("DarkCore RA thread exiting");
 }

@@ -19,14 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_FORMULAS_H
-#define TRINITY_FORMULAS_H
+#ifndef DARKCORE_FORMULAS_H
+#define DARKCORE_FORMULAS_H
 
 #include "World.h"
 #include "SharedDefines.h"
 #include "ScriptMgr.h"
 
-namespace Trinity
+namespace DarkCore
 {
     namespace Honor
     {

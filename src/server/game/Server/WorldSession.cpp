@@ -150,7 +150,7 @@ void WorldSession::SendPacket(WorldPacket const* packet)
     if (sWorld->debugOpcode != 0 && packet->GetOpcode() != sWorld->debugOpcode)
         return;
 
-    #ifdef TRINITY_DEBUG
+    #ifdef DARKCORE_DEBUG
 
     // Code for network use statistic
     static uint64 sendPacketCount = 0;
@@ -184,7 +184,7 @@ void WorldSession::SendPacket(WorldPacket const* packet)
         sendLastPacketBytes = packet->wpos();               // wpos is real written size
     }
 
-    #endif                                                  // !TRINITY_DEBUG
+    #endif                                                  // !DARKCORE_DEBUG
 
     if (m_Socket->SendPacket (*packet) == -1)
         m_Socket->CloseSocket ();
@@ -574,7 +574,7 @@ void WorldSession::SendNotification(const char *format, ...)
 
 void WorldSession::SendNotification(uint32 string_id, ...)
 {
-    char const* format = GetSkyFireString(string_id);
+    char const* format = GetDarkCoreString(string_id);
     if (format)
     {
         va_list ap;
@@ -590,9 +590,9 @@ void WorldSession::SendNotification(uint32 string_id, ...)
     }
 }
 
-const char * WorldSession::GetSkyFireString(int32 entry) const
+const char * WorldSession::GetDarkCoreString(int32 entry) const
 {
-    return sObjectMgr->GetSkyFireString(entry, GetSessionDbLocaleIndex());
+    return sObjectMgr->GetDarkCoreString(entry, GetSessionDbLocaleIndex());
 }
 
 void WorldSession::Handle_NULL(WorldPacket& recvPacket)

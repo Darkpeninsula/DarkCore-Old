@@ -153,7 +153,7 @@ public:
             { "spell_target_position",        SEC_ADMINISTRATOR, true,  &HandleReloadSpellTargetPositionCommand,        "", NULL },
             { "spell_threats",                SEC_ADMINISTRATOR, true,  &HandleReloadSpellThreatsCommand,               "", NULL },
             { "spell_group_stack_rules",      SEC_ADMINISTRATOR, true,  &HandleReloadSpellGroupStackRulesCommand,       "", NULL },
-            { "skyfire_string",               SEC_ADMINISTRATOR, true,  &HandleReloadSkyFireStringCommand,              "", NULL },
+            { "darkcore_string",               SEC_ADMINISTRATOR, true,  &HandleReloadDarkCoreStringCommand,              "", NULL },
             { "waypoint_scripts",             SEC_ADMINISTRATOR, true,  &HandleReloadWpScriptsCommand,                  "", NULL },
             { NULL,                           0,                 false, NULL,                                           "", NULL }
         };
@@ -191,7 +191,7 @@ public:
         HandleReloadMailLevelRewardCommand(handler,"");
         HandleReloadCommandCommand(handler,"");
         HandleReloadReservedNameCommand(handler,"");
-        HandleReloadSkyFireStringCommand(handler,"");
+        HandleReloadDarkCoreStringCommand(handler,"");
         HandleReloadGameTeleCommand(handler,"");
 
         HandleReloadAutobroadcastCommand(handler,"");
@@ -735,11 +735,11 @@ public:
         return true;
     }
 
-    static bool HandleReloadSkyFireStringCommand(ChatHandler* handler, const char* /*args*/)
+    static bool HandleReloadDarkCoreStringCommand(ChatHandler* handler, const char* /*args*/)
     {
-        sLog->outString("Re-Loading skyfire_string Table!");
-        sObjectMgr->LoadSkyFireStrings();
-        handler->SendGlobalGMSysMessage("DB table `skyfire_string` reloaded.");
+        sLog->outString("Re-Loading darkcore_string Table!");
+        sObjectMgr->LoadDarkCoreStrings();
+        handler->SendGlobalGMSysMessage("DB table `darkcore_string` reloaded.");
         return true;
     }
 

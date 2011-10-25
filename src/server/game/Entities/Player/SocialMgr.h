@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef __TRINITY_SOCIALMGR_H
-#define __TRINITY_SOCIALMGR_H
+#ifndef __DARKCORE_SOCIALMGR_H
+#define __DARKCORE_SOCIALMGR_H
 
 #include <ace/Singleton.h>
 #include "DatabaseEnv.h"

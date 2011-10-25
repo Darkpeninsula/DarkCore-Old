@@ -37,15 +37,15 @@
 #include "RealmList.h"
 #include "RealmAcceptor.h"
 
-#ifndef _TRINITY_REALM_CONFIG
-# define _TRINITY_REALM_CONFIG  "authserver.conf"
-#endif //_TRINITY_REALM_CONFIG
+#ifndef _DARKCORE_REALM_CONFIG
+# define _DARKCORE_REALM_CONFIG  "authserver.conf"
+#endif //_DARKCORE_REALM_CONFIG
 
 #ifdef _WIN32
 #include "ServiceWin32.h"
 char serviceName[] = "authserver";
-char serviceLongName[] = "SkyFireEMU Auth service";
-char serviceDescription[] = "SkyFireEMU World of Warcraft emulator world auth service";
+char serviceLongName[] = "DarkCore Auth service";
+char serviceDescription[] = "DarkCore World of Warcraft emulator world auth service";
 /*
  * -1 - not in service mode
  *  0 - stopped
@@ -62,7 +62,7 @@ bool stopEvent = false;                                     ///< Setting it to t
 LoginDatabaseWorkerPool LoginDatabase;                      ///< Accessor to the realm server database
 
 /// Handle realmd's termination signals
-class RealmdSignalHandler : public Trinity::SignalHandler
+class RealmdSignalHandler : public DarkCore::SignalHandler
 {
     public:
         virtual void HandleSignal(int SigNum)
@@ -103,7 +103,7 @@ extern int main(int argc, char **argv)
     sLog->SetLogDB(false);
 
     ///- Command line parsing to get the configuration file name
-    char const* cfg_file = _TRINITY_REALM_CONFIG;
+    char const* cfg_file = _DARKCORE_REALM_CONFIG;
     int c = 1;
     while(c < argc)
     {
@@ -167,16 +167,22 @@ extern int main(int argc, char **argv)
     sLog->Initialize();
 
     sLog->outString("%s (realm-daemon)", _FULLVERSION);
-    sLog->outString("   ____                     __         ____                           ");
-    sLog->outString("  /\\  _`\\                  /\\ \\      /\\   _`\\                         ");
-    sLog->outString("  \\ \\ \\/\\ \\     __     _ __\\ \\ \\/'\\  \\ \\ \\/\\_\\    ___   _ __    __   ");
-    sLog->outString("   \\ \\ \\ \\ \\  /'__`\\  /\\`'__\\ \\ , <   \\ \\ \\/_/_  / __`\\/\\`'__\\/'__`\\ ");
-    sLog->outString("    \\ \\ \\_\\ \\/\\ \\_\\ \\_\\ \\ \\/ \\ \\ \\\\`\\  \\ \\ \\_\\ \\/\\ \\_\\ \\ \\ \\//\\  __/ ");
-    sLog->outString("     \\ \\____/\\ \\__/ \\_\\\\ \\_\\  \\ \\_\\ \\_  \\ \\____/\\ \\____/\\ \\_\\\\ \\____\\ ");
-    sLog->outString("      \\/___/  \\/__/\\/_/ \\/_/   \\/_/\\/_/  \\/___/  \\/___/  \\/_/ \\/____/ ");
-    sLog->outString("       Dark Peninsula Massive Game Object Server, Ver. 0.6 (Pre-Alpha) ");
-    sLog->outString("           <http://www.darkpeninsula.eu/> ");
     sLog->outString("<Ctrl-C> to stop.\n");
+    sLog->outString(" ");
+	sLog->outString(" ");
+    sLog->outString("######                     ####      ######                            ");
+    sLog->outString("#    ##   ######  #######  #  #     ##    ##  ######  #######   ###### ");
+    sLog->outString("#  #  ##  #    ## #     ## #  ####  #  ##  # ##    ## #     ## ##    ##");
+    sLog->outString("#  ##  #  ####  # #  ##  # #  #  #  #  ##### #  ##  # #  ##  # #  ##  #");
+    sLog->outString("#  ##  # ##     # #  ##### #    ##  #  ##### #  ##  # #  ##### #      #");
+    sLog->outString("#  #  ## #  ##  # #  #     #  #  ## #  ##  # #  ##  # #  #     #  #####");
+    sLog->outString("#    ##  ##     # #  #     #  ##  # ##    ## ##    ## #  #     ##    # ");
+    sLog->outString("######    ####### ####     ########  ######   ######  ####      ###### ");
+	sLog->outString(" ");
+    sLog->outString("    Dark Peninsula Massive Game Object Server, Ver. 0.6 (Pre-Alpha)    ");
+    sLog->outString("                    <http://www.darkpeninsula.eu/>                     ");
+    sLog->outString(" ");
+	sLog->outString(" ");
 
     sLog->outDetail("%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
 
@@ -229,7 +235,7 @@ extern int main(int argc, char **argv)
 
     if (acceptor.open(bind_addr, ACE_Reactor::instance(), ACE_NONBLOCK) == -1)
     {
-        sLog->outError("SkyFireAuth can not bind to %s:%d", bind_ip.c_str(), rmport);
+        sLog->outError("DarkCore Auth can not bind to %s:%d", bind_ip.c_str(), rmport);
         return 1;
     }
 
@@ -277,7 +283,7 @@ extern int main(int argc, char **argv)
         if (Prio)
         {
             if (SetPriorityClass(hProcess, HIGH_PRIORITY_CLASS))
-                sLog->outString("SkyFireAuth process priority class set to HIGH");
+                sLog->outString("DarkCore Auth process priority class set to HIGH");
             else
                 sLog->outError("Can't set realmd process priority class.");
             sLog->outString();

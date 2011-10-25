@@ -20,7 +20,7 @@
  */
 
 /** \file
-    \ingroup Trinityd
+    \ingroup DarkCored
 */
 
 #include <ace/Sig_Handler.h>
@@ -53,7 +53,7 @@ extern int m_ServiceStatus;
 #endif
 
 /// Handle worldserver's termination signals
-class WorldServerSignalHandler : public Trinity::SignalHandler
+class WorldServerSignalHandler : public DarkCore::SignalHandler
 {
     public:
         virtual void HandleSignal(int SigNum)
@@ -128,18 +128,21 @@ int Master::Run()
 
     sLog->outString("%s (worldserver-daemon)", _FULLVERSION);
     sLog->outString("<Ctrl-C> to stop.\n");
-
     sLog->outString(" ");
-    sLog->outString("   ____                     __         ____                           ");
-    sLog->outString("  /\\  _`\\                  /\\ \\      /\\   _`\\                         ");
-    sLog->outString("  \\ \\ \\/\\ \\     __     _ __\\ \\ \\/'\\  \\ \\ \\/\\_\\    ___   _ __    __   ");
-    sLog->outString("   \\ \\ \\ \\ \\  /'__`\\  /\\`'__\\ \\ , <   \\ \\ \\/_/_  / __`\\/\\`'__\\/'__`\\ ");
-    sLog->outString("    \\ \\ \\_\\ \\/\\ \\_\\ \\_\\ \\ \\/ \\ \\ \\\\`\\  \\ \\ \\_\\ \\/\\ \\_\\ \\ \\ \\//\\  __/ ");
-    sLog->outString("     \\ \\____/\\ \\__/ \\_\\\\ \\_\\  \\ \\_\\ \\_  \\ \\____/\\ \\____/\\ \\_\\\\ \\____\\ ");
-    sLog->outString("      \\/___/  \\/__/\\/_/ \\/_/   \\/_/\\/_/  \\/___/  \\/___/  \\/_/ \\/____/ ");
-    sLog->outString("       Dark Peninsula Massive Game Object Server, Ver. 0.6 (Pre-Alpha) ");
-    sLog->outString("           <http://www.darkpeninsula.eu/> ");
+	sLog->outString(" ");
+    sLog->outString("######                     ####      ######                            ");
+    sLog->outString("#    ##   ######  #######  #  #     ##    ##  ######  #######   ###### ");
+    sLog->outString("#  #  ##  #    ## #     ## #  ####  #  ##  # ##    ## #     ## ##    ##");
+    sLog->outString("#  ##  #  ####  # #  ##  # #  #  #  #  ##### #  ##  # #  ##  # #  ##  #");
+    sLog->outString("#  ##  # ##     # #  ##### #    ##  #  ##### #  ##  # #  ##### #      #");
+    sLog->outString("#  #  ## #  ##  # #  #     #  #  ## #  ##  # #  ##  # #  #     #  #####");
+    sLog->outString("#    ##  ##     # #  #     #  ##  # ##    ## ##    ## #  #     ##    # ");
+    sLog->outString("######    ####### ####     ########  ######   ######  ####      ###### ");
+	sLog->outString(" ");
+    sLog->outString("    Dark Peninsula Massive Game Object Server, Ver. 0.6 (Pre-Alpha)    ");
+    sLog->outString("                    <http://www.darkpeninsula.eu/>                     ");
     sLog->outString(" ");
+	sLog->outString(" ");
 
 #ifdef USE_SFMT_FOR_RNG
     sLog->outString("\n");

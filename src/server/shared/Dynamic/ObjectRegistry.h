@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_OBJECTREGISTRY_H
-#define TRINITY_OBJECTREGISTRY_H
+#ifndef DARKCORE_OBJECTREGISTRY_H
+#define DARKCORE_OBJECTREGISTRY_H
 
 #include "Define.h"
 #include "Dynamic/UnorderedMap.h"

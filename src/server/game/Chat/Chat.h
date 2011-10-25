@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_CHAT_H
-#define TRINITYCORE_CHAT_H
+#ifndef DARKCORE_CHAT_H
+#define DARKCORE_CHAT_H
 
 #include "SharedDefines.h"
 #include "Player.h"
@@ -69,7 +69,7 @@ class ChatHandler
         static char* LineFromMessage(char*& pos) { char* start = strtok(pos, "\n"); pos = NULL; return start; }
 
         // function with different implementation for chat/console
-        virtual const char *GetSkyFireString(int32 entry) const;
+        virtual const char *GetDarkCoreString(int32 entry) const;
         virtual void SendSysMessage(const char *str);
 
         void SendSysMessage(int32     entry);
@@ -463,7 +463,7 @@ class CliHandler : public ChatHandler
         explicit CliHandler(void* callbackArg, Print* zprint) : m_callbackArg(callbackArg), m_print(zprint) {}
 
         // overwrite functions
-        const char *GetSkyFireString(int32 entry) const;
+        const char *GetDarkCoreString(int32 entry) const;
         bool isAvailable(ChatCommand const& cmd) const;
         void SendSysMessage(const char *str);
         std::string GetNameLink() const;

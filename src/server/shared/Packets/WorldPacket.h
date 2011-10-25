@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_WORLDPACKET_H
-#define TRINITYCORE_WORLDPACKET_H
+#ifndef DARKCORE_WORLDPACKET_H
+#define DARKCORE_WORLDPACKET_H
 
 #include "Common.h"
 #include "ByteBuffer.h"

@@ -33,7 +33,7 @@
 
 std::string ChatHandler::PGetParseString(int32 entry, ...)
 {
-    const char *format = GetSkyFireString(entry);
+    const char *format = GetDarkCoreString(entry);
     va_list ap;
     char str [1024];
     va_start(ap, entry);

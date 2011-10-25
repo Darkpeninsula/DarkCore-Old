@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_TIMER_H
-#define TRINITY_TIMER_H
+#ifndef DARKCORE_TIMER_H
+#define DARKCORE_TIMER_H
 
 #include "ace/OS_NS_sys_time.h"
 #include "Common.h"

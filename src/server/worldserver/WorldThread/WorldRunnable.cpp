@@ -21,7 +21,7 @@
  */
 
 /** \file
-    \ingroup Trinityd
+    \ingroup DarkCored
 */
 
 #include "Common.h"

@@ -109,7 +109,7 @@ enum BG_AV_OTHER_VALUES
 };
 enum BG_AV_ObjectIds
 {
-    //cause the mangos-system is a bit different, we don't use the right go-ids for every node.. if we want to be 100% like another big server, we must take one object for every node
+    //cause the DarkCore system is a bit different, we don't use the right go-ids for every node.. if we want to be 100% like another big server, we must take one object for every node
     //snowfall 4flags as eyecandy 179424 (alliance neutral)
     //Banners - stolen from battleground_AB.h ;-)
     BG_AV_OBJECTID_BANNER_A             = 178925, // can only be used by horde

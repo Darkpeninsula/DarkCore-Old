@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_TEMPSUMMON_H
-#define TRINITYCORE_TEMPSUMMON_H
+#ifndef DARKCORE_TEMPSUMMON_H
+#define DARKCORE_TEMPSUMMON_H
 
 #include "Creature.h"
 

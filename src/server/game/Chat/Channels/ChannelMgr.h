@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef __TRINITY_CHANNELMGR_H
-#define __TRINITY_CHANNELMGR_H
+#ifndef __DARKCORE_CHANNELMGR_H
+#define __DARKCORE_CHANNELMGR_H
 
 #include "Common.h"
 #include "Channel.h"

@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_CREATURE_EAI_H
-#define TRINITY_CREATURE_EAI_H
+#ifndef DARKCORE_CREATURE_EAI_H
+#define DARKCORE_CREATURE_EAI_H
 
 #include "Common.h"
 #include "Creature.h"
@@ -61,7 +61,7 @@ enum EventAI_Type
     EVENT_T_RECEIVE_EMOTE           = 22,                   // EmoteId, Condition, CondValue1, CondValue2
     EVENT_T_BUFFED                  = 23,                   // Param1 = SpellID, Param2 = Number of Time STacked, Param3/4 Repeat Min/Max
     EVENT_T_TARGET_BUFFED           = 24,                   // Param1 = SpellID, Param2 = Number of Time STacked, Param3/4 Repeat Min/Max
-    EVENT_T_RESET                   = 35,                   // Is it called after combat, when the creature respawn and spawn. -- TRINITY ONLY
+    EVENT_T_RESET                   = 35,                   // Is it called after combat, when the creature respawn and spawn.
 
     EVENT_T_END,
 };

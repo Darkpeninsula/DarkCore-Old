@@ -588,9 +588,9 @@ ChatCommand * ChatHandler::getCommandTable()
     return commandTableCache;
 }
 
-const char *ChatHandler::GetSkyFireString(int32 entry) const
+const char *ChatHandler::GetDarkCoreString(int32 entry) const
 {
-    return m_session->GetSkyFireString(entry);
+    return m_session->GetDarkCoreString(entry);
 }
 
 bool ChatHandler::isAvailable(ChatCommand const& cmd) const
@@ -728,12 +728,12 @@ void ChatHandler::SendGlobalGMSysMessage(const char *str)
 
 void ChatHandler::SendSysMessage(int32 entry)
 {
-    SendSysMessage(GetSkyFireString(entry));
+    SendSysMessage(GetDarkCoreString(entry));
 }
 
 void ChatHandler::PSendSysMessage(int32 entry, ...)
 {
-    const char *format = GetSkyFireString(entry);
+    const char *format = GetDarkCoreString(entry);
     va_list ap;
     char str [2048];
     va_start(ap, entry);
@@ -1023,7 +1023,7 @@ valid examples:
         }
         else if (reader.get() != '|')
         {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
             sLog->outBasic("ChatHandler::isValidChatMessage sequence aborted unexpectedly");
 #endif
             return false;
@@ -1032,7 +1032,7 @@ valid examples:
         // pipe has always to be followed by at least one char
         if (reader.peek() == '\0')
         {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
             sLog->outBasic("ChatHandler::isValidChatMessage pipe followed by \\0");
 #endif
             return false;
@@ -1057,7 +1057,7 @@ valid examples:
             }
             else
             {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                 sLog->outBasic("ChatHandler::isValidChatMessage invalid sequence, expected %c but got %c", *validSequenceIterator, commandChar);
 #endif
                 return false;
@@ -1066,7 +1066,7 @@ valid examples:
         else if (validSequence != validSequenceIterator)
         {
             // no escaped pipes in sequences
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
             sLog->outBasic("ChatHandler::isValidChatMessage got escaped pipe in sequence");
 #endif
             return false;
@@ -1083,7 +1083,7 @@ valid examples:
                     reader >> c;
                     if (!c)
                     {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                         sLog->outBasic("ChatHandler::isValidChatMessage got \\0 while reading color in |c command");
 #endif
                         return false;
@@ -1101,7 +1101,7 @@ valid examples:
                         color |= 10+c-'a';
                         continue;
                     }
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                     sLog->outBasic("ChatHandler::isValidChatMessage got non hex char '%c' while reading color", c);
 #endif
                     return false;
@@ -1119,7 +1119,7 @@ valid examples:
                     linkedItem= ObjectMgr::GetItemPrototype(atoi(buffer));
                     if (!linkedItem)
                     {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                         sLog->outBasic("ChatHandler::isValidChatMessage got invalid itemID %u in |item command", atoi(buffer));
 #endif
                         return false;
@@ -1127,7 +1127,7 @@ valid examples:
 
                     if (color != ItemQualityColors[linkedItem->Quality])
                     {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                         sLog->outBasic("ChatHandler::isValidChatMessage linked item has color %u, but user claims %u", ItemQualityColors[linkedItem->Quality],
                                 color);
 #endif
@@ -1199,7 +1199,7 @@ valid examples:
 
                     if (!linkedQuest)
                     {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                         sLog->outBasic("ChatHandler::isValidChatMessage Questtemplate %u not found", questid);
 #endif
                         return false;
@@ -1339,7 +1339,7 @@ valid examples:
                 }
                 else
                 {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                     sLog->outBasic("ChatHandler::isValidChatMessage user sent unsupported link type '%s'", buffer);
 #endif
                     return false;
@@ -1352,7 +1352,7 @@ valid examples:
                     // links start with '['
                     if (reader.get() != '[')
                     {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                         sLog->outBasic("ChatHandler::isValidChatMessage link caption doesn't start with '['");
 #endif
                         return false;
@@ -1411,7 +1411,7 @@ valid examples:
 
                             if (!ql)
                             {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                                 sLog->outBasic("ChatHandler::isValidChatMessage default questname didn't match and there is no locale");
 #endif
                                 return false;
@@ -1428,7 +1428,7 @@ valid examples:
                             }
                             if (!foundName)
                             {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                                 sLog->outBasic("ChatHandler::isValidChatMessage no quest locale title matched");
 #endif
                                 return false;
@@ -1471,7 +1471,7 @@ valid examples:
                             }
                             if (!foundName)
                             {
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                                 sLog->outBasic("ChatHandler::isValidChatMessage linked item name wasn't found in any localization");
 #endif
                                 return false;
@@ -1500,7 +1500,7 @@ valid examples:
                 // no further payload
                 break;
             default:
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
                 sLog->outBasic("ChatHandler::isValidChatMessage got invalid command |%c", commandChar);
 #endif
                 return false;
@@ -1508,7 +1508,7 @@ valid examples:
     }
 
     // check if every opened sequence was also closed properly
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
     if (validSequence != validSequenceIterator)
         sLog->outBasic("ChatHandler::isValidChatMessage EOF in active sequence");
 #endif
@@ -1889,8 +1889,8 @@ GameObject* ChatHandler::GetNearbyGameObject()
 
     Player* pl = m_session->GetPlayer();
     GameObject* obj = NULL;
-    Trinity::NearestGameObjectCheck check(*pl);
-    Trinity::GameObjectLastSearcher<Trinity::NearestGameObjectCheck> searcher(pl, obj, check);
+    DarkCore::NearestGameObjectCheck check(*pl);
+    DarkCore::GameObjectLastSearcher<DarkCore::NearestGameObjectCheck> searcher(pl, obj, check);
     pl->VisitNearbyGridObject(999, searcher);
     return obj;
 }
@@ -1907,14 +1907,14 @@ GameObject* ChatHandler::GetObjectGlobalyWithGuidOrNearWithDbGuid(uint32 lowguid
     if (!obj && sObjectMgr->GetGOData(lowguid))                   // guid is DB guid of object
     {
         // search near player then
-        CellPair p(Trinity::ComputeCellPair(pl->GetPositionX(), pl->GetPositionY()));
+        CellPair p(DarkCore::ComputeCellPair(pl->GetPositionX(), pl->GetPositionY()));
         Cell cell(p);
         cell.data.Part.reserved = ALL_DISTRICT;
 
-        Trinity::GameObjectWithDbGUIDCheck go_check(*pl, lowguid);
-        Trinity::GameObjectSearcher<Trinity::GameObjectWithDbGUIDCheck> checker(pl, obj, go_check);
+        DarkCore::GameObjectWithDbGUIDCheck go_check(*pl, lowguid);
+        DarkCore::GameObjectSearcher<DarkCore::GameObjectWithDbGUIDCheck> checker(pl, obj, go_check);
 
-        TypeContainerVisitor<Trinity::GameObjectSearcher<Trinity::GameObjectWithDbGUIDCheck>, GridTypeMapContainer > object_checker(checker);
+        TypeContainerVisitor<DarkCore::GameObjectSearcher<DarkCore::GameObjectWithDbGUIDCheck>, GridTypeMapContainer > object_checker(checker);
         cell.Visit(p, object_checker, *pl->GetMap());
     }
 
@@ -2192,9 +2192,9 @@ int ChatHandler::GetSessionDbLocaleIndex() const
     return m_session->GetSessionDbLocaleIndex();
 }
 
-const char *CliHandler::GetSkyFireString(int32 entry) const
+const char *CliHandler::GetDarkCoreString(int32 entry) const
 {
-    return sObjectMgr->GetSkyFireStringForDBCLocale(entry);
+    return sObjectMgr->GetDarkCoreStringForDBCLocale(entry);
 }
 
 bool CliHandler::isAvailable(ChatCommand const& cmd) const
@@ -2211,7 +2211,7 @@ void CliHandler::SendSysMessage(const char *str)
 
 std::string CliHandler::GetNameLink() const
 {
-    return GetSkyFireString(LANG_CONSOLE_COMMAND);
+    return GetDarkCoreString(LANG_CONSOLE_COMMAND);
 }
 
 bool CliHandler::needReportToTarget(Player* /*chr*/) const

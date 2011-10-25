@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_DISABLEMGR_H
-#define TRINITY_DISABLEMGR_H
+#ifndef DARKCORE_DISABLEMGR_H
+#define DARKCORE_DISABLEMGR_H
 
 #include <ace/Singleton.h>
 class Unit;
@@ -77,4 +77,4 @@ class DisableMgr
 
 #define sDisableMgr ACE_Singleton<DisableMgr, ACE_Null_Mutex>::instance()
 
-#endif //TRINITY_DISABLEMGR_H
+#endif //DARKCORE_DISABLEMGR_H

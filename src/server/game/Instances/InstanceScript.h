@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_INSTANCE_DATA_H
-#define TRINITY_INSTANCE_DATA_H
+#ifndef DARKCORE_INSTANCE_DATA_H
+#define DARKCORE_INSTANCE_DATA_H
 
 #include "ZoneScript.h"
 #include "World.h"

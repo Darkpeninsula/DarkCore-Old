@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_CREATUREAIFACTORY_H
-#define TRINITY_CREATUREAIFACTORY_H
+#ifndef DARKCORE_CREATUREAIFACTORY_H
+#define DARKCORE_CREATUREAIFACTORY_H
 
 //#include "Policies/Singleton.h"
 #include "ObjectRegistry.h"

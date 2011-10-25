@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef __TRINITY_PALADINPLAYER_H
-#define __TRINITY_PALADINPLAYER_H
+#ifndef __DARKCORE_PALADINPLAYER_H
+#define __DARKCORE_PALADINPLAYER_H
 
 #include "Player.h"
 

@@ -438,7 +438,7 @@ public:
 
 };
 
-/* don't need that for MaNGOS, not portable to Win64...
+/* don't need that for DarkCore, not portable to Win64...
 #ifdef _MSC_VER
     inline uint64 System::getCycleCount() {
         uint32 timehi, timelo;

@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_SPELLAURAEFFECTS_H
-#define TRINITY_SPELLAURAEFFECTS_H
+#ifndef DARKCORE_SPELLAURAEFFECTS_H
+#define DARKCORE_SPELLAURAEFFECTS_H
 
 class Unit;
 class DynamicObject;
@@ -288,7 +288,7 @@ class AuraEffect
         void HandleAuraModFakeInebriation(AuraApplication const * aurApp, uint8 mode, bool apply) const;
 };
 
-namespace Trinity
+namespace DarkCore
 {
     // Binary predicate for sorting the priority of absorption aura effects
     class AbsorbAuraOrderPred

@@ -366,18 +366,18 @@ typedef UNORDERED_MAP<uint32/*(mapid, spawnMode) pair*/, CellObjectGuidsMap> Map
 
 typedef UNORDERED_MAP<uint64/*(instance, guid) pair*/, time_t> RespawnTimes;
 
-// Trinity string ranges
-#define MIN_SKYFIRE_STRING_ID           1                    // 'skyfire_string'
-#define MAX_SKYFIRE_STRING_ID           2000000000
-#define MIN_DB_SCRIPT_STRING_ID        MAX_SKYFIRE_STRING_ID // 'db_script_string'
+// DarkCore string ranges
+#define MIN_DARKCORE_STRING_ID           1                    // 'darkcore_string'
+#define MAX_DARKCORE_STRING_ID           2000000000
+#define MIN_DB_SCRIPT_STRING_ID        MAX_DARKCORE_STRING_ID // 'db_script_string'
 #define MAX_DB_SCRIPT_STRING_ID        2000010000
 #define MIN_CREATURE_AI_TEXT_STRING_ID (-1)                 // 'creature_ai_texts'
 #define MAX_CREATURE_AI_TEXT_STRING_ID (-1000000)
 
-// Trinity Trainer Reference start range
-#define TRINITY_TRAINER_START_REF      200000
+// DarkCore Trainer Reference start range
+#define DARKCORE_TRAINER_START_REF      200000
 
-struct SkyFireStringLocale
+struct DarkCoreStringLocale
 {
     StringVector Content;
 };
@@ -392,7 +392,7 @@ typedef UNORDERED_MAP<uint32, ItemSetNameLocale> ItemSetNameLocaleMap;
 typedef UNORDERED_MAP<uint32, QuestLocale> QuestLocaleMap;
 typedef UNORDERED_MAP<uint32, NpcTextLocale> NpcTextLocaleMap;
 typedef UNORDERED_MAP<uint32, PageTextLocale> PageTextLocaleMap;
-typedef UNORDERED_MAP<int32, SkyFireStringLocale> SkyFireStringLocaleMap;
+typedef UNORDERED_MAP<int32, DarkCoreStringLocale> DarkCoreStringLocaleMap;
 typedef UNORDERED_MAP<uint32, GossipMenuItemsLocale> GossipMenuItemsLocaleMap;
 typedef UNORDERED_MAP<uint32, PointOfInterestLocale> PointOfInterestLocaleMap;
 
@@ -922,8 +922,8 @@ class ObjectMgr
         void LoadSpellScriptNames();
         void ValidateSpellScripts();
 
-        bool LoadSkyFireStrings(char const* table, int32 min_value, int32 max_value);
-        bool LoadSkyFireStrings() { return LoadSkyFireStrings("skyfire_string", MIN_SKYFIRE_STRING_ID, MAX_SKYFIRE_STRING_ID); }
+        bool LoadDarkCoreStrings(char const* table, int32 min_value, int32 max_value);
+        bool LoadDarkCoreStrings() { return LoadDarkCoreStrings("darkcore_string", MIN_DARKCORE_STRING_ID, MAX_DARKCORE_STRING_ID); }
         void LoadDbScriptStrings();
         void LoadCreatureClassLevelStats();
         void LoadCreatureLocales();
@@ -1124,14 +1124,14 @@ class ObjectMgr
         GameObjectData& NewGOData(uint32 guid) { return mGameObjectDataMap[guid]; }
         void DeleteGOData(uint32 guid);
 
-        SkyFireStringLocale const* GetSkyFireStringLocale(int32 entry) const
+        DarkCoreStringLocale const* GetDarkCoreStringLocale(int32 entry) const
         {
-            SkyFireStringLocaleMap::const_iterator itr = mSkyFireStringLocaleMap.find(entry);
-            if (itr == mSkyFireStringLocaleMap.end()) return NULL;
+            DarkCoreStringLocaleMap::const_iterator itr = mDarkCoreStringLocaleMap.find(entry);
+            if (itr == mDarkCoreStringLocaleMap.end()) return NULL;
             return &itr->second;
         }
-        const char *GetSkyFireString(int32 entry, LocaleConstant locale_idx) const;
-        const char *GetSkyFireStringForDBCLocale(int32 entry) const { return GetSkyFireString(entry, DBCLocaleIndex); }
+        const char *GetDarkCoreString(int32 entry, LocaleConstant locale_idx) const;
+        const char *GetDarkCoreStringForDBCLocale(int32 entry) const { return GetDarkCoreString(entry, DBCLocaleIndex); }
         LocaleConstant GetDBCLocaleIndex() const { return DBCLocaleIndex; }
         void SetDBCLocaleIndex(LocaleConstant locale) { DBCLocaleIndex = locale; }
 
@@ -1417,7 +1417,7 @@ class ObjectMgr
         QuestLocaleMap mQuestLocaleMap;
         NpcTextLocaleMap mNpcTextLocaleMap;
         PageTextLocaleMap mPageTextLocaleMap;
-        SkyFireStringLocaleMap mSkyFireStringLocaleMap;
+        DarkCoreStringLocaleMap mDarkCoreStringLocaleMap;
         GossipMenuItemsLocaleMap mGossipMenuItemsLocaleMap;
         PointOfInterestLocaleMap mPointOfInterestLocaleMap;
         RespawnTimes mCreatureRespawnTimes;
@@ -1444,7 +1444,7 @@ class ObjectMgr
 #define sObjectMgr ACE_Singleton<ObjectMgr, ACE_Null_Mutex>::instance()
 
 // scripting access functions
- bool LoadSkyFireStrings(char const* table, int32 start_value = MAX_CREATURE_AI_TEXT_STRING_ID, int32 end_value = std::numeric_limits<int32>::min());
+ bool LoadDarkCoreStrings(char const* table, int32 start_value = MAX_CREATURE_AI_TEXT_STRING_ID, int32 end_value = std::numeric_limits<int32>::min());
  uint32 GetAreaTriggerScriptId(uint32 trigger_id);
  uint32 GetScriptId(const char *name);
  ObjectMgr::ScriptNameMap& GetScriptNames();

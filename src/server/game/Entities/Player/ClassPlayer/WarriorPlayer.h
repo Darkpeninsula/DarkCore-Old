@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef __TRINITY_WARRIORPLAYER_H
-#define __TRINITY_WARRIORPLAYER_H
+#ifndef __DARKCORE_WARRIORPLAYER_H
+#define __DARKCORE_WARRIORPLAYER_H
 
 #include "Player.h"
 

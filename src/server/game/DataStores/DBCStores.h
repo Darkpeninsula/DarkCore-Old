@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_DBCSTORES_H
-#define TRINITY_DBCSTORES_H
+#ifndef DARKCORE_DBCSTORES_H
+#define DARKCORE_DBCSTORES_H
 
 #include "Common.h"
 #include "DBCStore.h"

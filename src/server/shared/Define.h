@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_DEFINE_H
-#define TRINITY_DEFINE_H
+#ifndef DARKCORE_DEFINE_H
+#define DARKCORE_DEFINE_H
 
 #include <sys/types.h>
 
@@ -29,34 +29,34 @@
 
 #include "CompilerDefs.h"
 
-#define TRINITY_LITTLEENDIAN 0
-#define TRINITY_BIGENDIAN    1
+#define DARKCORE_LITTLEENDIAN 0
+#define DARKCORE_BIGENDIAN    1
 
-#if !defined(TRINITY_ENDIAN)
+#if !defined(DARKCORE_ENDIAN)
 #  if defined (ACE_BIG_ENDIAN)
-#    define TRINITY_ENDIAN TRINITY_BIGENDIAN
+#    define DARKCORE_ENDIAN DARKCORE_BIGENDIAN
 #  else //ACE_BYTE_ORDER != ACE_BIG_ENDIAN
-#    define TRINITY_ENDIAN TRINITY_LITTLEENDIAN
+#    define DARKCORE_ENDIAN DARKCORE_LITTLEENDIAN
 #  endif //ACE_BYTE_ORDER
-#endif //TRINITY_ENDIAN
+#endif //DARKCORE_ENDIAN
 
 #if PLATFORM == PLATFORM_WINDOWS
-#  define TRINITY_PATH_MAX MAX_PATH
+#  define DARKCORE_PATH_MAX MAX_PATH
 #  ifndef DECLSPEC_NORETURN
 #    define DECLSPEC_NORETURN __declspec(noreturn)
 #  endif //DECLSPEC_NORETURN
 #else //PLATFORM != PLATFORM_WINDOWS
-#  define TRINITY_PATH_MAX PATH_MAX
+#  define DARKCORE_PATH_MAX PATH_MAX
 #  define DECLSPEC_NORETURN
 #endif //PLATFORM
 
 #if !defined(COREDEBUG)
-#  define TRINITY_INLINE inline
+#  define DARKCORE_INLINE inline
 #else //COREDEBUG
-#  if !defined(TRINITY_DEBUG)
-#    define TRINITY_DEBUG
-#  endif //TRINITY_DEBUG
-#  define TRINITY_INLINE
+#  if !defined(DARKCORE_DEBUG)
+#    define DARKCORE_DEBUG
+#  endif //DARKCORE_DEBUG
+#  define DARKCORE_INLINE
 #endif //!COREDEBUG
 
 #if COMPILER == COMPILER_GNU
@@ -91,4 +91,4 @@ enum
 	FT_SQL_ABSENT='a'                                       //Used in sql format to mark column absent in sql dbc
 };
 
-#endif //TRINITY_DEFINE_H
+#endif //DARKCORE_DEFINE_H

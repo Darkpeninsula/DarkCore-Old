@@ -75,7 +75,7 @@ add_executable(authserver
 add_dependencies(authserver revision.h)
 
 if( NOT WIN32 )
-  add_definitions(-D_TRINITY_REALM_CONFIG='"${CONF_DIR}/authserver.conf"')
+  add_definitions(-D_DARKCORE_REALM_CONFIG='"${CONF_DIR}/authserver.conf"')
 endif()
 
 if( UNIX )

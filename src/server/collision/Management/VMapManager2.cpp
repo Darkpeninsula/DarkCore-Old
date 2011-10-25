@@ -70,7 +70,7 @@ namespace VMAP
 
     //=========================================================
 
-    Vector3 VMapManager2::convertPositionToMangosRep(float x, float y, float z) const
+    Vector3 VMapManager2::convertPositionToDarkCoreRep(float x, float y, float z) const
     {
         Vector3 pos;
         const float mid = 0.5f * 64.0f * 533.33333333f;
@@ -224,7 +224,7 @@ namespace VMAP
                 Vector3 pos2 = convertPositionToInternalRep(x2,y2,z2);
                 Vector3 resultPos;
                 result = instanceTree->second->getObjectHitPos(pos1, pos2, resultPos, pModifyDist);
-                resultPos = convertPositionToMangosRep(resultPos.x,resultPos.y,resultPos.z);
+                resultPos = convertPositionToDarkCoreRep(resultPos.x,resultPos.y,resultPos.z);
                 rx = resultPos.x;
                 ry = resultPos.y;
                 rz = resultPos.z;
@@ -267,7 +267,7 @@ namespace VMAP
         {
             Vector3 pos = convertPositionToInternalRep(x, y, z);
             result = instanceTree->second->getAreaInfo(pos, flags, adtId, rootId, groupId);
-            // z is not touched by convertPositionToMangosRep(), so just copy
+            // z is not touched by convertPositionToDarkCoreRep(), so just copy
             z = pos.z;
         }
         return(result);

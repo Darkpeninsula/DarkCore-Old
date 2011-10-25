@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_UNORDERED_MAP_H
-#define TRINITY_UNORDERED_MAP_H
+#ifndef DARKCORE_UNORDERED_MAP_H
+#define DARKCORE_UNORDERED_MAP_H
 
 #include "CompilerDefs.h"
 #include "Define.h"

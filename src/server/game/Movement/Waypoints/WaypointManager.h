@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_WAYPOINTMANAGER_H
-#define TRINITY_WAYPOINTMANAGER_H
+#ifndef DARKCORE_WAYPOINTMANAGER_H
+#define DARKCORE_WAYPOINTMANAGER_H
 
 #include <ace/Singleton.h>
 #include <ace/Null_Mutex.h>

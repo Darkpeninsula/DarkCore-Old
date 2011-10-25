@@ -262,7 +262,7 @@ class ThreatManager
 
 //=================================================
 
-namespace Trinity
+namespace DarkCore
 {
     // Binary predicate for sorting HostileReferences based on threat value
     class ThreatOrderPred

@@ -222,7 +222,7 @@ bool ChatHandler::HandleAnnounceCommand(const char* args)
         return false;
 
     char buff[2048];
-    sprintf(buff, GetSkyFireString(LANG_SYSTEMMESSAGE), args);
+    sprintf(buff, GetDarkCoreString(LANG_SYSTEMMESSAGE), args);
     sWorld->SendServerMessage(SERVER_MSG_STRING, buff);
     return true;
 }
@@ -243,7 +243,7 @@ bool ChatHandler::HandleNotifyCommand(const char* args)
     if (!*args)
         return false;
 
-    std::string str = GetSkyFireString(LANG_GLOBAL_NOTIFY);
+    std::string str = GetDarkCoreString(LANG_GLOBAL_NOTIFY);
     str += args;
 
     WorldPacket data(SMSG_NOTIFICATION, (str.size()+1));
@@ -259,7 +259,7 @@ bool ChatHandler::HandleGMNotifyCommand(const char* args)
     if (!*args)
         return false;
 
-    std::string str = GetSkyFireString(LANG_GM_NOTIFY);
+    std::string str = GetDarkCoreString(LANG_GM_NOTIFY);
     str += args;
 
     WorldPacket data(SMSG_NOTIFICATION, (str.size()+1));
@@ -366,7 +366,7 @@ bool ChatHandler::HandleGMVisibleCommand(const char* args)
 {
     if (!*args)
     {
-        PSendSysMessage(LANG_YOU_ARE, m_session->GetPlayer()->isGMVisible() ?  GetSkyFireString(LANG_VISIBLE) : GetSkyFireString(LANG_INVISIBLE));
+        PSendSysMessage(LANG_YOU_ARE, m_session->GetPlayer()->isGMVisible() ?  GetDarkCoreString(LANG_VISIBLE) : GetDarkCoreString(LANG_INVISIBLE));
         return true;
     }
 
@@ -426,7 +426,7 @@ bool ChatHandler::HandleGPSCommand(const char* args)
             return false;
         }
     }
-    CellPair cell_val = Trinity::ComputeCellPair(obj->GetPositionX(), obj->GetPositionY());
+    CellPair cell_val = DarkCore::ComputeCellPair(obj->GetPositionX(), obj->GetPositionY());
     Cell cell(cell_val);
 
     uint32 zone_id, area_id;
@@ -445,7 +445,7 @@ bool ChatHandler::HandleGPSCommand(const char* args)
     float ground_z = map->GetHeight(obj->GetPositionX(), obj->GetPositionY(), MAX_HEIGHT);
     float floor_z = map->GetHeight(obj->GetPositionX(), obj->GetPositionY(), obj->GetPositionZ());
 
-    GridPair p = Trinity::ComputeGridPair(obj->GetPositionX(), obj->GetPositionY());
+    GridPair p = DarkCore::ComputeGridPair(obj->GetPositionX(), obj->GetPositionY());
 
     // 63? WHY?
     int gx = 63 - p.x_coord;
@@ -584,7 +584,7 @@ bool ChatHandler::HandleSummonCommand(const char* args)
 
         std::string nameLink = playerLink(target_name);
 
-        PSendSysMessage(LANG_SUMMONING, nameLink.c_str(), GetSkyFireString(LANG_OFFLINE));
+        PSendSysMessage(LANG_SUMMONING, nameLink.c_str(), GetDarkCoreString(LANG_OFFLINE));
 
         // in point where GM stay
         Player::SavePositionInDB(m_session->GetPlayer()->GetMapId(),
@@ -892,7 +892,7 @@ bool ChatHandler::HandleModifyEnergyCommand(const char* args)
     chr->SetMaxPower(POWER_ENERGY, energym);
     chr->SetPower(POWER_ENERGY, energy);
 
-    sLog->outDetail(GetSkyFireString(LANG_CURRENT_ENERGY), chr->GetMaxPower(POWER_ENERGY));
+    sLog->outDetail(GetDarkCoreString(LANG_CURRENT_ENERGY), chr->GetMaxPower(POWER_ENERGY));
 
     return true;
 }
@@ -1736,7 +1736,7 @@ bool ChatHandler::HandleModifyMoneyCommand(const char* args)
     {
         int64 newmoney = int64(moneyuser) + addmoney;
 
-        sLog->outDetail(GetSkyFireString(LANG_CURRENT_MONEY), moneyuser, addmoney, newmoney);
+        sLog->outDetail(GetDarkCoreString(LANG_CURRENT_MONEY), moneyuser, addmoney, newmoney);
         if (newmoney <= 0)
         {
             PSendSysMessage(LANG_YOU_TAKE_ALL_MONEY, GetNameLink(chr).c_str());
@@ -1768,7 +1768,7 @@ bool ChatHandler::HandleModifyMoneyCommand(const char* args)
             chr->ModifyMoney(addmoney);
     }
 
-    sLog->outDetail(GetSkyFireString(LANG_NEW_MONEY), moneyuser, addmoney, chr->GetMoney());
+    sLog->outDetail(GetDarkCoreString(LANG_NEW_MONEY), moneyuser, addmoney, chr->GetMoney());
 
     return true;
 }
@@ -2030,7 +2030,7 @@ bool ChatHandler::HandleWhispersCommand(const char* args)
 {
     if (!*args)
     {
-        PSendSysMessage(LANG_COMMAND_WHISPERACCEPTING, m_session->GetPlayer()->isAcceptWhispers() ?  GetSkyFireString(LANG_ON) : GetSkyFireString(LANG_OFF));
+        PSendSysMessage(LANG_COMMAND_WHISPERACCEPTING, m_session->GetPlayer()->isAcceptWhispers() ?  GetDarkCoreString(LANG_ON) : GetDarkCoreString(LANG_OFF));
         return true;
     }
 
@@ -2191,7 +2191,7 @@ bool ChatHandler::HandleTeleNameCommand(const char * args)
 
         std::string nameLink = playerLink(target_name);
 
-        PSendSysMessage(LANG_TELEPORTING_TO, nameLink.c_str(), GetSkyFireString(LANG_OFFLINE), tele->name.c_str());
+        PSendSysMessage(LANG_TELEPORTING_TO, nameLink.c_str(), GetDarkCoreString(LANG_OFFLINE), tele->name.c_str());
         Player::SavePositionInDB(tele->mapId, tele->position_x, tele->position_y, tele->position_z, tele->orientation,
             sMapMgr->GetZoneId(tele->mapId, tele->position_x, tele->position_y, tele->position_z), target_guid);
     }

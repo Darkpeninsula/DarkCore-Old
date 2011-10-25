@@ -161,7 +161,7 @@ public:
             }
 
             //Sort the list of players
-            targets.sort(Trinity::ObjectDistanceOrderPred(me, false));
+            targets.sort(DarkCore::ObjectDistanceOrderPred(me, false));
             //Resize so we only get top 5
             targets.resize(5);
 

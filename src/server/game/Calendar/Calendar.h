@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_CALENDAR_H
-#define TRINITY_CALENDAR_H
+#ifndef DARKCORE_CALENDAR_H
+#define DARKCORE_CALENDAR_H
 
 class Calendar
 {

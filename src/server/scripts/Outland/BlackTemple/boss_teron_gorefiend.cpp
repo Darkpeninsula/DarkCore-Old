@@ -179,7 +179,7 @@ public:
                 if (pUnit && pUnit->isAlive())
                     targets.push_back(pUnit);
             }
-            targets.sort(Trinity::ObjectDistanceOrderPred(me));
+            targets.sort(DarkCore::ObjectDistanceOrderPred(me));
             Unit *pTarget = targets.front();
             if (pTarget && me->IsWithinDistInMap(pTarget, me->GetAttackDistance(pTarget)))
             {
@@ -336,7 +336,7 @@ public:
         {
             /************************************************************************/
             /** NOTE FOR FUTURE DEVELOPER: PROPERLY IMPLEMENT THE GHOST PORTION *****/
-            /**  ONLY AFTER TrinIty FULLY IMPLEMENTS MIND CONTROL ABILITIES      *****/
+            /**  ONLY AFTER DarkCore FULLY IMPLEMENTS MIND CONTROL ABILITIES      *****/
             /**   THE CURRENT CODE IN THIS FUNCTION IS ONLY THE BEGINNING OF    *****/
             /**    WHAT IS FULLY NECESSARY FOR GOREFIEND TO BE 100% COMPLETE    *****/
             /************************************************************************/

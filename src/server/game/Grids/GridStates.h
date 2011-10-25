@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_GRIDSTATES_H
-#define TRINITY_GRIDSTATES_H
+#ifndef DARKCORE_GRIDSTATES_H
+#define DARKCORE_GRIDSTATES_H
 
 #include "Map.h"
 #include "Object.h"
@@ -28,7 +28,7 @@
 class GridState
 {
     public:
-#ifdef TRINITY_DEBUG
+#ifdef DARKCORE_DEBUG
 #define MAGIC_TESTVAL 0xFBE823BA
         GridState() { i_Magic = MAGIC_TESTVAL; }
         bool checkMagic()

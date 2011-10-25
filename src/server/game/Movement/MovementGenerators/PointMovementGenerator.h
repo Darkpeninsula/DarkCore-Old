@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_POINTMOVEMENTGENERATOR_H
-#define TRINITY_POINTMOVEMENTGENERATOR_H
+#ifndef DARKCORE_POINTMOVEMENTGENERATOR_H
+#define DARKCORE_POINTMOVEMENTGENERATOR_H
 
 #include "MovementGenerator.h"
 #include "DestinationHolder.h"

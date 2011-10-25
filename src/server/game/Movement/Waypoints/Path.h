@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_PATH_H
-#define TRINITYCORE_PATH_H
+#ifndef DARKCORE_PATH_H
+#define DARKCORE_PATH_H
 
 #include "Common.h"
 #include <vector>

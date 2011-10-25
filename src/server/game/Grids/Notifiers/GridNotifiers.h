@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_GRIDNOTIFIERS_H
-#define TRINITY_GRIDNOTIFIERS_H
+#ifndef DARKCORE_GRIDNOTIFIERS_H
+#define DARKCORE_GRIDNOTIFIERS_H
 
 #include "ObjectGridLoader.h"
 #include "UpdateData.h"
@@ -37,7 +37,7 @@
 class Player;
 //class Map;
 
-namespace Trinity
+namespace DarkCore
 {
     struct VisibleNotifier
     {

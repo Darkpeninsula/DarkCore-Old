@@ -426,7 +426,7 @@ class boss_professor_putricide : public CreatureScript
                             GetCreatureListWithEntryInGrid(list, rotface, NPC_PUDDLE_STALKER, 36.0f);
                             if (list.size() > 4)
                             {
-                                list.sort(Trinity::ObjectDistanceOrderPred(rotface));
+                                list.sort(DarkCore::ObjectDistanceOrderPred(rotface));
                                 do
                                 {
                                     list.pop_back();

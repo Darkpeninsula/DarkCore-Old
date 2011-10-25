@@ -196,7 +196,7 @@ class boss_akilzon : public CreatureScript
                     for (uint8 i = 2; i < StormCount; ++i)
                         bp0 *= 2;
 
-                    CellPair p(Trinity::ComputeCellPair(me->GetPositionX(), me->GetPositionY()));
+                    CellPair p(DarkCore::ComputeCellPair(me->GetPositionX(), me->GetPositionY()));
                     Cell cell(p);
                     cell.data.Part.reserved = ALL_DISTRICT;
                     cell.SetNoCreate();
@@ -204,11 +204,11 @@ class boss_akilzon : public CreatureScript
                     std::list<Unit *> tempUnitMap;
 
                     {
-                        Trinity::AnyAoETargetUnitInObjectRangeCheck u_check(me, me, 999);
-                        Trinity::UnitListSearcher<Trinity::AnyAoETargetUnitInObjectRangeCheck> searcher(me, tempUnitMap, u_check);
+                        DarkCore::AnyAoETargetUnitInObjectRangeCheck u_check(me, me, 999);
+                        DarkCore::UnitListSearcher<DarkCore::AnyAoETargetUnitInObjectRangeCheck> searcher(me, tempUnitMap, u_check);
 
-                        TypeContainerVisitor<Trinity::UnitListSearcher<Trinity::AnyAoETargetUnitInObjectRangeCheck>, WorldTypeMapContainer > world_unit_searcher(searcher);
-                        TypeContainerVisitor<Trinity::UnitListSearcher<Trinity::AnyAoETargetUnitInObjectRangeCheck>, GridTypeMapContainer >  grid_unit_searcher(searcher);
+                        TypeContainerVisitor<DarkCore::UnitListSearcher<DarkCore::AnyAoETargetUnitInObjectRangeCheck>, WorldTypeMapContainer > world_unit_searcher(searcher);
+                        TypeContainerVisitor<DarkCore::UnitListSearcher<DarkCore::AnyAoETargetUnitInObjectRangeCheck>, GridTypeMapContainer >  grid_unit_searcher(searcher);
 
                         cell.Visit(p, world_unit_searcher, *(me->GetMap()));
                         cell.Visit(p, grid_unit_searcher, *(me->GetMap()));

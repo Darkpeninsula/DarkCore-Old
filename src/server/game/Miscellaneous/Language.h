@@ -19,10 +19,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef __TRINITY_LANGUAGE_H
-#define __TRINITY_LANGUAGE_H
+#ifndef __DARKCORE_LANGUAGE_H
+#define __DARKCORE_LANGUAGE_H
 
-enum SkyFireStrings
+enum DarkCoreStrings
 {
     // for chat commands
     LANG_SELECT_CHAR_OR_CREATURE        = 1,
@@ -943,7 +943,7 @@ enum SkyFireStrings
     LANG_COMMAND_TICKETLISTAGECREATE    = 2025,
     LANG_COMMAND_TICKETSHOWESCALATEDLIST = 2026,
 
-    // SkyFire Strings                    5000-9999
+    // DarkCore Strings                 5000-9999
     LANG_COMMAND_FREEZE                 = 5000,
     LANG_COMMAND_FREEZE_ERROR           = 5001,
     LANG_COMMAND_FREEZE_WRONG           = 5002,
@@ -975,7 +975,7 @@ enum SkyFireStrings
     LANG_GOINFO_NAME                    = 5027,
     LANG_GOINFO_LOOTID                  = 5028,
     LANG_COMMAND_LOOKUP_MAX_RESULTS     = 5029,
-    // Room for more SkyFire Strings      5030-9999
+    // Room for more DarkCore Strings   5030-9999
 
     // Level requirement notifications
     LANG_SAY_REQ                        = 6604,

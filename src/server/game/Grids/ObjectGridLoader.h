@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_OBJECTGRIDLOADER_H
-#define TRINITY_OBJECTGRIDLOADER_H
+#ifndef DARKCORE_OBJECTGRIDLOADER_H
+#define DARKCORE_OBJECTGRIDLOADER_H
 
 #include "TypeList.h"
 #include "Define.h"

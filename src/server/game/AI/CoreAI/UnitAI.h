@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_UNITAI_H
-#define TRINITY_UNITAI_H
+#ifndef DARKCORE_UNITAI_H
+#define DARKCORE_UNITAI_H
 
 #include "Define.h"
 #include <list>
@@ -165,7 +165,7 @@ class UnitAI
                 return NULL;
 
             if (targetType == SELECT_TARGET_NEAREST || targetType == SELECT_TARGET_FARTHEST)
-                targetList.sort(Trinity::ObjectDistanceOrderPred(me));
+                targetList.sort(DarkCore::ObjectDistanceOrderPred(me));
 
             switch(targetType)
             {

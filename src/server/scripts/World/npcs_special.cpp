@@ -1963,8 +1963,8 @@ public:
             despawnTimer = 0;
             // Find victim of Summon Gargoyle spell
             std::list<Unit*> targets;
-            Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(me, me, 30);
-            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(me, targets, u_check);
+            DarkCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(me, me, 30);
+            DarkCore::UnitListSearcher<DarkCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(me, targets, u_check);
             me->VisitNearbyObject(30, searcher);
             for (std::list<Unit*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)
                 if ((*iter)->GetAura(49206, owner->GetGUID()))
@@ -2743,16 +2743,16 @@ public:
 
             // Remove other ring spawned by the player
             {
-            CellPair pair(Trinity::ComputeCellPair(owner->GetPositionX(), owner->GetPositionY()));
+            CellPair pair(DarkCore::ComputeCellPair(owner->GetPositionX(), owner->GetPositionY()));
             Cell cell(pair);
             cell.data.Part.reserved = ALL_DISTRICT;
             cell.SetNoCreate();
 
             std::list<Creature*> templist;
-            Trinity::AllCreaturesOfEntryInGrid check(owner, me->GetEntry());
-            Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInGrid> searcher(owner, templist, check);
+            DarkCore::AllCreaturesOfEntryInGrid check(owner, me->GetEntry());
+            DarkCore::CreatureListSearcher<DarkCore::AllCreaturesOfEntryInGrid> searcher(owner, templist, check);
 
-            TypeContainerVisitor<Trinity::CreatureListSearcher<Trinity::AllCreaturesOfEntryInGrid>, GridTypeMapContainer> visitor(searcher);
+            TypeContainerVisitor<DarkCore::CreatureListSearcher<DarkCore::AllCreaturesOfEntryInGrid>, GridTypeMapContainer> visitor(searcher);
             cell.Visit(pair, visitor, *(owner->GetMap()));
 
             if (!templist.empty())
@@ -2788,8 +2788,8 @@ public:
 
             // Find all the enemies
             std::list<Unit*> targets;
-            Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(me, me, 5.0f);
-            Trinity::UnitListSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(me, targets, u_check);
+            DarkCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(me, me, 5.0f);
+            DarkCore::UnitListSearcher<DarkCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(me, targets, u_check);
             me->VisitNearbyObject(5.0f, searcher);
             for (std::list<Unit*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)
                 CheckIfMoveInRing(*iter);
@@ -2864,8 +2864,8 @@ public:
 
            //Check friendly entities
            std::list<Unit*> targets;
-            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(me, me, 7.0f);
-            Trinity::UnitListSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(me, targets, u_check);
+            DarkCore::AnyFriendlyUnitInObjectRangeCheck u_check(me, me, 7.0f);
+            DarkCore::UnitListSearcher<DarkCore::AnyFriendlyUnitInObjectRangeCheck> searcher(me, targets, u_check);
 
             me->VisitNearbyObject(7.0f, searcher);
             for (std::list<Unit*>::const_iterator iter = targets.begin(); iter != targets.end(); ++iter)

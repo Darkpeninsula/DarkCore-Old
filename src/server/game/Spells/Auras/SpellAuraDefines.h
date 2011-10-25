@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_SPELLAURADEFINES_H
-#define TRINITY_SPELLAURADEFINES_H
+#ifndef DARKCORE_SPELLAURADEFINES_H
+#define DARKCORE_SPELLAURADEFINES_H
 
 #define MAX_AURAS 64                                        // client support up to 255, but it will cause problems with group auras updating
 

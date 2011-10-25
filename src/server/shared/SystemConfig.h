@@ -22,16 +22,16 @@
 
 // THIS FILE IS DEPRECATED
 
-#ifndef TRINITY_SYSTEMCONFIG_H
-#define TRINITY_SYSTEMCONFIG_H
+#ifndef DARKCORE_SYSTEMCONFIG_H
+#define DARKCORE_SYSTEMCONFIG_H
 
 #include "Define.h"
 #include "revision.h"
 
-#define _PACKAGENAME "SkyFireEMU"
+#define _PACKAGENAME "DarkCore"
 #define _CODENAME "COLD_DAY_IN_HELL"
 
-#if TRINITY_ENDIAN == TRINITY_BIGENDIAN
+#if DARKCORE_ENDIAN == DARKCORE_BIGENDIAN
 # define _ENDIAN_STRING "big-endian"
 #else
 # define _ENDIAN_STRING "little-endian"

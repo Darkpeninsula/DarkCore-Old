@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_QUEST_H
-#define TRINITYCORE_QUEST_H
+#ifndef DARKCORE_QUEST_H
+#define DARKCORE_QUEST_H
 
 #include "Define.h"
 #include "DatabaseEnv.h"
@@ -153,12 +153,12 @@ enum QuestFlags
 
 enum QuestSpecialFlags
 {
-    // SkyFire flags for set SpecialFlags in DB if required but used only at server
+    // DarkCore flags for set SpecialFlags in DB if required but used only at server
     QUEST_SPECIAL_FLAG_REPEATABLE           = 0x001,  // Set by 1 in SpecialFlags from DB
     QUEST_SPECIAL_FLAG_EXPLORATION_OR_EVENT = 0x002,  // Set by 2 in SpecialFlags from DB (if reequired area explore, spell SPELL_EFFECT_QUEST_COMPLETE casting, table `*_script` command SCRIPT_COMMAND_QUEST_EXPLORED use, set from script)
     //QUEST_SPECIAL_FLAG_MONTHLY              = 0x004,  // Set by 4 in SpecialFlags. Quest reset for player at beginning of month.
 
-    // Trinity flags for internal use only
+    // DarkCore flags for internal use only
     QUEST_SPECIAL_FLAG_DELIVER              = 0x008,  // Internal flag computed only
     QUEST_SPECIAL_FLAG_SPEAKTO              = 0x010,  // Internal flag computed only
     QUEST_SPECIAL_FLAG_KILL_OR_CAST         = 0x020,  // Internal flag computed only

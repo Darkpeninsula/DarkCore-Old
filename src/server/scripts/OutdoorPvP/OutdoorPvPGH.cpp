@@ -112,11 +112,11 @@ void OPvPCapturePointGH::ChangeState()
     case OBJECTIVESTATE_NEUTRAL:
         break;
     case OBJECTIVESTATE_ALLIANCE:
-        sWorld->SendZoneText(GH_OUTDOORPVP_ZONE, sObjectMgr->GetSkyFireStringForDBCLocale(LANG_OPVP_GH_LOOSE_A));
+        sWorld->SendZoneText(GH_OUTDOORPVP_ZONE, sObjectMgr->GetDarkCoreStringForDBCLocale(LANG_OPVP_GH_LOOSE_A));
         DeSpawnNPCs();
         break;
     case OBJECTIVESTATE_HORDE:
-        sWorld->SendZoneText(GH_OUTDOORPVP_ZONE, sObjectMgr->GetSkyFireStringForDBCLocale(LANG_OPVP_GH_LOOSE_H));
+        sWorld->SendZoneText(GH_OUTDOORPVP_ZONE, sObjectMgr->GetDarkCoreStringForDBCLocale(LANG_OPVP_GH_LOOSE_H));
         DeSpawnNPCs();
         break;
     case OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
@@ -136,13 +136,13 @@ void OPvPCapturePointGH::ChangeState()
         m_VentureState = VENTURE_A;
         FactionTakeOver(ALLIANCE);
         artkit = 2;
-        sWorld->SendZoneText(GH_OUTDOORPVP_ZONE, sObjectMgr->GetSkyFireStringForDBCLocale(LANG_OPVP_GH_CAPTURE_A));
+        sWorld->SendZoneText(GH_OUTDOORPVP_ZONE, sObjectMgr->GetDarkCoreStringForDBCLocale(LANG_OPVP_GH_CAPTURE_A));
         break;
     case OBJECTIVESTATE_HORDE:
         m_VentureState = VENTURE_H;
         FactionTakeOver(HORDE);
         artkit = 1;
-        sWorld->SendZoneText(GH_OUTDOORPVP_ZONE, sObjectMgr->GetSkyFireStringForDBCLocale(LANG_OPVP_GH_CAPTURE_H));
+        sWorld->SendZoneText(GH_OUTDOORPVP_ZONE, sObjectMgr->GetDarkCoreStringForDBCLocale(LANG_OPVP_GH_CAPTURE_H));
         break;
     case OBJECTIVESTATE_NEUTRAL_ALLIANCE_CHALLENGE:
         m_VentureState = VENTURE_N_A;

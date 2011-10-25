@@ -226,10 +226,10 @@ class example_escort : public CreatureScript
                         pEscortAI->Start(false, true, pPlayer->GetGUID());
                     break;
                 default:
-                    return false;                                   // nothing defined      -> trinity core handling
+                    return false;                                   // nothing defined      -> DarkCore handling
             }
 
-            return true;                                            // no default handling  -> prevent trinity core handling
+            return true;                                            // no default handling  -> prevent DarkCore handling
         }
 };
 

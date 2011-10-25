@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_COMMON_H
-#define TRINITYCORE_COMMON_H
+#ifndef DARKCORE_COMMON_H
+#define DARKCORE_COMMON_H
 
 // config.h needs to be included 1st
 // TODO this thingy looks like hack , but its not, need to
@@ -28,7 +28,7 @@
 #ifdef HAVE_CONFIG_H
 // Remove Some things that we will define
 // This is in case including another config.h
-// before trinity config.h
+// before DarkCore config.h
 #ifdef PACKAGE
 #undef PACKAGE
 #endif //PACKAGE

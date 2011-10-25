@@ -575,7 +575,7 @@ WorldObject* Spell::FindCorpseUsing()
     // non-standard target selection
     float max_range = GetSpellMaxRange(m_spellInfo, false);
 
-    CellPair p(Trinity::ComputeCellPair(m_caster->GetPositionX(), m_caster->GetPositionY()));
+    CellPair p(DarkCore::ComputeCellPair(m_caster->GetPositionX(), m_caster->GetPositionY()));
     Cell cell(p);
     cell.data.Part.reserved = ALL_DISTRICT;
     cell.SetNoCreate();
@@ -583,14 +583,14 @@ WorldObject* Spell::FindCorpseUsing()
     WorldObject* result = NULL;
 
     T u_check(m_caster, max_range);
-    Trinity::WorldObjectSearcher<T> searcher(m_caster, result, u_check);
+    DarkCore::WorldObjectSearcher<T> searcher(m_caster, result, u_check);
 
-    TypeContainerVisitor<Trinity::WorldObjectSearcher<T>, GridTypeMapContainer > grid_searcher(searcher);
+    TypeContainerVisitor<DarkCore::WorldObjectSearcher<T>, GridTypeMapContainer > grid_searcher(searcher);
     cell.Visit(p, grid_searcher, *m_caster->GetMap(), *m_caster, max_range);
 
     if (!result)
     {
-        TypeContainerVisitor<Trinity::WorldObjectSearcher<T>, WorldTypeMapContainer > world_searcher(searcher);
+        TypeContainerVisitor<DarkCore::WorldObjectSearcher<T>, WorldTypeMapContainer > world_searcher(searcher);
         cell.Visit(p, world_searcher, *m_caster->GetMap(), *m_caster, max_range);
     }
 
@@ -653,9 +653,9 @@ void Spell::SelectSpellTargets()
                         {
                             WorldObject* result = NULL;
                             if (m_spellInfo->Id == 20577)
-                                result = FindCorpseUsing<Trinity::CannibalizeObjectCheck>();
+                                result = FindCorpseUsing<DarkCore::CannibalizeObjectCheck>();
                             else
-                                result = FindCorpseUsing<Trinity::CarrionFeederObjectCheck>();
+                                result = FindCorpseUsing<DarkCore::CarrionFeederObjectCheck>();
 
                             if (result)
                             {
@@ -1811,7 +1811,7 @@ void Spell::SearchChainTarget(std::list<Unit*> &TagUnitMap, float max_range, uin
         }
         else
         {
-            tempUnitMap.sort(Trinity::ObjectDistanceOrderPred(cur));
+            tempUnitMap.sort(DarkCore::ObjectDistanceOrderPred(cur));
             next = tempUnitMap.begin();
 
             if (cur->GetDistance(*next) > CHAIN_SPELL_JUMP_RADIUS)      // Don't search beyond the max jump radius
@@ -1869,7 +1869,7 @@ void Spell::SearchAreaTarget(std::list<Unit*> &TagUnitMap, float radius, SpellNo
     }
 
     bool requireDeadTarget = bool(m_spellInfo->AttributesEx3 & SPELL_ATTR3_REQUIRE_DEAD_TARGET);
-    Trinity::SpellNotifierCreatureAndPlayer notifier(m_caster, TagUnitMap, radius, type, TargetType, pos, entry, requireDeadTarget);
+    DarkCore::SpellNotifierCreatureAndPlayer notifier(m_caster, TagUnitMap, radius, type, TargetType, pos, entry, requireDeadTarget);
     if ((m_spellInfo->AttributesEx3 & SPELL_ATTR3_PLAYERS_ONLY)
         || (TargetType == SPELL_TARGETS_ENTRY && !entry))
         m_caster->GetMap()->VisitWorld(pos->m_positionX, pos->m_positionY, radius, notifier);
@@ -1901,8 +1901,8 @@ void Spell::SearchGOAreaTarget(std::list<GameObject*> &TagGOMap, float radius, S
             break;
     }
 
-    Trinity::GameObjectInRangeCheck check(pos->m_positionX, pos->m_positionY, pos->m_positionZ, radius, entry);
-    Trinity::GameObjectListSearcher<Trinity::GameObjectInRangeCheck> searcher(m_caster, TagGOMap, check);
+    DarkCore::GameObjectInRangeCheck check(pos->m_positionX, pos->m_positionY, pos->m_positionZ, radius, entry);
+    DarkCore::GameObjectListSearcher<DarkCore::GameObjectInRangeCheck> searcher(m_caster, TagGOMap, check);
     m_caster->GetMap()->VisitGrid(pos->m_positionX, pos->m_positionY, radius, searcher);
 }
 
@@ -1988,16 +1988,16 @@ WorldObject* Spell::SearchNearbyTarget(float range, SpellTargets TargetType, Spe
         case SPELL_TARGETS_ENEMY:
         {
             Unit *target = NULL;
-            Trinity::AnyUnfriendlyUnitInObjectRangeCheck u_check(m_caster, m_caster, range);
-            Trinity::UnitLastSearcher<Trinity::AnyUnfriendlyUnitInObjectRangeCheck> searcher(m_caster, target, u_check);
+            DarkCore::AnyUnfriendlyUnitInObjectRangeCheck u_check(m_caster, m_caster, range);
+            DarkCore::UnitLastSearcher<DarkCore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(m_caster, target, u_check);
             m_caster->VisitNearbyObject(range, searcher);
             return target;
         }
         case SPELL_TARGETS_ALLY:
         {
             Unit *target = NULL;
-            Trinity::AnyFriendlyUnitInObjectRangeCheck u_check(m_caster, m_caster, range);
-            Trinity::UnitLastSearcher<Trinity::AnyFriendlyUnitInObjectRangeCheck> searcher(m_caster, target, u_check);
+            DarkCore::AnyFriendlyUnitInObjectRangeCheck u_check(m_caster, m_caster, range);
+            DarkCore::UnitLastSearcher<DarkCore::AnyFriendlyUnitInObjectRangeCheck> searcher(m_caster, target, u_check);
             m_caster->VisitNearbyObject(range, searcher);
             return target;
         }
@@ -2570,7 +2570,7 @@ void Spell::SelectEffectTargets(uint32 i, uint32 cur)
                     {
                         case 46584: // Raise Dead
                         {
-                            if (WorldObject* result = FindCorpseUsing<Trinity::RaiseDeadObjectCheck> ())
+                            if (WorldObject* result = FindCorpseUsing<DarkCore::RaiseDeadObjectCheck> ())
                             {
                                 switch(result->GetTypeId())
                                 {
@@ -2600,7 +2600,7 @@ void Spell::SelectEffectTargets(uint32 i, uint32 cur)
                             {
                                 CleanupTargetList();
 
-                                WorldObject* result = FindCorpseUsing <Trinity::ExplodeCorpseObjectCheck> ();
+                                WorldObject* result = FindCorpseUsing <DarkCore::ExplodeCorpseObjectCheck> ();
 
                                 if (result)
                                 {
@@ -2827,7 +2827,7 @@ void Spell::SelectEffectTargets(uint32 i, uint32 cur)
                 {
                     if (unitList.size() > maxSize)
                     {
-                        unitList.sort(Trinity::HealthPctOrderPred());
+                        unitList.sort(DarkCore::HealthPctOrderPred());
                         unitList.resize(maxSize);
                     }
                 }
@@ -2842,7 +2842,7 @@ void Spell::SelectEffectTargets(uint32 i, uint32 cur)
                     }
                     if (unitList.size() > maxSize)
                     {
-                        unitList.sort(Trinity::PowerPctOrderPred((Powers)power));
+                        unitList.sort(DarkCore::PowerPctOrderPred((Powers)power));
                         unitList.resize(maxSize);
                     }
                 }
@@ -2858,7 +2858,7 @@ void Spell::SelectEffectTargets(uint32 i, uint32 cur)
 
                 if (m_spellInfo->Id == 5246) //Intimidating Shout
                     unitList.remove(m_targets.getUnitTarget());
-                Trinity::RandomResizeList(unitList, maxTargets);
+                DarkCore::RandomResizeList(unitList, maxTargets);
             }
             else
             {
@@ -2886,7 +2886,7 @@ void Spell::SelectEffectTargets(uint32 i, uint32 cur)
                     case 69782: case 69796:                 // Ooze Flood
                     case 69798: case 69801:                 // Ooze Flood
                         // get 2 targets except 2 nearest
-                        unitList.sort(Trinity::ObjectDistanceOrderPred(m_caster));
+                        unitList.sort(DarkCore::ObjectDistanceOrderPred(m_caster));
                         unitList.resize(4);
                         while (unitList.size() > 2)
                             unitList.pop_front();
@@ -2974,7 +2974,7 @@ void Spell::SelectEffectTargets(uint32 i, uint32 cur)
                     if ((*j)->IsAffectedOnSpell(m_spellInfo))
                         maxTargets += (*j)->GetAmount();
 
-                Trinity::RandomResizeList(gobjectList, maxTargets);
+                DarkCore::RandomResizeList(gobjectList, maxTargets);
             }
             for (std::list<GameObject*>::iterator itr = gobjectList.begin(); itr != gobjectList.end(); ++itr)
                 AddGOTarget(*itr, i);
@@ -6307,15 +6307,15 @@ SpellCastResult Spell::CheckItems()
     // check spell focus object
     if (m_spellInfo->RequiresSpellFocus)
     {
-        CellPair p(Trinity::ComputeCellPair(m_caster->GetPositionX(), m_caster->GetPositionY()));
+        CellPair p(DarkCore::ComputeCellPair(m_caster->GetPositionX(), m_caster->GetPositionY()));
         Cell cell(p);
         cell.data.Part.reserved = ALL_DISTRICT;
 
         GameObject* ok = NULL;
-        Trinity::GameObjectFocusCheck go_check(m_caster, m_spellInfo->RequiresSpellFocus);
-        Trinity::GameObjectSearcher<Trinity::GameObjectFocusCheck> checker(m_caster, ok, go_check);
+        DarkCore::GameObjectFocusCheck go_check(m_caster, m_spellInfo->RequiresSpellFocus);
+        DarkCore::GameObjectSearcher<DarkCore::GameObjectFocusCheck> checker(m_caster, ok, go_check);
 
-        TypeContainerVisitor<Trinity::GameObjectSearcher<Trinity::GameObjectFocusCheck>, GridTypeMapContainer > object_checker(checker);
+        TypeContainerVisitor<DarkCore::GameObjectSearcher<DarkCore::GameObjectFocusCheck>, GridTypeMapContainer > object_checker(checker);
         Map& map = *m_caster->GetMap();
         cell.Visit(p, object_checker, map, *m_caster, m_caster->GetVisibilityRange());
 
@@ -7387,7 +7387,7 @@ void Spell::SelectTrajTargets()
     if (unitList.empty())
         return;
 
-    unitList.sort(Trinity::ObjectDistanceOrderPred(m_caster));
+    unitList.sort(DarkCore::ObjectDistanceOrderPred(m_caster));
 
     float b = tangent(m_targets.m_elevation);
     float a = (dz - dist2d * b) / (dist2d * dist2d);

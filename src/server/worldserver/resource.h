@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by SkyFireEMU.rc
+// Used by DarkCore.rc
 //
 
 // Next default values for new objects

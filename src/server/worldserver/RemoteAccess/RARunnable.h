@@ -20,12 +20,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-/// \addtogroup Trinityd
+/// \addtogroup DarkCored
 /// @{
 /// \file
 
-#ifndef _TRINITY_RARUNNABLE_H_
-#define _TRINITY_RARUNNABLE_H_
+#ifndef _DARKCORE_RARUNNABLE_H_
+#define _DARKCORE_RARUNNABLE_H_
 
 #include "Common.h"
 
@@ -42,5 +42,5 @@ private:
     ACE_Reactor* m_Reactor;
 };
 
-#endif /* _TRINITY_RARUNNABLE_H_ */
+#endif /* _DARKCORE_RARUNNABLE_H_ */
 /// @}

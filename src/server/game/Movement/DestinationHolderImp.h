@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_DESTINATIONHOLDERIMP_H
-#define TRINITY_DESTINATIONHOLDERIMP_H
+#ifndef DARKCORE_DESTINATIONHOLDERIMP_H
+#define DARKCORE_DESTINATIONHOLDERIMP_H
 
 #include "MapManager.h"
 #include "DestinationHolder.h"

@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_PET_H
-#define TRINITYCORE_PET_H
+#ifndef DARKCORE_PET_H
+#define DARKCORE_PET_H
 
 #include "ObjectDefines.h"
 #include "Unit.h"

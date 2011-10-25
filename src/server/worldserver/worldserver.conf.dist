@@ -1,5 +1,5 @@
 ################################################
-#   SkyFire World Server configuration file    #
+#   DarkCore World Server configuration file    #
 ################################################
 [worldserver]
 
@@ -14,7 +14,7 @@
 #        Data directory setting.
 #        Important: DataDir needs to be quoted, as it is a string which may
 #         contain space characters.
-#        Example: "@prefix@/share/skyfire_emu"
+#        Example: "@prefix@/share/darkcore"
 #
 #    LogsDir
 #        Logs directory setting.
@@ -1082,7 +1082,7 @@ OffhandCheckAtSpellUnlearn = 1
 ClientCacheVersion = 0
 Event.Announce = 0
 BeepAtStart = 1
-Motd = "Welcome to a SkyFire server."
+Motd = "Welcome to a DarkCore server."
 Server.LoginInfo = 0
 Command.LookupMaxResults = 0
 AllowTickets = 1

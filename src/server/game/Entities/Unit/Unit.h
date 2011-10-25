@@ -2198,7 +2198,7 @@ class Unit : public WorldObject
         bool m_duringRemoveFromWorld; // lock made to not add stuff after begining removing from world
 };
 
-namespace Trinity
+namespace DarkCore
 {
     // Binary predicate for sorting Units based on percent value of a power
     class PowerPctOrderPred

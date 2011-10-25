@@ -45,7 +45,7 @@ set(MYSQL_DATADIR "${DEFAULT_MYSQL_HOME}/data")
 set(DEFAULT_CHARSET_HOME "${DEFAULT_MYSQL_HOME}")
 set(PLUGINDIR "${DEFAULT_MYSQL_HOME}/lib/plugin")
 
-set(COMPILATION_COMMENT "Source distribution lite for TrinityCore")
+set(COMPILATION_COMMENT "Source distribution lite for DarkCore")
 
 # Run platform tests
 include(${CMAKE_CURRENT_SOURCE_DIR}/configure.cmake)

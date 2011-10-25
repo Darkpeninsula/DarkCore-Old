@@ -80,7 +80,7 @@ namespace VMAP
         public:
             // public for debug
             G3D::Vector3 convertPositionToInternalRep(float x, float y, float z) const;
-            G3D::Vector3 convertPositionToMangosRep(float x, float y, float z) const;
+            G3D::Vector3 convertPositionToDarkCoreRep(float x, float y, float z) const;
             static std::string getMapFileName(unsigned int pMapId);
 
             VMapManager2();

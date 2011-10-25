@@ -213,7 +213,7 @@ public:
         {
             if (summoned->GetEntry() == ENTRY_STOLEN_SOUL)
             {
-                //SPELL_STOLEN_SOUL_VISUAL has shapeshift effect, but not implemented feature in Trinity for this spell.
+                //SPELL_STOLEN_SOUL_VISUAL has shapeshift effect, but not implemented feature in DarkCore for this spell.
                 summoned->CastSpell(summoned, SPELL_STOLEN_SOUL_VISUAL, false);
                 summoned->SetDisplayId(soulmodel);
                 summoned->setFaction(me->getFaction());

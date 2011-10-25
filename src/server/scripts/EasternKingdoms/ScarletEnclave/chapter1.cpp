@@ -1168,7 +1168,7 @@ public:
     {
         if (pPlayer->GetQuestStatus(12701) == QUEST_STATUS_INCOMPLETE)
         {
-            // Hack Why Trinity Dont Support Custom Summon Location
+            // Hack Why DarkCore Dont Support Custom Summon Location
             if (Creature *miner = pPlayer->SummonCreature(28841, 2383.869629f, -5900.312500f, 107.996086f, pPlayer->GetOrientation(), TEMPSUMMON_DEAD_DESPAWN, 1))
             {
                 pPlayer->CastSpell(pPlayer, SPELL_CART_SUMM, true);

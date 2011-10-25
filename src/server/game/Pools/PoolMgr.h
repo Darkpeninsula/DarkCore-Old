@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_POOLHANDLER_H
-#define TRINITY_POOLHANDLER_H
+#ifndef DARKCORE_POOLHANDLER_H
+#define DARKCORE_POOLHANDLER_H
 
 #include "Define.h"
 #include <ace/Singleton.h>

@@ -1,5 +1,5 @@
 ###############################################
-# SkyFireEMU Auth Server configuration file   #
+# DarkCore Auth Server configuration file   #
 ###############################################
 [authserver]
 
@@ -233,9 +233,9 @@ WrongPass.BanType = 0
 #                                                                 section my.ini)
 #                     ".;/path/to/unix_socket;username;password;database" - (use Unix sockets on
 #                                                                           Unix/Linux)
-#        Default:     "127.0.0.1;3306;skyfire;skyfire;auth"
+#        Default:     "127.0.0.1;3306;darkcore;darkcore;auth"
 
-LoginDatabaseInfo = "127.0.0.1;3306;skyfire;skyfire;auth"
+LoginDatabaseInfo = "127.0.0.1;3306;darkcore;darkcore;auth"
 
 #
 #    LoginDatabase.WorkerThreads

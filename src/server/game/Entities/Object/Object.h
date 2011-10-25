@@ -882,7 +882,7 @@ class WorldObject : public Object, public WorldLocation
         uint16 m_executed_notifies;
 };
 
-namespace Trinity
+namespace DarkCore
 {
     template<class T>
     void RandomResizeList(std::list<T> &_list, uint32 _size)

@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_TYPECONTAINERVISITOR_H
-#define TRINITY_TYPECONTAINERVISITOR_H
+#ifndef DARKCORE_TYPECONTAINERVISITOR_H
+#define DARKCORE_TYPECONTAINERVISITOR_H
 
 /*
  * @class TypeContainerVisitor is implemented as a visitor pattern.  It is

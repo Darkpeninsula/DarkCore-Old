@@ -135,7 +135,7 @@ enum SpellLogType
 };
 bool IsQuestTameSpell(uint32 spellId);
 
-namespace Trinity
+namespace DarkCore
 {
     struct SpellNotifierCreatureAndPlayer;
 }
@@ -298,7 +298,7 @@ enum SpellTargets
 
 class Spell
 {
-    friend struct Trinity::SpellNotifierCreatureAndPlayer;
+    friend struct DarkCore::SpellNotifierCreatureAndPlayer;
     friend void Unit::SetCurrentCastedSpell(Spell * pSpell);
     friend class SpellScript;
     public:
@@ -752,7 +752,7 @@ class Spell
 #endif
 };
 
-namespace Trinity
+namespace DarkCore
 {
     struct SpellNotifierCreatureAndPlayer
     {

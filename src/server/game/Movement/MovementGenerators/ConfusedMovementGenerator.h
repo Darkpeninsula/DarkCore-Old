@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_CONFUSEDGENERATOR_H
-#define TRINITY_CONFUSEDGENERATOR_H
+#ifndef DARKCORE_CONFUSEDGENERATOR_H
+#define DARKCORE_CONFUSEDGENERATOR_H
 
 #include "MovementGenerator.h"
 #include "DestinationHolder.h"

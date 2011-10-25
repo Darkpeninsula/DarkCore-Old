@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_DB2SFRM_H
-#define TRINITY_DB2SFRM_H
+#ifndef DARKCORE_DB2SFRM_H
+#define DARKCORE_DB2SFRM_H
 
 const char Itemfmt[]="niiiiiii";
 

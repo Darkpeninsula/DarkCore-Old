@@ -47,13 +47,13 @@ For further information on the SkyFireEMU project, please visit the
 project website at http://www.projectskyfire.org/.
 
 For further information on the DarkCore project, please visit the
-project website at http://www.project.darkpeninsula.eu/.
+project website at http://www.darkpeninsula.eu/.
 
 SQL files to create the database can be found in the database directory. Files
 to update your database from an older revision/version can be found in the
 database/updates directory.
 
-See http://http://wiki.darkpeninsula.eu/ for installation instructions on Linux.
+See http://wiki.darkpeninsula.eu/ for installation instructions on Linux.
 
 Our Bug Tracker can be found in our GitHub repository:
 https://github.com/Darkpeninsula/DarkCore/issues

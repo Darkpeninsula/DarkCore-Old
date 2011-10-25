@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_MAP_INSTANCED_H
-#define TRINITY_MAP_INSTANCED_H
+#ifndef DARKCORE_MAP_INSTANCED_H
+#define DARKCORE_MAP_INSTANCED_H
 
 #include "Map.h"
 #include "InstanceSaveMgr.h"

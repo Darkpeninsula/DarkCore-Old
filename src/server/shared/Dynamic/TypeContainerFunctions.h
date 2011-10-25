@@ -33,7 +33,7 @@
 #include "Dynamic/TypeList.h"
 #include <map>
 
-namespace Trinity
+namespace DarkCore
 {
     /* ContainerMapList Helpers */
     // count functions

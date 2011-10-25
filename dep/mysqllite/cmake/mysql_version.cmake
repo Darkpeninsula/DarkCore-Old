@@ -78,7 +78,7 @@ IF(NOT MYSQL_UNIX_ADDR)
   SET(MYSQL_UNIX_ADDR "/tmp/mysql.sock")
 ENDIF()
 IF(NOT COMPILATION_COMMENT)
-  SET(COMPILATION_COMMENT "Source distribution lite for Trinity Core")
+  SET(COMPILATION_COMMENT "Source distribution lite for DarkCore")
 ENDIF()
 
 # Windows 'date' command has unpredictable output, so cannot rely on it to

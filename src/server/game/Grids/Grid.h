@@ -19,12 +19,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_GRID_H
-#define TRINITY_GRID_H
+#ifndef DARKCORE_GRID_H
+#define DARKCORE_GRID_H
 
 /*
   @class Grid
-  Grid is a logical segment of the game world represented inside TrinIty.
+  Grid is a logical segment of the game world represented inside DarkCore.
   Grid is bind at compile time to a particular type of object which
   we call it the object of interested.  There are many types of loader,
   specially, dynamic loader, static loader, or on-demand loader.  There's

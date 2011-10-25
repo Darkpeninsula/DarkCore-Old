@@ -40,7 +40,7 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Texts()
     m_CreatureEventAI_TextMap.clear();
 
     // Load EventAI Text
-    sObjectMgr->LoadSkyFireStrings("creature_ai_texts", MIN_CREATURE_AI_TEXT_STRING_ID, MAX_CREATURE_AI_TEXT_STRING_ID);
+    sObjectMgr->LoadDarkCoreStrings("creature_ai_texts", MIN_CREATURE_AI_TEXT_STRING_ID, MAX_CREATURE_AI_TEXT_STRING_ID);
 
     // Gather Additional data from EventAI Texts
     QueryResult result = WorldDatabase.Query("SELECT entry, sound, type, language, emote FROM creature_ai_texts");
@@ -73,7 +73,7 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Texts()
         }
 
         // range negative (don't must be happen, loaded from same table)
-        if (!sObjectMgr->GetSkyFireStringLocale(i))
+        if (!sObjectMgr->GetDarkCoreStringLocale(i))
         {
             sLog->outErrorDb("CreatureEventAI:  Entry %i in table `creature_ai_texts` not found", i);
             continue;
@@ -138,7 +138,7 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Summons()
         temp.orientation = fields[4].GetFloat();
         temp.SpawnTimeSecs = fields[5].GetUInt32();
 
-        if (!Trinity::IsValidMapCoord(temp.position_x, temp.position_y, temp.position_z, temp.orientation))
+        if (!DarkCore::IsValidMapCoord(temp.position_x, temp.position_y, temp.position_z, temp.orientation))
         {
             sLog->outErrorDb("CreatureEventAI:  Summon id %u have wrong coordinates (%f, %f, %f, %f), skipping.", i, temp.position_x, temp.position_y, temp.position_z, temp.orientation);
             continue;

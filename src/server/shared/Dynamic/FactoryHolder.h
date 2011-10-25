@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_FACTORY_HOLDER
-#define TRINITY_FACTORY_HOLDER
+#ifndef DARKCORE_FACTORY_HOLDER
+#define DARKCORE_FACTORY_HOLDER
 
 #include "Define.h"
 #include "Dynamic/TypeList.h"

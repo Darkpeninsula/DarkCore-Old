@@ -122,7 +122,7 @@ std::string GetScriptCommandName(ScriptCommands command)
         case SCRIPT_COMMAND_LOAD_PATH: res = "SCRIPT_COMMAND_LOAD_PATH"; break;
         case SCRIPT_COMMAND_CALLSCRIPT_TO_UNIT: res = "SCRIPT_COMMAND_CALLSCRIPT_TO_UNIT"; break;
         case SCRIPT_COMMAND_KILL: res = "SCRIPT_COMMAND_KILL"; break;
-        // TrinityCore only
+        // DarkCore only
         case SCRIPT_COMMAND_ORIENTATION: res = "SCRIPT_COMMAND_ORIENTATION"; break;
         case SCRIPT_COMMAND_EQUIP: res = "SCRIPT_COMMAND_EQUIP"; break;
         case SCRIPT_COMMAND_MODEL: res = "SCRIPT_COMMAND_MODEL"; break;
@@ -1595,7 +1595,7 @@ void ObjectMgr::AddCreatureToGrid(uint32 guid, CreatureData const* data)
     {
         if (mask & 1)
         {
-            CellPair cell_pair = Trinity::ComputeCellPair(data->posX, data->posY);
+            CellPair cell_pair = DarkCore::ComputeCellPair(data->posX, data->posY);
             uint32 cell_id = (cell_pair.y_coord*TOTAL_NUMBER_OF_CELLS_PER_MAP) + cell_pair.x_coord;
 
             CellObjectGuids& cell_guids = mMapObjectGuids[MAKE_PAIR32(data->mapid, i)][cell_id];
@@ -1611,7 +1611,7 @@ void ObjectMgr::RemoveCreatureFromGrid(uint32 guid, CreatureData const* data)
     {
         if (mask & 1)
         {
-            CellPair cell_pair = Trinity::ComputeCellPair(data->posX, data->posY);
+            CellPair cell_pair = DarkCore::ComputeCellPair(data->posX, data->posY);
             uint32 cell_id = (cell_pair.y_coord*TOTAL_NUMBER_OF_CELLS_PER_MAP) + cell_pair.x_coord;
 
             CellObjectGuids& cell_guids = mMapObjectGuids[MAKE_PAIR32(data->mapid, i)][cell_id];
@@ -1920,7 +1920,7 @@ void ObjectMgr::AddGameobjectToGrid(uint32 guid, GameObjectData const* data)
     {
         if (mask & 1)
         {
-            CellPair cell_pair = Trinity::ComputeCellPair(data->posX, data->posY);
+            CellPair cell_pair = DarkCore::ComputeCellPair(data->posX, data->posY);
             uint32 cell_id = (cell_pair.y_coord*TOTAL_NUMBER_OF_CELLS_PER_MAP) + cell_pair.x_coord;
 
             CellObjectGuids& cell_guids = mMapObjectGuids[MAKE_PAIR32(data->mapid, i)][cell_id];
@@ -1936,7 +1936,7 @@ void ObjectMgr::RemoveGameobjectFromGrid(uint32 guid, GameObjectData const* data
     {
         if (mask & 1)
         {
-            CellPair cell_pair = Trinity::ComputeCellPair(data->posX, data->posY);
+            CellPair cell_pair = DarkCore::ComputeCellPair(data->posX, data->posY);
             uint32 cell_id = (cell_pair.y_coord*TOTAL_NUMBER_OF_CELLS_PER_MAP) + cell_pair.x_coord;
 
             CellObjectGuids& cell_guids = mMapObjectGuids[MAKE_PAIR32(data->mapid, i)][cell_id];
@@ -4919,7 +4919,7 @@ void ObjectMgr::LoadScripts(ScriptsType type)
                     continue;
                 }
 
-                if (!Trinity::IsValidMapCoord(tmp.TeleportTo.DestX, tmp.TeleportTo.DestY, tmp.TeleportTo.DestZ, tmp.TeleportTo.Orientation))
+                if (!DarkCore::IsValidMapCoord(tmp.TeleportTo.DestX, tmp.TeleportTo.DestY, tmp.TeleportTo.DestZ, tmp.TeleportTo.Orientation))
                 {
                     sLog->outErrorDb("Table `%s` has invalid coordinates (X: %f Y: %f Z: %f O: %f) in SCRIPT_COMMAND_TELEPORT_TO for script id %u",
                         tableName.c_str(), tmp.TeleportTo.DestX, tmp.TeleportTo.DestY, tmp.TeleportTo.DestZ, tmp.TeleportTo.Orientation, tmp.id);
@@ -5017,7 +5017,7 @@ void ObjectMgr::LoadScripts(ScriptsType type)
 
             case SCRIPT_COMMAND_TEMP_SUMMON_CREATURE:
             {
-                if (!Trinity::IsValidMapCoord(tmp.TempSummonCreature.PosX, tmp.TempSummonCreature.PosY, tmp.TempSummonCreature.PosZ, tmp.TempSummonCreature.Orientation))
+                if (!DarkCore::IsValidMapCoord(tmp.TempSummonCreature.PosX, tmp.TempSummonCreature.PosY, tmp.TempSummonCreature.PosZ, tmp.TempSummonCreature.Orientation))
                 {
                     sLog->outErrorDb("Table `%s` has invalid coordinates (X: %f Y: %f Z: %f O: %f) in SCRIPT_COMMAND_TEMP_SUMMON_CREATURE for script id %u",
                         tableName.c_str(), tmp.TempSummonCreature.PosX, tmp.TempSummonCreature.PosY, tmp.TempSummonCreature.PosZ, tmp.TempSummonCreature.Orientation, tmp.id);
@@ -7402,7 +7402,7 @@ void ObjectMgr::LoadPointsOfInterest()
         POI.data                 = fields[5].GetUInt16();
         POI.icon_name            = fields[6].GetString();
 
-        if (!Trinity::IsValidMapCoord(POI.x, POI.y))
+        if (!DarkCore::IsValidMapCoord(POI.x, POI.y))
         {
             sLog->outErrorDb("Table `points_of_interest` (Entry: %u) have invalid coordinates (X: %f Y: %f), ignored.", point_id, POI.x, POI.y);
             continue;
@@ -8083,7 +8083,7 @@ void ObjectMgr::LoadGameObjectForQuests()
     sLog->outString(">> Loaded %u GameObjects for quests", count);
 }
 
-bool ObjectMgr::LoadSkyFireStrings(char const* table, int32 min_value, int32 max_value)
+bool ObjectMgr::LoadDarkCoreStrings(char const* table, int32 min_value, int32 max_value)
 {
     int32 start_value = min_value;
     int32 end_value   = max_value;
@@ -8111,10 +8111,10 @@ bool ObjectMgr::LoadSkyFireStrings(char const* table, int32 min_value, int32 max
     }
 
     // cleanup affected map part for reloading case
-    for (SkyFireStringLocaleMap::iterator itr = mSkyFireStringLocaleMap.begin(); itr != mSkyFireStringLocaleMap.end();)
+    for (DarkCoreStringLocaleMap::iterator itr = mDarkCoreStringLocaleMap.begin(); itr != mDarkCoreStringLocaleMap.end();)
     {
         if (itr->first >= start_value && itr->first < end_value)
-            mSkyFireStringLocaleMap.erase(itr++);
+            mDarkCoreStringLocaleMap.erase(itr++);
         else
             ++itr;
     }
@@ -8124,8 +8124,8 @@ bool ObjectMgr::LoadSkyFireStrings(char const* table, int32 min_value, int32 max
     if (!result)
     {
         sLog->outString();
-        if (min_value == MIN_SKYFIRE_STRING_ID)              // error only in case internal strings
-            sLog->outErrorDb(">> Loaded 0 SkyFire Strings. DB table `%s` is empty. Cannot continue.", table);
+        if (min_value == MIN_DARKCORE_STRING_ID)              // error only in case internal strings
+            sLog->outErrorDb(">> Loaded 0 DarkCore Strings. DB table `%s` is empty. Cannot continue.", table);
         else
             sLog->outString(">> Loaded 0 string templates. DB table `%s` is empty.", table);
         return false;
@@ -8150,7 +8150,7 @@ bool ObjectMgr::LoadSkyFireStrings(char const* table, int32 min_value, int32 max
             continue;
         }
 
-        SkyFireStringLocale& data = mSkyFireStringLocaleMap[entry];
+        DarkCoreStringLocale& data = mDarkCoreStringLocaleMap[entry];
 
         if (data.Content.size() > 0)
         {
@@ -8169,17 +8169,17 @@ bool ObjectMgr::LoadSkyFireStrings(char const* table, int32 min_value, int32 max
     } while (result->NextRow());
 
     sLog->outString();
-    if (min_value == MIN_SKYFIRE_STRING_ID)
-        sLog->outString(">> Loaded %u SkyFire Strings from table %s", count, table);
+    if (min_value == MIN_DARKCORE_STRING_ID)
+        sLog->outString(">> Loaded %u DarkCore Strings from table %s", count, table);
     else
         sLog->outString(">> Loaded %u string templates from %s", count, table);
 
     return true;
 }
 
-const char *ObjectMgr::GetSkyFireString(int32 entry, LocaleConstant locale_idx) const
+const char *ObjectMgr::GetDarkCoreString(int32 entry, LocaleConstant locale_idx) const
 {
-    if (SkyFireStringLocale const *msl = GetSkyFireStringLocale(entry))
+    if (DarkCoreStringLocale const *msl = GetDarkCoreStringLocale(entry))
     {
         if (msl->Content.size() > size_t(locale_idx) && !msl->Content[locale_idx].empty())
             return msl->Content[locale_idx].c_str();
@@ -8188,9 +8188,9 @@ const char *ObjectMgr::GetSkyFireString(int32 entry, LocaleConstant locale_idx) 
     }
 
     if (entry > 0)
-        sLog->outErrorDb("Entry %i not found in `skyfire_string` table.", entry);
+        sLog->outErrorDb("Entry %i not found in `darkcore_string` table.", entry);
     else
-        sLog->outErrorDb("Trinity string entry %i not found in DB.", entry);
+        sLog->outErrorDb("DarkCore string entry %i not found in DB.", entry);
     return "<error>";
 }
 
@@ -8470,7 +8470,7 @@ void ObjectMgr::LoadMailLevelRewards()
 
 void ObjectMgr::AddSpellToTrainer( uint32 entry, uint32 spell, uint32 spellCost, uint32 reqSkill, uint32 reqSkillValue, uint32 reqLevel, uint32 KillCredit)
 {
-    if (entry >= TRINITY_TRAINER_START_REF)
+    if (entry >= DARKCORE_TRAINER_START_REF)
         return;
 
     CreatureInfo const* cInfo = GetCreatureTemplate(entry);
@@ -8979,7 +8979,7 @@ void ObjectMgr::CheckScripts(ScriptsType type, std::set<int32>& ids)
             {
                 case SCRIPT_COMMAND_TALK:
                 {
-                    if (!GetSkyFireStringLocale (itrM->second.Talk.TextID))
+                    if (!GetDarkCoreStringLocale (itrM->second.Talk.TextID))
                         sLog->outErrorDb("Table `db_script_string` not has string id  %u used db script (ID: %u)", itrM->second.Talk.TextID, itrMM->first);
 
                     if (ids.find(itrM->second.Talk.TextID) != ids.end())
@@ -8994,12 +8994,12 @@ void ObjectMgr::CheckScripts(ScriptsType type, std::set<int32>& ids)
 
 void ObjectMgr::LoadDbScriptStrings()
 {
-    LoadSkyFireStrings("db_script_string", MIN_DB_SCRIPT_STRING_ID, MAX_DB_SCRIPT_STRING_ID);
+    LoadDarkCoreStrings("db_script_string", MIN_DB_SCRIPT_STRING_ID, MAX_DB_SCRIPT_STRING_ID);
 
     std::set<int32> ids;
 
     for (int32 i = MIN_DB_SCRIPT_STRING_ID; i < MAX_DB_SCRIPT_STRING_ID; ++i)
-        if (GetSkyFireStringLocale(i))
+        if (GetDarkCoreStringLocale(i))
             ids.insert(i);
 
     for (int type = SCRIPTS_FIRST; type < SCRIPTS_LAST; ++type)
@@ -9015,17 +9015,17 @@ uint32 GetAreaTriggerScriptId(uint32 trigger_id)
     return sObjectMgr->GetAreaTriggerScriptId(trigger_id);
 }
 
-bool LoadSkyFireStrings(char const* table, int32 start_value, int32 end_value)
+bool LoadDarkCoreStrings(char const* table, int32 start_value, int32 end_value)
 {
     // MAX_DB_SCRIPT_STRING_ID is max allowed negative value for scripts (scrpts can use only more deep negative values
     // start/end reversed for negative values
     if (start_value > MAX_DB_SCRIPT_STRING_ID || end_value >= start_value)
     {
-        sLog->outErrorDb("Table '%s' load attempted with range (%d - %d) reserved by Trinity, strings not loaded.", table, start_value, end_value+1);
+        sLog->outErrorDb("Table '%s' load attempted with range (%d - %d) reserved by DarkCore, strings not loaded.", table, start_value, end_value+1);
         return false;
     }
 
-    return sObjectMgr->LoadSkyFireStrings(table, start_value, end_value);
+    return sObjectMgr->LoadDarkCoreStrings(table, start_value, end_value);
 }
 
 uint32  GetScriptId(const char *name)

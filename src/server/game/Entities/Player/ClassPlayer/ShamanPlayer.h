@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef __TRINITY_SHAMANPLAYER_H
-#define __TRINITY_SHAMANPLAYER_H
+#ifndef __DARKCORE_SHAMANPLAYER_H
+#define __DARKCORE_SHAMANPLAYER_H
 
 #include "Player.h"
 

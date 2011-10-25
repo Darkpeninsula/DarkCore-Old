@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_TYPELIST_H
-#define TRINITY_TYPELIST_H
+#ifndef DARKCORE_TYPELIST_H
+#define DARKCORE_TYPELIST_H
 
 /*
   @struct TypeList

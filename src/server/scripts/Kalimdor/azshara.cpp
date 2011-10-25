@@ -419,7 +419,7 @@ public:
         void SendText(int32 iTextEntry, Player* pPlayer)
         {
             LocaleConstant loc_idx = pPlayer->GetSession()->GetSessionDbLocaleIndex();
-            const char* text = sObjectMgr->GetSkyFireString(iTextEntry, loc_idx);
+            const char* text = sObjectMgr->GetDarkCoreString(iTextEntry, loc_idx);
             sWorld->SendServerMessage(SERVER_MSG_STRING, text, pPlayer);
         }
 

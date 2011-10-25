@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_GUILD_H
-#define TRINITYCORE_GUILD_H
+#ifndef DARKCORE_GUILD_H
+#define DARKCORE_GUILD_H
 
 #include "World.h"
 #include "Item.h"

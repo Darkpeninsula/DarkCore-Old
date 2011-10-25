@@ -409,7 +409,7 @@ void World::LoadConfigSettings(bool reload)
 
     ///- Read the player limit and the Message of the day from the config file
     SetPlayerAmountLimit(sConfig->GetIntDefault("PlayerLimit", 100));
-    SetMotd(sConfig->GetStringDefault("Motd", "Welcome to a SkyFire server."));
+    SetMotd(sConfig->GetStringDefault("Motd", "Welcome to a DarkCore server."));
 
     ///- Read ticket system setting from the config file
     m_bool_configs[CONFIG_ALLOW_TICKETS] = sConfig->GetBoolDefault("AllowTickets", true);
@@ -1265,8 +1265,8 @@ void World::SetInitialWorldSettings()
 
     ///- Loading strings. Getting no records means core load has to be canceled because no error message can be output.
     sLog->outString();
-    sLog->outString("Loading SkyFire strings...");
-    if (!sObjectMgr->LoadSkyFireStrings())
+    sLog->outString("Loading DarkCore strings...");
+    if (!sObjectMgr->LoadDarkCoreStrings())
         exit(1);                                            // Error message displayed in function already
 
     ///- Update the realm entry in the database with the realm type from the config file
@@ -2090,7 +2090,7 @@ void World::SendGlobalGMMessage(WorldPacket *packet, WorldSession *self, uint32 
     }
 }
 
-namespace Trinity
+namespace DarkCore
 {
     class WorldWorldTextBuilder
     {
@@ -2099,7 +2099,7 @@ namespace Trinity
             explicit WorldWorldTextBuilder(int32 textId, va_list* args = NULL) : i_textId(textId), i_args(args) {}
             void operator()(WorldPacketList& data_list, LocaleConstant loc_idx)
             {
-                char const* text = sObjectMgr->GetSkyFireString(i_textId, loc_idx);
+                char const* text = sObjectMgr->GetDarkCoreString(i_textId, loc_idx);
 
                 if (i_args)
                 {
@@ -2145,7 +2145,7 @@ namespace Trinity
             int32 i_textId;
             va_list* i_args;
     };
-}                                                           // namespace Trinity
+}                                                           // namespace DarkCore
 
 /// Send a System Message to all players (except self if mentioned)
 void World::SendWorldText(int32 string_id, ...)
@@ -2153,8 +2153,8 @@ void World::SendWorldText(int32 string_id, ...)
     va_list ap;
     va_start(ap, string_id);
 
-    Trinity::WorldWorldTextBuilder wt_builder(string_id, &ap);
-    Trinity::LocalizedPacketListDo<Trinity::WorldWorldTextBuilder> wt_do(wt_builder);
+    DarkCore::WorldWorldTextBuilder wt_builder(string_id, &ap);
+    DarkCore::LocalizedPacketListDo<DarkCore::WorldWorldTextBuilder> wt_do(wt_builder);
     for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
     {
         if (!itr->second || !itr->second->GetPlayer() || !itr->second->GetPlayer()->IsInWorld())
@@ -2172,8 +2172,8 @@ void World::SendGMText(int32 string_id, ...)
     va_list ap;
     va_start(ap, string_id);
 
-    Trinity::WorldWorldTextBuilder wt_builder(string_id, &ap);
-    Trinity::LocalizedPacketListDo<Trinity::WorldWorldTextBuilder> wt_do(wt_builder);
+    DarkCore::WorldWorldTextBuilder wt_builder(string_id, &ap);
+    DarkCore::LocalizedPacketListDo<DarkCore::WorldWorldTextBuilder> wt_do(wt_builder);
     for (SessionMap::iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
     {
         if (!itr->second || !itr->second->GetPlayer() || !itr->second->GetPlayer()->IsInWorld())

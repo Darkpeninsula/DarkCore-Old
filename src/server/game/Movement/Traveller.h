@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_TRAVELLER_H
-#define TRINITY_TRAVELLER_H
+#ifndef DARKCORE_TRAVELLER_H
+#define DARKCORE_TRAVELLER_H
 
 #include "Creature.h"
 #include "Player.h"

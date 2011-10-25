@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_SHAREDDEFINES_H
-#define TRINITY_SHAREDDEFINES_H
+#ifndef DARKCORE_SHAREDDEFINES_H
+#define DARKCORE_SHAREDDEFINES_H
 
 #include "Define.h"
 #include <cassert>

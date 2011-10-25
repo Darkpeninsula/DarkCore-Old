@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_CELL_H
-#define TRINITY_CELL_H
+#ifndef DARKCORE_CELL_H
+#define DARKCORE_CELL_H
 
 #include <cmath>
 

@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITYCORE_ARENATEAM_H
-#define TRINITYCORE_ARENATEAM_H
+#ifndef DARKCORE_ARENATEAM_H
+#define DARKCORE_ARENATEAM_H
 
 #include "QueryResult.h"
 #include "Player.h"

@@ -371,7 +371,7 @@ public:
             if (targets.empty())
                 return false;
 
-            targets.sort(Trinity::ObjectDistanceOrderPred(me));
+            targets.sort(DarkCore::ObjectDistanceOrderPred(me));
             Unit *pTarget = targets.front();
             if (pTarget)
             {

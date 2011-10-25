@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef TRINITY_IDLEMOVEMENTGENERATOR_H
-#define TRINITY_IDLEMOVEMENTGENERATOR_H
+#ifndef DARKCORE_IDLEMOVEMENTGENERATOR_H
+#define DARKCORE_IDLEMOVEMENTGENERATOR_H
 
 #include "MovementGenerator.h"
 

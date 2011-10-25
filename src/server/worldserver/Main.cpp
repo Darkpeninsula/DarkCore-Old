@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-/// \addtogroup Trinityd Trinity Daemon
+/// \addtogroup DarkCored DarkCore Daemon
 /// @{
 /// \file
 
@@ -34,15 +34,15 @@
 #include "Log.h"
 #include "Master.h"
 
-#ifndef _TRINITY_CORE_CONFIG
-# define _TRINITY_CORE_CONFIG  "worldserver.conf"
-#endif //_TRINITY_CORE_CONFIG
+#ifndef _DARKCORE_CORE_CONFIG
+# define _DARKCORE_CORE_CONFIG  "worldserver.conf"
+#endif //_DARKCORE_CORE_CONFIG
 
 #ifdef _WIN32
 #include "ServiceWin32.h"
 char serviceName[] = "worldserver";
-char serviceLongName[] = "SkyFireEMU world service";
-char serviceDescription[] = "SkyFireEMU World of Warcraft emulator world service";
+char serviceLongName[] = "DarkCore world service";
+char serviceDescription[] = "DarkCore World of Warcraft emulator world service";
 /*
  * -1 - not in service mode
  *  0 - stopped
@@ -72,11 +72,11 @@ void usage(const char *prog)
         , prog);
 }
 
-/// Launch the Trinity server
+/// Launch the DarkCore server
 extern int main(int argc, char **argv)
 {
     ///- Command line parsing to get the configuration file name
-    char const* cfg_file = _TRINITY_CORE_CONFIG;
+    char const* cfg_file = _DARKCORE_CORE_CONFIG;
     int c = 1;
     while( c < argc )
     {
@@ -150,7 +150,7 @@ extern int main(int argc, char **argv)
     // at sMaster return function exist with codes
     // 0 - normal shutdown
     // 1 - shutdown at error
-    // 2 - restart command used, this code can be used by restarter for restart Trinityd
+    // 2 - restart command used, this code can be used by restarter for restart DarkCored
 
     return ret;
 }

@@ -19,8 +19,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TRINITY_SMARTSCRIPT_H
-#define TRINITY_SMARTSCRIPT_H
+#ifndef DARKCORE_SMARTSCRIPT_H
+#define DARKCORE_SMARTSCRIPT_H
 
 #include "Common.h"
 #include "Creature.h"
@@ -158,14 +158,14 @@ class SmartScript
         {
             GameObject* pGameObject = NULL;
 
-            CellPair p(Trinity::ComputeCellPair(pSearchObject->GetPositionX(), pSearchObject->GetPositionY()));
+            CellPair p(DarkCore::ComputeCellPair(pSearchObject->GetPositionX(), pSearchObject->GetPositionY()));
             Cell cell(p);
             cell.data.Part.reserved = ALL_DISTRICT;
 
-            Trinity::GameObjectWithDbGUIDCheck goCheck(*pSearchObject, guid);
-            Trinity::GameObjectSearcher<Trinity::GameObjectWithDbGUIDCheck> checker(pSearchObject, pGameObject, goCheck);
+            DarkCore::GameObjectWithDbGUIDCheck goCheck(*pSearchObject, guid);
+            DarkCore::GameObjectSearcher<DarkCore::GameObjectWithDbGUIDCheck> checker(pSearchObject, pGameObject, goCheck);
 
-            TypeContainerVisitor<Trinity::GameObjectSearcher<Trinity::GameObjectWithDbGUIDCheck>, GridTypeMapContainer > objectChecker(checker);
+            TypeContainerVisitor<DarkCore::GameObjectSearcher<DarkCore::GameObjectWithDbGUIDCheck>, GridTypeMapContainer > objectChecker(checker);
             cell.Visit(p, objectChecker, *pSearchObject->GetMap());
 
             return pGameObject;
@@ -174,14 +174,14 @@ class SmartScript
         Creature* FindCreatureNear(WorldObject* pSearchObject, uint32 guid) const
         {
             Creature* crea = NULL;
-            CellPair p(Trinity::ComputeCellPair(pSearchObject->GetPositionX(), pSearchObject->GetPositionY()));
+            CellPair p(DarkCore::ComputeCellPair(pSearchObject->GetPositionX(), pSearchObject->GetPositionY()));
             Cell cell(p);
             cell.data.Part.reserved = ALL_DISTRICT;
 
-            Trinity::CreatureWithDbGUIDCheck target_check(pSearchObject, guid);
-            Trinity::CreatureSearcher<Trinity::CreatureWithDbGUIDCheck> checker(pSearchObject, crea, target_check);
+            DarkCore::CreatureWithDbGUIDCheck target_check(pSearchObject, guid);
+            DarkCore::CreatureSearcher<DarkCore::CreatureWithDbGUIDCheck> checker(pSearchObject, crea, target_check);
 
-            TypeContainerVisitor<Trinity::CreatureSearcher <Trinity::CreatureWithDbGUIDCheck>, GridTypeMapContainer > unit_checker(checker);
+            TypeContainerVisitor<DarkCore::CreatureSearcher <DarkCore::CreatureWithDbGUIDCheck>, GridTypeMapContainer > unit_checker(checker);
             cell.Visit(p, unit_checker, *pSearchObject->GetMap());
 
             return crea;
