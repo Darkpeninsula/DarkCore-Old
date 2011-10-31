@@ -6060,7 +6060,7 @@ void Spell::EffectScriptEffect(SpellEffIndex effIndex)
 
                     // Check for Judgement dependent auras
                     if (m_caster->HasAura(31876))
-                        m_caster->CastSpell(m_caster,57669,true)
+                        m_caster->CastSpell(m_caster,57669,true);
                 }
                 return;
             }
