@@ -6921,6 +6921,13 @@ bool Unit::HandleDummyAuraProc(Unit *pVictim, uint32 damage, AuraEffect* trigger
                     target = pVictim;
                     break;
                 }
+                // Judgements of the Bold
+                case 89901:
+                {
+                    target = this;
+                    triggered_spell_id = 89906;
+                    break;
+                }
             }
             break;
         }
