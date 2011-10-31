@@ -3146,7 +3146,7 @@ void Spell::EffectEnergize(SpellEffIndex effIndex)
         case 31930:                                         // Judgements of the Wise
         case 63375:                                         // Improved Stormstrike
         case 68082:                                         // Glyph of Seal of Command
-		case 89906:                                         // Judgements of the Bold
+        case 89906:                                         // Judgements of the Bold
             damage = damage * unitTarget->GetCreateMana() / 100;
             break;
         case 71132:                                         // Glyph of Shadow Word: Pain
@@ -6020,7 +6020,7 @@ void Spell::EffectScriptEffect(SpellEffIndex effIndex)
 
                 uint32 spellId = 0;
 
-				// Seal of Truth and Seal of Righteoussness have a dummy aura on effect 2
+                // Seal of Truth and Seal of Righteoussness have a dummy aura on effect 2
                 Unit::AuraApplicationMap & sealAuras = m_caster->GetAppliedAuras();
                 for (Unit::AuraApplicationMap::iterator iter = sealAuras.begin(); iter != sealAuras.end();)
                 {
@@ -6028,14 +6028,15 @@ void Spell::EffectScriptEffect(SpellEffIndex effIndex)
                     if (IsSealSpell(aura->GetSpellProto()))
                     {
                         if (AuraEffect * aureff = aura->GetEffect(2))
-						{
+                        {
                             if (aureff->GetAuraType() == SPELL_AURA_DUMMY)
                             {
                                 if (sSpellStore.LookupEntry(aureff->GetAmount()))
                                     spellId = aureff->GetAmount();
                                 break;
                             }
-						}
+                        }
+
                         if (!spellId)
                         {
                             switch (iter->first)
@@ -6052,16 +6053,15 @@ void Spell::EffectScriptEffect(SpellEffIndex effIndex)
                         ++iter;
                 }
 
-				// Cast Judgement
+                // Cast Judgement
                 if (spellId)
-				{
+                {
                     m_caster->CastSpell(unitTarget, spellId, true);
-					
-					// Check for Judgement dependent auras
-					if (m_caster->HasAura(31876))
-						m_caster->CastSpell(m_caster,57669,true)
-				}
 
+                    // Check for Judgement dependent auras
+                    if (m_caster->HasAura(31876))
+                        m_caster->CastSpell(m_caster,57669,true)
+                }
                 return;
             }
         }
