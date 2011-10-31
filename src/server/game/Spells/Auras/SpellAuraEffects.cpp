@@ -6149,6 +6149,12 @@ void AuraEffect::HandleAuraDummy(AuraApplication const *aurApp, uint8 mode, bool
                         if (AuraEffect *aurEff = caster->GetAuraEffect(63330, 0)) // glyph of Dancing Rune Weapon
                             GetBase()->SetDuration(GetBase()->GetDuration() + aurEff->GetAmount());
                     break;
+                case 52437: // Sudden Death
+                {
+                    if (caster && caster->ToPlayer()->HasSpellCooldown(86346))
+                        caster->ToPlayer()->RemoveSpellCooldown(86346);
+                    break;
+                }
                 case 52916: // Honor Among Thieves
                     if (target == caster)
                         if (Player* pTarget = caster->ToPlayer())
