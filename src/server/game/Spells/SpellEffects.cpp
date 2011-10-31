@@ -6035,19 +6035,6 @@ void Spell::EffectScriptEffect(SpellEffIndex effIndex)
                 Unit::AuraApplicationMap & sealAuras = m_caster->GetAppliedAuras();
                 for (Unit::AuraApplicationMap::iterator iter = sealAuras.begin(); iter != sealAuras.end();)
                 {
-                    switch (iter->first)
-                    {
-                        // Heart of the Crusader
-                        case 20335: // Rank 1
-                            spellId3 = 21183;
-                            break;
-                        case 20336: // Rank 2
-                            spellId3 = 54498;
-                            break;
-                        case 20337: // Rank 3
-                            spellId3 = 54499;
-                            break;
-                    }
                     Aura * aura = iter->second->GetBase();
                     if (IsSealSpell(aura->GetSpellProto()))
                     {
