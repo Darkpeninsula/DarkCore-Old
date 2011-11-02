@@ -79,4 +79,10 @@ if( WIN32 )
   endif()
 endif( WIN32 )
 
+if( WITH_CONF )
+  message("* Install Conf-files     : Yes (default)")
+else()
+  message("* Install Conf-files     : No")
+endif()
+
 message("")
