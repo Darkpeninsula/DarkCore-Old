@@ -102,7 +102,7 @@ class remove_commandscript : public CommandScript
                 player->CastSpell(player, SPELL_DUAL_SPEC, true);
                 ChatHandler(player).SendSysMessage(LANG_RESET_TALENTS);
 
-				Pet* pet = player->GetPet();
+                Pet* pet = player->GetPet();
                 Pet::resetTalentsForAllPetsOf(player, pet);
 
                 if (pet)
