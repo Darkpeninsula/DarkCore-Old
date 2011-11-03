@@ -66,6 +66,7 @@ void AddSC_gobject_commandscript();
 void AddSC_honor_commandscript();
 void AddSC_quest_commandscript();
 void AddSC_reload_commandscript();
+void AddSC_remove_commandscript();
 
 #ifdef SCRIPTS
 //world
@@ -683,6 +684,7 @@ void AddCommandScripts()
     AddSC_honor_commandscript();
     AddSC_quest_commandscript();
     AddSC_reload_commandscript();
+    AddSC_remove_commandscript();
 }
 
 void AddWorldScripts()

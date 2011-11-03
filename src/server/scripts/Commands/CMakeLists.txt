@@ -96,6 +96,7 @@ set(scripts_STAT_SRCS
 #  Commands/cs_bindsight.cpp
 #  Commands/cs_unbindsight.cpp
 #  Commands/cs_playall.cpp
+  Commands/cs_remove.cpp
 )
 
 message("  -> Prepared: Commands")
