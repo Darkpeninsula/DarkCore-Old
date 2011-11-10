@@ -599,6 +599,11 @@ void AddSC_instance_grim_batol();               //Grim Batol
 void AddSC_instance_throne_of_the_tides();      //Throne of the Tides
 void AddSC_instance_blackrock_caverns();        //Blackrock Caverns
 
+// The Maelstrom
+
+// Kezan
+void AddSC_kezan();
+
 // battlegrounds
 
 // outdoor pvp
@@ -1234,6 +1239,11 @@ void AddNorthrendScripts()
     AddSC_instance_grim_batol();               //Grim Batol
     AddSC_instance_throne_of_the_tides();      //Throne of the Tides
     AddSC_instance_blackrock_caverns();        //Blackrock Caverns
+
+    // The Maelstrom
+
+    // Kezan
+    AddSC_kezan();
 
 #endif
 }

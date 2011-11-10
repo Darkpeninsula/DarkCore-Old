@@ -750,6 +750,116 @@ class spell_gen_dungeon_credit : public SpellScriptLoader
         }
 };
 
+// 66298 Honk Horn
+enum eHomies
+{
+   NPC_IZZY    = 34959,
+   NPC_ACE     = 34957,
+   NPC_GOBBER  = 34958,
+};
+
+class spell_honk_horn : public SpellScriptLoader
+{
+    public:
+        spell_honk_horn() : SpellScriptLoader("spell_honk_horn") { }
+
+        class spell_honk_horn_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_honk_horn_SpellScript);
+
+            bool Load()
+            {
+                _handled = false;
+                return true;
+            }
+
+            void QuestEncounter()
+            {
+                if (_handled)
+                    return;
+
+                _handled = true;
+
+                if (GetCaster()->GetTypeId() == TYPEID_UNIT)
+                {
+                    if(GetCaster()->GetVehicleKit()->GetPassenger(0)->ToPlayer()->GetQuestStatus(14071) == QUEST_STATUS_INCOMPLETE)
+                    {
+                        if(GetCaster()->GetVehicleKit()->GetPassenger(0)->ToPlayer()->FindNearestCreature(NPC_IZZY,5.0f,true))
+                            GetCaster()->GetVehicleKit()->GetPassenger(0)->ToPlayer()->KilledMonsterCredit(NPC_IZZY,0);
+                        if(GetCaster()->GetVehicleKit()->GetPassenger(0)->ToPlayer()->FindNearestCreature(NPC_ACE,5.0f,true))
+                            GetCaster()->GetVehicleKit()->GetPassenger(0)->ToPlayer()->KilledMonsterCredit(NPC_ACE,0);
+                        if(GetCaster()->GetVehicleKit()->GetPassenger(0)->ToPlayer()->FindNearestCreature(NPC_GOBBER,5.0f,true))
+                            GetCaster()->GetVehicleKit()->GetPassenger(0)->ToPlayer()->KilledMonsterCredit(NPC_GOBBER,0);
+                    }
+                }
+            }
+
+            void Register()
+            {
+                AfterHit += SpellHitFn(spell_honk_horn_SpellScript::QuestEncounter);
+            }
+
+            bool _handled;
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_honk_horn_SpellScript();
+        }
+};
+
+// 67682 Kablooey Bombs
+class spell_kablooey_bombs : public SpellScriptLoader
+{
+    public:
+        spell_kablooey_bombs() : SpellScriptLoader("spell_kablooey_bombs") { }
+
+        class spell_kablooey_bombs_SpellScript : public SpellScript
+        {
+            PrepareSpellScript(spell_kablooey_bombs_SpellScript);
+
+            bool Load()
+            {
+                _handled = false;
+                return true;
+            }
+
+            void ActivateChunk()
+            {
+                if (_handled)
+                    return;
+
+                _handled = true;
+
+                if (GetCaster()->GetTypeId() == TYPEID_PLAYER)
+                {
+                    if(GetCaster()->ToPlayer()->GetQuestStatus(14124) == QUEST_STATUS_INCOMPLETE)
+                    {
+                        GameObject* Deposit = GetCaster()->ToPlayer()->FindNearestGameObject(202593, 5.0f);
+
+                        if(Deposit)
+                        {
+                            Deposit->Delete();
+                            GetCaster()->ToPlayer()->AddItem(48766,1);
+                        }
+                    }
+                }
+            }
+
+            void Register()
+            {
+                AfterHit += SpellHitFn(spell_kablooey_bombs_SpellScript::ActivateChunk);
+            }
+
+            bool _handled;
+        };
+
+        SpellScript* GetSpellScript() const
+        {
+            return new spell_kablooey_bombs_SpellScript();
+        }
+};
+
 void AddSC_generic_spell_scripts()
 {
     new spell_gen_absorb0_hitlimit1();
@@ -769,4 +879,6 @@ void AddSC_generic_spell_scripts()
     new spell_gen_gunship_portal();
     new spell_gen_shroud_of_death();
     new spell_gen_dungeon_credit();
+    new spell_honk_horn();
+    new spell_kablooey_bombs();
 }
