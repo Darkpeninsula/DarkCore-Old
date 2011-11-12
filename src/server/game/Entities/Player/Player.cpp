@@ -2927,10 +2927,7 @@ void Player::GiveLevel(uint8 level)
     {
         // Running Wild
         if(!HasSpell(87840))
-            learnSpell(87840, false);
-        // Apprentice Riding
-        if(!HasSpell(33388))
-            learnSpell(33388, false);
+            CastSpell(this, 94098, true);
     }
 }
 
