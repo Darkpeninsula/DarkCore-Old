@@ -11194,10 +11194,10 @@ uint32 Unit::SpellHealingBonus(Unit *pVictim, SpellEntry const *spellProto, uint
     {
         uint32 am = GetPower(POWER_HOLY_POWER);
         am = am > 0 ? am : 1;                              // proc Chance?
-		healamount = (((spellProto->EffectBasePoints[0] + spellProto->EffectBasePoints[0] / 2) + 0.198 * GetTotalAttackPowerValue(BASE_ATTACK))) * am;
+        healamount = (((spellProto->EffectBasePoints[0] + spellProto->EffectBasePoints[0] / 2) + 0.198 * GetTotalAttackPowerValue(BASE_ATTACK))) * am;
 
         uint32 chance = 0;
-        if (HasAura(87163))   // Eternal Glory rank1
+        if (HasAura(87163))        // Eternal Glory rank1
             chance = 15;
         else if (HasAura(87164))   // Eternal Glory rank2
             chance = 30;
