@@ -280,6 +280,84 @@ bool AchievementCriteriaData::IsValid(AchievementCriteriaEntry const* criteria)
 
 bool AchievementCriteriaData::Meets(uint32 criteria_id, Player const* source, Unit const* target, uint32 miscvalue1 /*= 0*/) const
 {
+    const AchievementCriteriaEntry* criteria = sAchievementCriteriaStore.LookupEntry(criteria_id);
+    
+    bool met = true;
+    for(uint32 i = 0; i < 3; ++i)
+    {
+        uint32 checkType = criteria->moreRequirement[i];
+        
+        if(checkType == 0)
+            break;
+
+        uint32 checkValue = criteria->moreRequirementValue[i];
+        
+        switch(checkType)
+        {
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_ITEM_LEVEL:
+            {
+                ItemPrototype const *item = ObjectMgr::GetItemPrototype(miscvalue1);
+                if (!item)
+                    return false;
+                if(!(item->ItemLevel >= checkValue))
+                    return false;
+                break;
+            }
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_CREATURE_ID:
+                if(target->GetEntry() != checkValue)
+                    return false;
+                break;
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_TARGET_TYPE:
+                if(checkValue == 0 && target->GetTypeId() != TYPEID_PLAYER)
+                    return false;
+                break;
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_SPELL:
+                if(!source->HasAura(checkValue))
+                    return false;
+                break;
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_SPELL_ON_TARGET:
+                if(!target->HasAura(checkValue))
+                    return false;
+                break;
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_MOUNTED:
+                if(!target->IsMounted())
+                    return false;
+                break;
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_ITEM_QUALITY_EQUIPPED:
+            {
+                ItemPrototype const *item2 = ObjectMgr::GetItemPrototype(miscvalue1);
+                if (!item2)
+                    return false;
+                if(!(item2->Quality >= checkValue))
+                    return false;
+                break;
+            }
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_ITEM_QUALITY_LOOTED:
+            {
+                ItemPrototype const *item3 = ObjectMgr::GetItemPrototype(miscvalue1);
+                if (!item3)
+                    return false;
+                if(!(item3->Quality == checkValue))
+                    return false;
+                break;
+            }
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_AREA_ID:
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_AREA_ID2:
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_AREA_ID3:
+                if(source->GetAreaId() != checkValue && source->GetZoneId() != checkValue)
+                    return false;
+                break;
+            case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_RAID_DIFFICULTY:
+            {
+                Map* map = source->GetMap();
+                if(uint32(map->GetDifficulty()) != checkValue)
+                    return false;
+                break;
+            }
+            // ToDo: Implement the rest, research more on it
+        }
+    }
+
     switch (dataType)
     {
         case ACHIEVEMENT_CRITERIA_DATA_TYPE_NONE:
@@ -1561,8 +1639,13 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, ui
     }
 }
 
-static const uint32 achievIdByClass[MAX_CLASSES] = {0, 459, 465 , 462, 458, 464, 461, 467, 460, 463, 0, 466};
-static const uint32 achievIdByRace[MAX_RACES]    = {0, 1408, 1410, 1407, 1409, 1413, 1411, 1404, 1412, 0, 1405, 1406};
+// Level 80 Realm First!
+static const uint32 achievIdByClassPreCataclysmRealmFirst[MAX_CLASSES] = {0, 459, 465, 462, 458, 464, 461, 467, 460, 463, 0, 466};
+// Level 85 Realm First!
+static const uint32 achievIdByClassRealmFirst[MAX_CLASSES] = {0, 5007, 5001, 5004, 5008, 5002, 5005, 4998, 5006, 5003, 0, 5000};
+
+// Level 80
+static const uint32 achievIdByRacePreCataclysmRealmFirst[MAX_RACES] = {0, 1408, 1410, 1407, 1409, 1413, 1411, 1404, 1412, 0, 1405, 1406};
 
 bool AchievementMgr::IsCompletedCriteria(AchievementCriteriaEntry const* achievementCriteria, AchievementEntry const* achievement)
 {
@@ -1591,13 +1674,19 @@ bool AchievementMgr::IsCompletedCriteria(AchievementCriteriaEntry const* achieve
         {
             // skip wrong class achievements
             for (int i = 1; i < MAX_CLASSES; ++i)
-                if (achievIdByClass[i] == achievement->ID && i != GetPlayer()->getClass())
+            {
+                if (achievIdByClassPreCataclysmRealmFirst[i] == achievement->ID && i != GetPlayer()->getClass())
                     return false;
+                if (achievIdByClassRealmFirst[i] == achievement->ID && i != GetPlayer()->getClass())
+                    return false;
+            }
 
             // skip wrong race achievements
             for (int i = 1; i < MAX_RACES; ++i)
-                if (achievIdByRace[i] == achievement->ID && i != GetPlayer()->getRace())
+            {
+                if (achievIdByRacePreCataclysmRealmFirst[i] == achievement->ID && i != GetPlayer()->getRace())
                     return false;
+            }
 
             // appropriate class/race or not class/race specific
             return progress->counter >= achievementCriteria->reach_level.level;

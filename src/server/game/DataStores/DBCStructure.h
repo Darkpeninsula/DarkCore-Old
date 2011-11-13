@@ -511,8 +511,8 @@ struct AchievementCriteriaEntry
     uint32  showOrder;                                      // 14 show order
     //uint32 unk1;                                          // 15 only one value, still unknown
     //uint32 unk2;                                          // 16 all zeros
-    //uint32 moreRequirement[3];                            // 17-19
-    //uint32 moreRequirementValue[3];                       // 20-22
+    uint32 moreRequirement[3];                              // 17-19
+    uint32 moreRequirementValue[3];                         // 20-22
 };
 
 struct AreaTableEntry
