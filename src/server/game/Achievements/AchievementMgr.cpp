@@ -304,23 +304,23 @@ bool AchievementCriteriaData::Meets(uint32 criteria_id, Player const* source, Un
                 break;
             }
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_CREATURE_ID:
-                if(target->GetEntry() != checkValue)
+                if(target && target->GetEntry() != checkValue)
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_TARGET_TYPE:
-                if(checkValue == 0 && target->GetTypeId() != TYPEID_PLAYER)
+                if(checkValue == 0 && target && target->GetTypeId() != TYPEID_PLAYER)
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_SPELL:
-                if(!source->HasAura(checkValue))
+                if(source && !source->HasAura(checkValue))
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_SPELL_ON_TARGET:
-                if(!target->HasAura(checkValue))
+                if(target && !target->HasAura(checkValue))
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_MOUNTED:
-                if(!target->IsMounted())
+                if(target && !target->IsMounted())
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_ITEM_QUALITY_EQUIPPED:
@@ -344,14 +344,17 @@ bool AchievementCriteriaData::Meets(uint32 criteria_id, Player const* source, Un
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_AREA_ID:
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_AREA_ID2:
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_AREA_ID3:
-                if(source->GetAreaId() != checkValue && source->GetZoneId() != checkValue)
+                if(source && source->GetAreaId() != checkValue && source->GetZoneId() != checkValue)
                     return false;
                 break;
             case ACHIEVEMENT_CRITERIA_MORE_REQ_TYPE_RAID_DIFFICULTY:
             {
-                Map* map = source->GetMap();
-                if(uint32(map->GetDifficulty()) != checkValue)
-                    return false;
+                if(source)
+                {
+                    Map* map = source->GetMap();
+                    if(uint32(map->GetDifficulty()) != checkValue)
+                        return false;
+                }
                 break;
             }
             // ToDo: Implement the rest, research more on it
