@@ -1282,7 +1282,7 @@ CREATE TABLE `characters` (
   `deleteInfos_Name` varchar(12) DEFAULT NULL,
   `deleteDate` int(10) unsigned DEFAULT NULL,
   `currentPetSlot` int(10) DEFAULT NULL,
-  `petSlotUsed` int(32) DEFAULT NULL,
+  `petSlotUsed` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`guid`),
   KEY `idx_account` (`account`),
   KEY `idx_online` (`online`),

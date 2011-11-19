@@ -5977,17 +5977,6 @@ bool Unit::HandleDummyAuraProc(Unit *pVictim, uint32 damage, AuraEffect* trigger
             }
             switch (dummySpell->Id)
             {
-                // Siphon Life
-                case 63108:
-                {
-                    // Glyph of Siphon Life
-                    if (HasAura(56216))
-                        triggerAmount += triggerAmount / 4;
-                    triggered_spell_id = 63106;
-                    target = this;
-                    basepoints0 = int32(damage*triggerAmount/100);
-                    break;
-                }
                 // Glyph of Shadowflame
                 case 63310:
                 {
@@ -8175,8 +8164,15 @@ bool Unit::HandleProcTriggerSpell(Unit *pVictim, uint32 damage, AuraEffect* trig
                 break;
             case SPELLFAMILY_WARLOCK:
             {
+                // Siphon Life
+                if(auraSpellInfo->SpellIconID == 152)
+                {
+                    trigger_spell_id = 63106;
+                    target = this;
+                    basepoints0 = int32(CountPctFromMaxHealth(triggerAmount));
+                }
                 // Drain Soul
-                if (auraSpellInfo->SpellFamilyFlags[0] & 0x4000)
+                else if (auraSpellInfo->SpellFamilyFlags[0] & 0x4000)
                 {
                     // Improved Drain Soul
                     Unit::AuraEffectList const& mAddFlatModifier = GetAuraEffectsByType(SPELL_AURA_DUMMY);
@@ -10407,7 +10403,7 @@ uint32 Unit::SpellDamageBonus(Unit *pVictim, SpellEntry const *spellProto, uint3
                 {
                     Aura const * aura = itr->second->GetBase();
                     SpellEntry const *m_spell = aura->GetSpellProto();
-                    if (m_spell->SpellFamilyName != SPELLFAMILY_WARLOCK || !(m_spell->SpellFamilyFlags[1] & 0x0004071B || m_spell->SpellFamilyFlags[0] & 0x8044C402))
+                    if (m_spell->SpellFamilyName != SPELLFAMILY_WARLOCK || !(m_spell->SpellFamilyFlags[0] & 0x4008))
                         continue;
                     modPercent += stepPercent * aura->GetStackAmount();
                     if (modPercent >= maxPercent)
@@ -10495,6 +10491,9 @@ uint32 Unit::SpellDamageBonus(Unit *pVictim, SpellEntry const *spellProto, uint3
                     // Glyph of Ice Lance
                     if (owner->HasAura(56377) && pVictim->getLevel() > owner->getLevel())
                         DoneTotalMod *= 1.05f;
+
+                    // damage doubled against frozen targets
+                    DoneTotalMod *= 2.0f;
                 }
             }
 
@@ -11186,12 +11185,30 @@ uint32 Unit::SpellHealingBonus(Unit *pVictim, SpellEntry const *spellProto, uint
     // no bonus for heal potions/bandages
     if (spellProto->SpellFamilyName == SPELLFAMILY_POTION)
         return healamount;
+
     // and Warlock's Healthstones
     if (spellProto->SpellFamilyName == SPELLFAMILY_WARLOCK && (spellProto->SpellFamilyFlags[0] & 0x10000))
     {
         healamount = 0.45 * (GetMaxHealth() - 10 * (STAT_STAMINA - 180));
         return healamount;
     }
+
+    if (spellProto->Id == 85673)    // Word of Glory
+    {
+        uint32 am = GetPower(POWER_HOLY_POWER);
+        am = am > 0 ? am : 1;                              // proc Chance?
+        healamount = (((spellProto->EffectBasePoints[0] + spellProto->EffectBasePoints[0] / 2) + 0.198 * GetTotalAttackPowerValue(BASE_ATTACK))) * am;
+
+        uint32 chance = 0;
+        if (HasAura(87163))        // Eternal Glory rank1
+            chance = 15;
+        else if (HasAura(87164))   // Eternal Glory rank2
+            chance = 30;
+
+        if(!roll_chance_i(chance))
+            SetPower(POWER_HOLY_POWER, 0);
+    }
+
     // Healing Done
     // Taken/Done total percent damage auras
     float  DoneTotalMod = 1.0f;

@@ -2919,6 +2919,16 @@ void Player::GiveLevel(uint8 level)
     }
 
     GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_REACH_LEVEL);
+
+    // Only for Wargen
+    // Note: The ability is automatically learned at level 20 in addition to Apprentice riding,
+    // this saves Worgen players some money as they do not have to spend 4 to learn Apprentice Riding and buy a mount.
+    if (level >= 20 && getRace() == RACE_WORGEN)
+    {
+        // Running Wild
+        if(!HasSpell(87840))
+            CastSpell(this, 94098, true);
+    }
 }
 
 void Player::InitTalentForLevel()
@@ -24190,6 +24200,13 @@ void Player::LearnTalent(uint32 talentId, uint32 talentRank, bool one)
     AddTalent(spellid, m_activeSpec, true);
 
     sLog->outDetail("TalentID: %u Rank: %u Spell: %u Spec: %u\n", talentId, talentRank, spellid, m_activeSpec);
+
+    // Save Talents
+    SQLTransaction trans = CharacterDatabase.BeginTransaction();
+    _SaveTalents(trans);
+    _SaveTalentBranchSpecs(trans);
+    _SaveSpells(trans);
+    CharacterDatabase.CommitTransaction(trans);
 
     // update free talent points
     SetFreeTalentPoints(CurTalentPoints - (talentRank - curtalent_maxrank + 1));
