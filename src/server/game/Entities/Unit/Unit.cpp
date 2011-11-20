@@ -10534,6 +10534,12 @@ uint32 Unit::SpellDamageBonus(Unit *pVictim, SpellEntry const *spellProto, uint3
                     if (pVictim->GetAuraEffect(SPELL_AURA_PERIODIC_DAMAGE, SPELLFAMILY_PRIEST, 0x100000, 0, 0, GetGUID()))
                         AddPctN(DoneTotalMod, aurEff->GetAmount());
             }
+            // Shadow Word: Death - Deals three times as much damage to targets below 25% health
+            else if (spellProto->SpellFamilyFlags[1] & 0x2)
+            {
+                if (!pVictim->HealthAbovePct(25))
+                    DoneTotalMod *= 3.0f;
+            }
         break;
         case SPELLFAMILY_PALADIN:
             // Judgement of Vengeance/Judgement of Corruption
