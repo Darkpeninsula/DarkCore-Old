@@ -76,7 +76,7 @@ void WorldSession::HandleLearnPreviewTalents(WorldPacket& recvPacket)
                 if (!talentInfo || talentInfo->TalentTabID != specID)
                     continue;
 
-                _player->learnSpell(talentInfo->SpellID, false);
+                _player->learnSpell(talentInfo->SpellID, true);
             }
         }
         else if (_player->GetTalentBranchSpec(_player->m_activeSpec) != specID) //cheat

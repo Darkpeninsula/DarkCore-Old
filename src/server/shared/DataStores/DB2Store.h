@@ -34,6 +34,7 @@ template<class T>
 class DB2Storage
 {
     typedef std::list<char*> StringPoolList;
+    typedef std::vector<T*> DataTableEx;
 public:
     explicit DB2Storage(const char *f) : nCount(0), fieldCount(0), fmt(f), indexTable(NULL), m_dataTable(NULL) { }
     ~DB2Storage() { Clear(); }
@@ -91,6 +92,10 @@ public:
         indexTable = NULL;
         delete[] ((char*)m_dataTable);
         m_dataTable = NULL;
+        for (typename DataTableEx::const_iterator itr = dataTableEx.begin(); itr != dataTableEx.end(); ++itr)
+            delete *itr;
+
+        dataTableEx.clear();
 
         while(!m_stringPoolList.empty())
         {
@@ -108,6 +113,7 @@ private:
     char const* fmt;
     T** indexTable;
     T* m_dataTable;
+    DataTableEx dataTableEx;
     StringPoolList m_stringPoolList;
 };
 
