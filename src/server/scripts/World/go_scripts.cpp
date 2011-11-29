@@ -49,6 +49,7 @@ go_jotunheim_cage
 go_table_theka
 go_soulwell
 go_bashir_crystalforge
+go_death_gate
 EndContentData */
 
 #include "ScriptPCH.h"
@@ -1170,6 +1171,34 @@ public:
     }
 };
 
+/*######
+## go_death_gate
+######*/
+
+enum eDeathGate
+{
+    QUEST_TAKING_BACK_ACHERUS      = 13165,
+    SPELL_DEATH_GATE_ONLY_QUEST    = 53822,
+    SPELL_DEATH_GATE               = 53098
+};
+
+class go_death_gate : public GameObjectScript
+{
+public:
+    go_death_gate() : GameObjectScript("go_death_gate") { }
+
+    bool OnGossipHello(Player *pPlayer, GameObject *pGO)
+    {
+        QuestStatus status = pPlayer->GetQuestStatus(QUEST_TAKING_BACK_ACHERUS);
+        if (status == QUEST_STATUS_COMPLETE)
+            pGO->CastSpell(pPlayer, SPELL_DEATH_GATE_ONLY_QUEST);
+        else
+            pGO->CastSpell(pPlayer, SPELL_DEATH_GATE);
+
+        return true;
+    }
+};
+
 void AddSC_go_scripts()
 {
     new go_cat_figurine;
@@ -1207,4 +1236,5 @@ void AddSC_go_scripts()
     new go_amberpine_outhouse;
     new go_hive_pod;
     new go_massive_seaforium_charge;
+    new go_death_gate;
 }
