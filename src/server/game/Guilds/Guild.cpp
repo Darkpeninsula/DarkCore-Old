@@ -2327,7 +2327,7 @@ bool Guild::AddMember(const uint64& guid, uint8 rankId)
         pMember->SetStats(player);
 
         // Learn our perks to him
-        for(int i = 0; i < m_level-1; ++i)
+        for(int i = 0; i < m_level; ++i)
             if (const GuildPerksEntry* perk = sGuildPerksStore.LookupEntry(i))
                 player->learnSpell(perk->SpellId, true);
     }
@@ -3041,7 +3041,6 @@ void Guild::LevelUp()
         return;
 
     uint8 level = m_level + 1;
-    m_level = level;
     m_nextLevelXP = sObjectMgr->GetXPForGuildLevel(level);
 
     WorldPacket data(SMSG_GUILD_XP_UPDATE, 8*5);
@@ -3051,11 +3050,6 @@ void Guild::LevelUp()
     data << uint64(GetCurrentXP()); // Curr exp
     data << uint64(0); // Today exp (not supported yet)
 
-    // Find perk to gain
-    uint32 spellId = 0;
-    if (const GuildPerksEntry* perk = sGuildPerksStore.LookupEntry(level-1))
-        spellId = perk->SpellId;
-
     // Notify players of level change
     for (Members::const_iterator itr = m_members.begin(); itr != m_members.end(); ++itr)
         if (Player *player = itr->second->FindPlayer())
@@ -3063,8 +3057,14 @@ void Guild::LevelUp()
             player->SetUInt32Value(PLAYER_GUILDLEVEL, level);
             player->GetSession()->SendPacket(&data);
 
-            if (spellId)
-                player->learnSpell(spellId, true);
+            for(int i = 0; i < m_level; ++i)
+            {
+                if (const GuildPerksEntry* perk = sGuildPerksStore.LookupEntry(i))
+                {
+                    if(!player->HasSpell(perk->SpellId))
+                        player->learnSpell(perk->SpellId, true);
+                }
+            }
         }
 }
 
