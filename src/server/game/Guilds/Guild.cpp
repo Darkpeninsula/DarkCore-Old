@@ -3041,6 +3041,7 @@ void Guild::LevelUp()
         return;
 
     uint8 level = m_level + 1;
+    m_level = level;
     m_nextLevelXP = sObjectMgr->GetXPForGuildLevel(level);
 
     WorldPacket data(SMSG_GUILD_XP_UPDATE, 8*5);
@@ -3057,7 +3058,7 @@ void Guild::LevelUp()
             player->SetUInt32Value(PLAYER_GUILDLEVEL, level);
             player->GetSession()->SendPacket(&data);
 
-            for(int i = 0; i < m_level; ++i)
+            for(int i = 0; i < level; ++i)
             {
                 if (const GuildPerksEntry* perk = sGuildPerksStore.LookupEntry(i))
                 {
