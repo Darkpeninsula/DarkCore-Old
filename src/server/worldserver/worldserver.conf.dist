@@ -1425,6 +1425,13 @@ GuildAdvancement.Enabled = 0
 
 GuildAdvancement.MaxLevel = 25
 
+#        
+#    GuildAdvancement.ResetHour
+#        Reset Daily XP Cap at specified hour of the day (0-23)
+#        Default: 3
+
+GuildAdvancement.ResetHour = 3
+
 #
 #    BeepAtStart
 #        Description: Beep when the world server finished starting (Unix/Linux systems).

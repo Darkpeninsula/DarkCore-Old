@@ -668,6 +668,9 @@ public:
     void OnPlayerStatusChange(Player* plr, uint32 flag, bool state);
     void SendUpdateRoster(WorldSession* session = NULL);
 
+    // Guild experience system
+    uint64 GetTodayXPLimit();
+
     // Send info to client
     void SendInfo(WorldSession* session) const;
     void SendEventLog(WorldSession *session) const;
@@ -722,12 +725,16 @@ public:
     // Guild advancement
     uint8 GetLevel() { return m_level; }
     uint64 GetCurrentXP() { return m_xp; }
+    uint64 GetTodayXP() { return m_today_xp; }
+    uint64 GetXPCap() { return m_xp_cap; }
     uint64 GetNextLevelXP() { return m_nextLevelXP; }
     uint64 GetGuildMoney() { return m_bankMoney; }
     uint64 SetGuildMoney(uint64 add) { return m_bankMoney += add; }
 
     void GainXP(uint64 xp);
     void LevelUp();
+    void ResetTodayXP() { m_today_xp = 0; }
+    void GenerateXPCap();
 
 protected:
     uint32 m_id;
@@ -740,6 +747,8 @@ protected:
     uint8 m_level;
     uint64 m_xp;
     uint64 m_nextLevelXP;
+    uint64 m_today_xp;
+    uint64 m_xp_cap;
 
     EmblemInfo m_emblemInfo;
     uint32 m_accountsNumber;

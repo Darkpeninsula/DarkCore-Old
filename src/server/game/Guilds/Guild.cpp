@@ -1111,6 +1111,11 @@ Guild::~Guild()
         delete itr->second;
 }
 
+uint64 Guild::GetTodayXPLimit()
+{
+    return 0; // Temp
+}
+
 // Creates new guild with default data and saves it to database.
 bool Guild::Create(Player* pLeader, const std::string& name)
 {
@@ -1131,6 +1136,8 @@ bool Guild::Create(Player* pLeader, const std::string& name)
     m_createdDate = ::time(NULL);
     m_level = 1;
     m_xp = 0;
+    m_today_xp = 0;
+    GenerateXPCap();
     m_nextLevelXP = sObjectMgr->GetXPForGuildLevel(m_level);
     _CreateLogHolders();
 
@@ -1159,6 +1166,8 @@ bool Guild::Create(Player* pLeader, const std::string& name)
     stmt->setUInt32(++index, m_emblemInfo.GetBackgroundColor());
     stmt->setUInt64(++index, m_bankMoney);
     stmt->setUInt64(++index, m_xp);
+    stmt->setUInt64(++index, m_today_xp);
+    stmt->setUInt64(++index, m_xp_cap);
     stmt->setUInt32(++index, m_level);
     trans->Append(stmt);
 
@@ -2071,13 +2080,30 @@ bool Guild::LoadFromDB(Field* fields)
 
     m_xp = fields[13].GetUInt64();
     m_level = fields[14].GetUInt32();
+    m_today_xp = fields[15].GetUInt64();
+    m_xp_cap = fields[16].GetUInt64();
+
     if (m_level == 0)
         m_level = 1;
+
+    if(m_xp_cap == 0)
+        GenerateXPCap();
 
     m_nextLevelXP = sObjectMgr->GetXPForGuildLevel(m_level);
 
     _CreateLogHolders();
     return true;
+}
+
+void Guild::GenerateXPCap()
+{
+    uint64 baseXP = sObjectMgr->GetXPForGuildLevel(m_level);
+    uint64 diff = (uint64)(baseXP * 15 / 100);
+
+    if(diff < baseXP)
+        m_xp_cap = diff + m_xp;
+    else
+        m_xp_cap = baseXP;
 }
 
 bool Guild::LoadRankFromDB(Field* fields)
@@ -3019,6 +3045,10 @@ void Guild::GainXP(uint64 xp)
     uint64 new_xp = m_xp + xp;
     uint64 nextLvlXP = GetNextLevelXP();
     uint8 level = GetLevel();
+
+    if(new_xp > m_xp_cap)
+        return;
+
     while (new_xp >= nextLvlXP && level < sWorld->getIntConfig(CONFIG_GUILD_ADVANCEMENT_MAX_LEVEL))
     {
         new_xp -= nextLvlXP;
@@ -3032,7 +3062,19 @@ void Guild::GainXP(uint64 xp)
     }
 
     m_xp = new_xp;
+    m_today_xp += xp;
     SaveXP();
+
+    WorldPacket data(SMSG_GUILD_XP_UPDATE, 8*5);
+    data << uint64(GetXPCap());       // max daily xp
+    data << uint64(GetNextLevelXP()); // next level XP
+    data << uint64(GetXPCap());       // weekly xp
+    data << uint64(GetCurrentXP());   // Curr exp
+    data << uint64(GetTodayXP());     // Today exp
+
+    for (Members::const_iterator itr = m_members.begin(); itr != m_members.end(); ++itr)
+        if (Player *player = itr->second->FindPlayer())
+            player->GetSession()->SendPacket(&data);
 }
 
 void Guild::LevelUp()
@@ -3045,11 +3087,16 @@ void Guild::LevelUp()
     m_nextLevelXP = sObjectMgr->GetXPForGuildLevel(level);
 
     WorldPacket data(SMSG_GUILD_XP_UPDATE, 8*5);
-    data << uint64(0x37); // max daily xp
+    data << uint64(GetXPCap());       // max daily xp
     data << uint64(GetNextLevelXP()); // next level XP
-    data << uint64(0x37); // weekly xp
-    data << uint64(GetCurrentXP()); // Curr exp
-    data << uint64(0); // Today exp (not supported yet)
+    data << uint64(GetXPCap());       // weekly xp
+    data << uint64(GetCurrentXP());   // Curr exp
+    data << uint64(GetTodayXP());     // Today exp
+
+    // Find perk to gain
+    uint32 spellId = 0;
+    if (const GuildPerksEntry* perk = sGuildPerksStore.LookupEntry(level-1))
+        spellId = perk->SpellId;
 
     // Notify players of level change
     for (Members::const_iterator itr = m_members.begin(); itr != m_members.end(); ++itr)
@@ -3058,14 +3105,8 @@ void Guild::LevelUp()
             player->SetUInt32Value(PLAYER_GUILDLEVEL, level);
             player->GetSession()->SendPacket(&data);
 
-            for(int i = 0; i < level; ++i)
-            {
-                if (const GuildPerksEntry* perk = sGuildPerksStore.LookupEntry(i))
-                {
-                    if(!player->HasSpell(perk->SpellId))
-                        player->learnSpell(perk->SpellId, true);
-                }
-            }
+            if (spellId)
+                player->learnSpell(spellId, true);
         }
 }
 
@@ -3077,8 +3118,10 @@ void Guild::SaveXP()
 
         PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_GUILD_SAVE_XP);
         stmt->setUInt64(0, m_xp);
-        stmt->setUInt32(1, uint32(m_level));
-        stmt->setUInt32(2, m_id);
+        stmt->setUInt64(1, m_today_xp);
+        stmt->setUInt64(2, m_xp_cap);
+        stmt->setUInt32(3, uint32(m_level));
+        stmt->setUInt32(4, m_id);
         CharacterDatabase.Execute(stmt);
     }
 }

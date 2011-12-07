@@ -254,11 +254,11 @@ void WorldSession::HandleGuildExperienceOpcode(WorldPacket& recvPacket)
     if (Guild* pGuild = sObjectMgr->GetGuildById(_player->GetGuildId()))
     {
         WorldPacket data(SMSG_GUILD_XP_UPDATE, 8*5);
-        data << uint64(0x37); // max daily xp
+        data << uint64(pGuild->GetXPCap());       // max daily xp
         data << uint64(pGuild->GetNextLevelXP()); // next level XP
-        data << uint64(0x37); // weekly xp
-        data << uint64(pGuild->GetCurrentXP()); // Curr exp
-        data << uint64(0); // Today exp (unsupported)
+        data << uint64(pGuild->GetXPCap());       // weekly xp
+        data << uint64(pGuild->GetCurrentXP());   // Curr exp
+        data << uint64(pGuild->GetTodayXP());     // Today exp
         SendPacket(&data);
     }
 }
@@ -267,9 +267,12 @@ void WorldSession::HandleGuildMaxExperienceOpcode(WorldPacket& recvPacket)
 {
     recvPacket.read_skip<uint64>();
 
-    WorldPacket data(SMSG_GUILD_MAX_DAILY_XP, 8);
-    data << uint64(67800000); // Constant value for now
-    SendPacket(&data);
+    if (Guild* pGuild = sObjectMgr->GetGuildById(_player->GetGuildId()))
+    {
+        WorldPacket data(SMSG_GUILD_MAX_DAILY_XP, 8);
+        data << uint64(pGuild->GetXPCap());
+        SendPacket(&data);
+    }
 }
 
 void WorldSession::HandleGuildRewardsOpcode(WorldPacket& recvPacket)

@@ -922,7 +922,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder * holder)
                 pCurrChar->SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_GLEVEL_ENABLED);
 
                 /// Learn perks to him
-                for(int i = 0; i < pGuild->GetLevel()-1; ++i)
+                for(int i = 0; i < pGuild->GetLevel(); ++i)
                     if (const GuildPerksEntry* perk = sGuildPerksStore.LookupEntry(i))
                         pCurrChar->learnSpell(perk->SpellId, true);
             }
