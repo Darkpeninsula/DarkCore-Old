@@ -1639,6 +1639,8 @@ CREATE TABLE `guild` (
   `BankMoney` bigint(20) unsigned NOT NULL DEFAULT '0',
   `xp` bigint(20) unsigned NOT NULL,
   `level` int(10) unsigned NOT NULL,
+  `m_today_xp` bigint(20) NOT NULL,
+  `m_xp_cap` bigint(20) NOT NULL AFTER,
   PRIMARY KEY (`guildid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Guild System';
 /*!40101 SET character_set_client = @saved_cs_client */;
