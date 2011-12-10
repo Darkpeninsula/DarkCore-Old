@@ -803,6 +803,9 @@ enum DarkCoreStrings
     LANG_BANLIST_CHARACTERS_HEADER      = 1133,
     LANG_ALLOW_TICKETS                  = 1134,
     LANG_DISALLOW_TICKETS               = 1135,
+    LANG_CHAR_NOT_BANNED                = 1136,
+    LANG_DEV_ON                         = 1137,
+    LANG_DEV_OFF                        = 1138,
     // Room for more level 3              1136-1199 not used
 
     // Debug commands

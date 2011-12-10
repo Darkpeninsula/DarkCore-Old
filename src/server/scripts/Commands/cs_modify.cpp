@@ -66,7 +66,7 @@ public:
             { "morph",          SEC_GAMEMASTER,     false, &HandleModifyMorphCommand,         "", NULL },
             { "phase",          SEC_ADMINISTRATOR,  false, &HandleModifyPhaseCommand,         "", NULL },
             { "gender",         SEC_GAMEMASTER,     false, &HandleModifyGenderCommand,        "", NULL },
-            { NULL,             0,                  false, NULL,                                           "", NULL }
+            { NULL,             0,                  false, NULL,                              "", NULL }
         };
         static ChatCommand commandTable[] =
         {

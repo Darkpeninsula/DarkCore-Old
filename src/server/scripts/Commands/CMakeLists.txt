@@ -6,6 +6,7 @@ set(scripts_STAT_SRCS
   Commands/cs_npc.cpp
   Commands/cs_go.cpp
   Commands/cs_learn.cpp
+  Commands/cs_misc.cpp
   Commands/cs_modify.cpp
   Commands/cs_debug.cpp
   Commands/cs_gobject.cpp

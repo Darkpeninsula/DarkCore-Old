@@ -300,6 +300,7 @@ ChatCommand * ChatHandler::getCommandTable()
     static ChatCommand resetCommandTable[] =
     {
         { "achievements",   SEC_ADMINISTRATOR,  true,  OldHandler<&ChatHandler::HandleResetAchievementsCommand>,   "", NULL },
+        { "honor",          SEC_ADMINISTRATOR,  true,  OldHandler<&ChatHandler::HandleResetHonorCommand>,          "", NULL },
         { "level",          SEC_ADMINISTRATOR,  true,  OldHandler<&ChatHandler::HandleResetLevelCommand>,          "", NULL },
         { "spells",         SEC_ADMINISTRATOR,  true,  OldHandler<&ChatHandler::HandleResetSpellsCommand>,         "", NULL },
         { "stats",          SEC_ADMINISTRATOR,  true,  OldHandler<&ChatHandler::HandleResetStatsCommand>,          "", NULL },
@@ -433,13 +434,10 @@ ChatCommand * ChatHandler::getCommandTable()
         { "reset",          SEC_ADMINISTRATOR,  true,  NULL,                                           "", resetCommandTable    },
         { "instance",       SEC_ADMINISTRATOR,  true,  NULL,                                           "", instanceCommandTable },
         { "server",         SEC_ADMINISTRATOR,  true,  NULL,                                           "", serverCommandTable   },
-
-        { "channel",        SEC_ADMINISTRATOR,  true, NULL,                                            "", channelCommandTable  },
-
-        { "pet",            SEC_GAMEMASTER,     false, NULL,                                           "", petCommandTable },
-        { "ticket",         SEC_MODERATOR,      false,  NULL,                                          "", ticketCommandTable },
+        { "channel",        SEC_ADMINISTRATOR,  true,  NULL,                                           "", channelCommandTable  },
+        { "pet",            SEC_GAMEMASTER,     false, NULL,                                           "", petCommandTable      },
+        { "ticket",         SEC_MODERATOR,      false, NULL,                                           "", ticketCommandTable   },
         { "opcode",         SEC_ADMINISTRATOR,  false, OldHandler<&ChatHandler::HandleOpcodeTestCommand>,          "", NULL },
-
         { "aura",           SEC_ADMINISTRATOR,  false, OldHandler<&ChatHandler::HandleAuraCommand>,                "", NULL },
         { "unaura",         SEC_ADMINISTRATOR,  false, OldHandler<&ChatHandler::HandleUnAuraCommand>,              "", NULL },
         { "nameannounce",   SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleNameAnnounceCommand>,        "", NULL },
@@ -497,17 +495,15 @@ ChatCommand * ChatHandler::getCommandTable()
         { "cometome",       SEC_ADMINISTRATOR,  false, OldHandler<&ChatHandler::HandleComeToMeCommand>,            "", NULL },
         { "damage",         SEC_ADMINISTRATOR,  false, OldHandler<&ChatHandler::HandleDamageCommand>,              "", NULL },
         { "combatstop",     SEC_GAMEMASTER,     false, OldHandler<&ChatHandler::HandleCombatStopCommand>,          "", NULL },
-        { "flusharenapoints", SEC_ADMINISTRATOR, false, OldHandler<&ChatHandler::HandleFlushArenaPointsCommand>,    "", NULL },
+        { "flusharenapoints", SEC_ADMINISTRATOR, false, OldHandler<&ChatHandler::HandleFlushArenaPointsCommand>,   "", NULL },
         { "repairitems",    SEC_GAMEMASTER,     true,  OldHandler<&ChatHandler::HandleRepairitemsCommand>,         "", NULL },
         { "waterwalk",      SEC_GAMEMASTER,     false, OldHandler<&ChatHandler::HandleWaterwalkCommand>,           "", NULL },
-
         { "freeze",         SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleFreezeCommand>,              "", NULL },
         { "unfreeze",       SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleUnFreezeCommand>,            "", NULL },
         { "listfreeze",     SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleListFreezeCommand>,          "", NULL },
         { "root",           SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleFreezeCommand>,              "", NULL },
         { "unroot",         SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleUnFreezeCommand>,            "", NULL },
         { "listroot",       SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleListFreezeCommand>,          "", NULL },
-
         { "possess",        SEC_ADMINISTRATOR,  false, OldHandler<&ChatHandler::HandlePossessCommand>,             "", NULL },
         { "unpossess",      SEC_ADMINISTRATOR,  false, OldHandler<&ChatHandler::HandleUnPossessCommand>,           "", NULL },
         { "bindsight",      SEC_ADMINISTRATOR,  false, OldHandler<&ChatHandler::HandleBindSightCommand>,           "", NULL },
