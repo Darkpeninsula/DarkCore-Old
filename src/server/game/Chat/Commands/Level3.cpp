@@ -3853,37 +3853,6 @@ bool ChatHandler::HandleRespawnCommand(const char* /*args*/)
     return true;
 }
 
-bool ChatHandler::HandleGMFlyCommand(const char *args)
-{
-    if (!*args)
-        return false;
-
-    Player *target = getSelectedPlayer();
-    if (!target)
-        target = m_session->GetPlayer();
-
-    WorldPacket data(SMSG_MULTIPLE_PACKETS, 14);
-    if (strncmp(args, "change", 7) == 0)
-        if (target->canFly())
-            data << uint16(SMSG_MOVE_UNSET_CAN_FLY);
-        else
-            data << uint16(SMSG_MOVE_SET_CAN_FLY);
-    else if (strncmp(args, "on", 3) == 0)
-        data << uint16(SMSG_MOVE_SET_CAN_FLY);
-    else if (strncmp(args, "off", 4) == 0)
-        data << uint16(SMSG_MOVE_UNSET_CAN_FLY);
-    else
-    {
-        SendSysMessage(LANG_USE_BOL);
-        return false;
-    }
-    data.append(target->GetPackGUID());
-    data << uint32(0);                                      // unknown
-    target->SendMessageToSet(&data, true);
-    PSendSysMessage(LANG_COMMAND_FLYMODE_STATUS, GetNameLink(target).c_str(), args);
-    return true;
-}
-
 bool ChatHandler::HandlePDumpLoadCommand(const char *args)
 {
     if (!*args)
@@ -4546,33 +4515,6 @@ bool ChatHandler::HandleInstanceSaveDataCommand(const char * /*args*/)
     }
 
     ((InstanceMap*)map)->GetInstanceScript()->SaveToDB();
-    return true;
-}
-
-/// Display the list of GMs
-bool ChatHandler::HandleGMListFullCommand(const char* /*args*/)
-{
-    ///- Get the accounts with GM Level >0
-    QueryResult result = LoginDatabase.Query("SELECT a.username, aa.gmlevel FROM account a, account_access aa WHERE a.id=aa.id AND aa.gmlevel > 0");
-    if (result)
-    {
-        SendSysMessage(LANG_GMLIST);
-        SendSysMessage(" ======================== ");
-        SendSysMessage(LANG_GMLIST_HEADER);
-        SendSysMessage(" ======================== ");
-
-        ///- Circle through them. Display username and GM level
-        do
-        {
-            Field *fields = result->Fetch();
-            PSendSysMessage("|%15s|%6s|", fields[0].GetCString(), fields[1].GetCString());
-        }
-        while (result->NextRow());
-
-        PSendSysMessage(" ======================== ");
-    }
-    else
-        PSendSysMessage(LANG_GMLIST_EMPTY);
     return true;
 }
 

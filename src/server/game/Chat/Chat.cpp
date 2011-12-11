@@ -173,17 +173,6 @@ ChatCommand * ChatHandler::getCommandTable()
         { NULL,             0,                  false, NULL,                                           "", NULL }
     };
 
-    static ChatCommand gmCommandTable[] =
-    {
-        { "chat",           SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGMChatCommand>,              "", NULL },
-        { "fly",            SEC_ADMINISTRATOR,  false, OldHandler<&ChatHandler::HandleGMFlyCommand>,               "", NULL },
-        { "ingame",         SEC_PLAYER,         true,  OldHandler<&ChatHandler::HandleGMListIngameCommand>,        "", NULL },
-        { "list",           SEC_ADMINISTRATOR,  true,  OldHandler<&ChatHandler::HandleGMListFullCommand>,          "", NULL },
-        { "visible",        SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGMVisibleCommand>,           "", NULL },
-        { "",               SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGMCommand>,                  "", NULL },
-        { NULL,             0,                  false, NULL,                                           "", NULL }
-    };
-
     static ChatCommand goCommandTable[] =
     {
         { "creature",       SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoCreatureCommand>,          "", NULL },
@@ -420,7 +409,6 @@ ChatCommand * ChatHandler::getCommandTable()
 
     static ChatCommand commandTable[] =
     {
-        { "gm",             SEC_MODERATOR,      true,  NULL,                                           "", gmCommandTable       },
         { "go",             SEC_MODERATOR,      false, NULL,                                           "", goCommandTable       },
         { "learn",          SEC_MODERATOR,      false, NULL,                                           "", learnCommandTable    },
         { "tele",           SEC_MODERATOR,      true,  NULL,                                           "", teleCommandTable     },
