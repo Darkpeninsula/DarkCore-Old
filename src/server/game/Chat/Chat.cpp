@@ -173,22 +173,6 @@ ChatCommand * ChatHandler::getCommandTable()
         { NULL,             0,                  false, NULL,                                           "", NULL }
     };
 
-    static ChatCommand goCommandTable[] =
-    {
-        { "creature",       SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoCreatureCommand>,          "", NULL },
-        { "graveyard",      SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoGraveyardCommand>,         "", NULL },
-        { "grid",           SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoGridCommand>,              "", NULL },
-        { "object",         SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoObjectCommand>,            "", NULL },
-        { "taxinode",       SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoTaxinodeCommand>,          "", NULL },
-        { "trigger",        SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoTriggerCommand>,           "", NULL },
-        { "zonexy",         SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoZoneXYCommand>,            "", NULL },
-        { "xy",             SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoXYCommand>,                "", NULL },
-        { "xyz",            SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoXYZCommand>,               "", NULL },
-        { "ticket",         SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoTicketCommand>,            "", NULL },
-        { "",               SEC_MODERATOR,      false, OldHandler<&ChatHandler::HandleGoXYZCommand>,               "", NULL },
-        { NULL,             0,                  false, NULL,                                           "", NULL }
-    };
-
     static ChatCommand groupCommandTable[] =
     {
         { "leader",         SEC_ADMINISTRATOR,     false,  OldHandler<&ChatHandler::HandleGroupLeaderCommand>,         "", NULL },
@@ -409,7 +393,6 @@ ChatCommand * ChatHandler::getCommandTable()
 
     static ChatCommand commandTable[] =
     {
-        { "go",             SEC_MODERATOR,      false, NULL,                                           "", goCommandTable       },
         { "learn",          SEC_MODERATOR,      false, NULL,                                           "", learnCommandTable    },
         { "tele",           SEC_MODERATOR,      true,  NULL,                                           "", teleCommandTable     },
         { "character",      SEC_GAMEMASTER,     true,  NULL,                                           "", characterCommandTable},

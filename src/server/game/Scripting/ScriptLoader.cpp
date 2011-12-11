@@ -54,7 +54,7 @@ void AddSC_SmartSCripts();
 void AddSC_account_commandscript();
 void AddSC_achievement_commandscript();
 void AddSC_gm_commandscript();
-//void AddSC_go_commandscript();
+void AddSC_go_commandscript();
 //void AddSC_learn_commandscript();
 void AddSC_misc_commandscript();
 void AddSC_modify_commandscript();
@@ -677,7 +677,7 @@ void AddCommandScripts()
     AddSC_account_commandscript();
     AddSC_achievement_commandscript();
     AddSC_gm_commandscript();
-    //AddSC_go_commandscript();
+    AddSC_go_commandscript();
     //AddSC_learn_commandscript();
     AddSC_misc_commandscript();
     AddSC_modify_commandscript();
