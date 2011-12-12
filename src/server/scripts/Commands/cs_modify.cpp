@@ -1171,8 +1171,12 @@ public:
 
         uint16 drunkMod = drunklevel * 0xFFFF / 100;
 
-        handler->GetSession()->GetPlayer()->SetDrunkValue(drunkMod);
-
+		Player* target = handler->getSelectedPlayer();
+		if (!target) // cast on self
+			target = handler->GetSession()->GetPlayer();
+		
+		target->SetDrunkValue(drunkMod);
+		
         return true;
     }
 
