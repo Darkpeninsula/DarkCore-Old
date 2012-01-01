@@ -42,10 +42,6 @@ enum Spells
     H_SPELL_SHADOWFURY       = 92644,
     SPELL_TIGULE             = 81220,
 
-    // Rock Borer (43917, 42845) Health: 6, 702 - 11, 624
-    SPELL_ROCK_BORE          = 80028,
-    H_SPELL_ROCK_BORE        = 92630,
-
     // Stonecore Berserker (43430) Health: 312, 753 - 387, 450
     SPELL_SCHARGE            = 81574,
     SPELL_SPINNING_SLASH     = 81568,
@@ -95,7 +91,6 @@ enum eEvents
     EVENT_SHADOW_BOLT,
     EVENT_SHADOWFURY,
     EVENT_TIGULE,
-    EVENT_ROCK_BORE,
     EVENT_SCHARGE,
     EVENT_SPINNING_SLASH,
     EVENT_BODY_SLAM,
@@ -224,62 +219,6 @@ public:
     };
 };
 
-// Rock Borer AI
-class mob_rock_borer : public CreatureScript
-{
-public:
-    mob_rock_borer() : CreatureScript("mob_rock_borer") { }
-
-    CreatureAI* GetAI(Creature* pCreature) const
-    {
-        return new mob_rock_borerAI(pCreature);
-    }
-
-    struct mob_rock_borerAI : public ScriptedAI
-    {
-        mob_rock_borerAI(Creature *c) : ScriptedAI(c)
-        {
-        }
-
-        EventMap events;
-
-        void Reset()
-        {
-            events.Reset();
-        }
-
-        void EnterCombat(Unit* /*who*/)
-        {
-            events.ScheduleEvent(EVENT_ROCK_BORE, 1000);
-        }
-
-        void UpdateAI(const uint32 diff)
-        {
-            if (!UpdateVictim())
-                return;
-
-            events.Update(diff);
-
-            if (me->HasUnitState(UNIT_STAT_CASTING))
-                return;
-
-            while (uint32 eventId = events.ExecuteEvent())
-            {
-                switch(eventId)
-                {
-                    case EVENT_ROCK_BORE:
-                        if (Unit *pTarget = SelectUnit(SELECT_TARGET_RANDOM, 0))
-                            DoCast(pTarget, SPELL_ROCK_BORE);
-                        events.RescheduleEvent(EVENT_ROCK_BORE, 1000);
-                        return;
-                }
-            }
-
-            DoMeleeAttackIfReady();
-        }
-    };
-};
-
 // Millhouse Manastorm AI
 class mob_millhouse_manastorm : public CreatureScript
 {
@@ -364,5 +303,4 @@ void AddSC_the_stonecore()
     new mob_crystalspawn_giant();
     new mob_impp();
     new mob_millhouse_manastorm();
-    new mob_rock_borer;
 }
