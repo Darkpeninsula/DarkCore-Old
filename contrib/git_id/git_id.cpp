@@ -1,7 +1,7 @@
 /*
- * Copyright (C) 2005-2011 MaNGOS <http://www.getmangos.com/>
- * Copyright (C) 2008-2011 Trinity <http://www.trinitycore.org/>
- * Copyright (C) 2010-2011 Project SkyFire <http://www.projectskyfire.org/>
+ * Copyright (C) 2005-2012 MaNGOS <http://www.getmangos.com/>
+ * Copyright (C) 2008-2012 Trinity <http://www.trinitycore.org/>
+ * Copyright (C) 2010-2012 Project SkyFire <http://www.projectskyfire.org/>
  * Copyright (C) 2011-2012 Darkpeninsula Project <http://www.darkpeninsula.eu/>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -546,7 +546,7 @@ bool generate_sql_makefile()
     if(!fout) { pclose(cmd_pipe); return false; }
 
     fprintf(fout,
-        "# Copyright (C) 2005-2011 MaNGOS <http://getmangos.com/>\n"
+        "# Copyright (C) 2005-2012 MaNGOS <http://getmangos.com/>\n"
         "#\n"
         "# This program is free software; you can redistribute it and/or modify\n"
         "# it under the terms of the GNU General Public License as published by\n"
