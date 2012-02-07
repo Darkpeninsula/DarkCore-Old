@@ -19,32 +19,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef DATABASEENV_H
-#define DATABASEENV_H
+#include "ExtraDatabase.h"
 
-#include "Common.h"
-#include "Errors.h"
-#include "Log.h"
+void ExtraDatabaseConnection::DoPrepareStatements(bool m_prepare = false)
+{
+    if (!m_reconnecting)
+        m_stmts.resize(MAX_EXTRADATABASE_STATEMENTS);
 
-#include "Field.h"
-#include "QueryResult.h"
-
-#include "MySQLThreading.h"
-#include "Transaction.h"
-
-#define _LIKE_           "LIKE"
-#define _TABLE_SIM_      "`"
-#define _CONCAT3_(A, B, C) "CONCAT( " A " , " B " , " C " )"
-#define _OFFSET_         "LIMIT %d, 1"
-
-#include "Implementation/LoginDatabase.h"
-#include "Implementation/CharacterDatabase.h"
-#include "Implementation/WorldDatabase.h"
-#include "Implementation/ExtraDatabase.h"
-
-extern WorldDatabaseWorkerPool WorldDatabase;
-extern CharacterDatabaseWorkerPool CharacterDatabase;
-extern LoginDatabaseWorkerPool LoginDatabase;
-extern ExtraDatabaseWorkerPool ExtraDatabase;
-
-#endif
+    /*
+        ##################################
+        LOAD YOUR PREPARED STATEMENTS HERE
+        ##################################
+    */
+}

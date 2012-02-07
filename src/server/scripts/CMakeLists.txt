@@ -50,6 +50,7 @@ if(SCRIPTS)
   include(Outland/CMakeLists.txt)
   include(Northrend/CMakeLists.txt)
   include(TheMaelstrom/CMakeLists.txt)
+  include(Darkpeninsula/CMakeLists.txt)
 endif()
 
 message(STATUS "SCRIPT PREPARATION COMPLETE")

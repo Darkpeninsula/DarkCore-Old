@@ -21,7 +21,7 @@
 
 #include "CharacterDatabase.h"
 
-void CharacterDatabaseConnection::DoPrepareStatements()
+void CharacterDatabaseConnection::DoPrepareStatements(bool m_prepare = false)
 {
     if (!m_reconnecting)
         m_stmts.resize(MAX_CHARACTERDATABASE_STATEMENTS);
@@ -306,4 +306,10 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     PREPARE_STATEMENT(CHAR_ADD_GO_RESPAWN, "REPLACE INTO gameobject_respawn (guid, respawnTime, instanceId) VALUES (?, ?, ?)", CONNECTION_ASYNC);
     PREPARE_STATEMENT(CHAR_DEL_EXPIRED_GO_RESPAWNS, "DELETE FROM gameobject_respawn WHERE respawnTime <= UNIX_TIMESTAMP(NOW())", CONNECTION_SYNCH);
     PREPARE_STATEMENT(CHAR_DEL_NONEXISTENT_INSTANCE_GO_RESPAWNS, "DELETE FROM gameobject_respawn WHERE instanceId > 0 AND instanceId NOT IN (SELECT instanceId FROM instance)", CONNECTION_SYNCH);
+
+    if(m_prepare)
+    {
+        for (PreparedStatementMap::const_iterator itr = m_queries.begin(); itr != m_queries.end(); ++itr)
+            PrepareStatement(itr->first, itr->second.first, itr->second.second);
+    }
 }

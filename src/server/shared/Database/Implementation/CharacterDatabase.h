@@ -33,7 +33,7 @@ class CharacterDatabaseConnection : public MySQLConnection
         CharacterDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
 
         //- Loads databasetype specific prepared statements
-        void DoPrepareStatements();
+        void DoPrepareStatements(bool m_prepare);
 };
 
 typedef DatabaseWorkerPool<CharacterDatabaseConnection> CharacterDatabaseWorkerPool;

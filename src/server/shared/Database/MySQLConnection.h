@@ -126,7 +126,7 @@ class MySQLConnection
         void PrepareStatement(uint32 index, const char* sql, ConnectionFlags flags);
 
         bool PrepareStatements();
-        virtual void DoPrepareStatements() = 0;
+        virtual void DoPrepareStatements(bool m_prepare) = 0;
 
     protected:
         std::vector<MySQLPreparedStatement*> m_stmts;         //! PreparedStatements storage

@@ -601,6 +601,9 @@ void AddSC_instance_grim_batol();               //Grim Batol
 void AddSC_instance_throne_of_the_tides();      //Throne of the Tides
 void AddSC_instance_blackrock_caverns();        //Blackrock Caverns
 
+// Darkpeninsula
+void AddSC_premium();
+
 // The Maelstrom
 
 // Kezan
@@ -1243,6 +1246,9 @@ void AddNorthrendScripts()
     AddSC_instance_grim_batol();               //Grim Batol
     AddSC_instance_throne_of_the_tides();      //Throne of the Tides
     AddSC_instance_blackrock_caverns();        //Blackrock Caverns
+
+    // Darkpeninsula
+    AddSC_premium();
 
     // The Maelstrom
 

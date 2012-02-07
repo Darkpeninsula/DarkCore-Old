@@ -154,9 +154,7 @@ bool MySQLConnection::Open()
 
 bool MySQLConnection::PrepareStatements()
 {
-    DoPrepareStatements();
-    for (PreparedStatementMap::const_iterator itr = m_queries.begin(); itr != m_queries.end(); ++itr)
-        PrepareStatement(itr->first, itr->second.first, itr->second.second);
+    DoPrepareStatements(true);
     return !m_prepareError;
 }
 

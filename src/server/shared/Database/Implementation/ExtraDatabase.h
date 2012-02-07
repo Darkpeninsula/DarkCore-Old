@@ -19,26 +19,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef _WORLDDATABASE_H
-#define _WORLDDATABASE_H
+#ifndef _EXTRADATABASE_H
+#define _EXTRADATABASE_H
 
 #include "DatabaseWorkerPool.h"
 #include "MySQLConnection.h"
 
-class WorldDatabaseConnection : public MySQLConnection
+class ExtraDatabaseConnection : public MySQLConnection
 {
     public:
         //- Constructors for sync and async connections
-        WorldDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
-        WorldDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
+        ExtraDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) {}
+        ExtraDatabaseConnection(ACE_Activation_Queue* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) {}
 
-        //- Loads database type specific prepared statements
+        //- Loads databasetype specific prepared statements
         void DoPrepareStatements(bool m_prepare);
 };
 
-typedef DatabaseWorkerPool<WorldDatabaseConnection> WorldDatabaseWorkerPool;
+typedef DatabaseWorkerPool<ExtraDatabaseConnection> ExtraDatabaseWorkerPool;
 
-enum WorldDatabaseStatements
+enum ExtraDatabaseStatements
 {
     /*  Naming standard for defines:
         {DB}_{SET/DEL/ADD/REP}_{Summary of data changed}
@@ -46,14 +46,7 @@ enum WorldDatabaseStatements
         name for a suiting suffix.
     */
 
-    WORLD_LOAD_QUEST_POOLS,
-    WORLD_DEL_CRELINKED_RESPAWN,
-    WORLD_REP_CRELINKED_RESPAWN,
-    WORLD_LOAD_CRETEXT,
-    WORLD_LOAD_SMART_SCRIPTS,
-    WORLD_LOAD_SMARTAI_WP,
-
-    MAX_WORLDDATABASE_STATEMENTS,
+    MAX_EXTRADATABASE_STATEMENTS,
 };
 
 #endif

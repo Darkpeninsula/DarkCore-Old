@@ -1,4 +1,4 @@
-################################################
+###############################################
 #   DarkCore World Server configuration file   #
 ################################################
 [worldserver]
@@ -72,6 +72,7 @@ LogsDir = ""
 #    LoginDatabaseInfo
 #    WorldDatabaseInfo
 #    CharacterDatabaseInfo
+#    ExtraDatabaseInfo
 #        Database connection settings for the world server.
 #        Default:
 #                    hostname;port;username;password;database
@@ -85,11 +86,13 @@ LogsDir = ""
 LoginDatabaseInfo     = "127.0.0.1;3306;user;password;auth"
 WorldDatabaseInfo     = "127.0.0.1;3306;user;password;world"
 CharacterDatabaseInfo = "127.0.0.1;3306;user;password;characters"
+ExtraDatabaseInfo     = "127.0.0.1;3306;user;password;extra"
 
 #
 #    LoginDatabase.WorkerThreads
 #    WorldDatabase.WorkerThreads
 #    CharacterDatabase.WorkerThreads
+#    ExtraDatabase.WorkerThreads
 #        The amount of worker threads spawned to handle
 #        asynchronous (delayed) MySQL statements.
 #        Each worker thread is mirrored with its own
@@ -100,11 +103,13 @@ CharacterDatabaseInfo = "127.0.0.1;3306;user;password;characters"
 LoginDatabase.WorkerThreads = 1
 WorldDatabase.WorkerThreads = 1
 CharacterDatabase.WorkerThreads = 1
+ExtraDatabase.WorkerThreads     = 1
 
 #
 #    LoginDatabase.SynchThreads
 #    WorldDatabase.SynchThreads    
-#    CharacterDatabase.SynchThreads    
+#    CharacterDatabase.SynchThreads
+#    ExtraDatabase.SynchThreads
 #        Description: The amount of MySQL connections spawned to handle.    
 #        Default:     1 - (LoginDatabase.WorkerThreads)    
 #                     1 - (WorldDatabase.WorkerThreads)
@@ -112,6 +117,7 @@ CharacterDatabase.WorkerThreads = 1
 LoginDatabase.SynchThreads     = 1    
 WorldDatabase.SynchThreads     = 1
 CharacterDatabase.SynchThreads = 2
+ExtraDatabase.SynchThreads     = 2
 
 #
 #    MaxPingTime

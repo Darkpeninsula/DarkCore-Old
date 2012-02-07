@@ -447,6 +447,32 @@ bool Master::_StartDB()
         return false;
     }
 
+    ///- Extra Database
+    ///- Get extra database info from configuration file
+    dbstring = sConfig->GetStringDefault("ExtraDatabaseInfo", "");
+    if (dbstring.empty())
+    {
+        sLog->outError("Extra database not specified in configuration file");
+        return false;
+    }
+
+    async_threads = sConfig->GetIntDefault("ExtraDatabase.WorkerThreads", 1);
+    if (async_threads < 1 || async_threads > 32)
+    {
+        sLog->outError("Extra database: invalid number of worker threads specified. "
+            "Please pick a value between 1 and 32.");
+        return false;
+    }
+
+    synch_threads = sConfig->GetIntDefault("ExtraDatabase.SynchThreads", 2);
+
+    ///- Initialise the extra database
+    if (!ExtraDatabase.Open(dbstring, async_threads, synch_threads))
+    {
+        sLog->outError("Cannot connect to extra database %s", dbstring.c_str());
+        return false;
+    }
+	
     ///- Get the realm Id from the configuration file
     realmID = sConfig->GetIntDefault("RealmID", 0);
     if (!realmID)
@@ -479,6 +505,7 @@ void Master::_StopDB()
     CharacterDatabase.Close();
     WorldDatabase.Close();
     LoginDatabase.Close();
+    ExtraDatabase.Close();
 
     MySQL::Library_End();
 }
