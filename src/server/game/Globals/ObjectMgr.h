@@ -57,7 +57,6 @@ extern SQLStorage sItemStorage;
 extern SQLStorage sInstanceTemplate;
 
 class Group;
-class Guild;
 class ArenaTeam;
 class Item;
 
@@ -606,8 +605,6 @@ class ObjectMgr
 
         typedef std::set<Group *> GroupSet;
 
-        typedef std::vector <Guild *> GuildMap;
-
         typedef UNORDERED_MAP<uint32, ArenaTeam*> ArenaTeamMap;
 
         typedef UNORDERED_MAP<uint32, Quest*> QuestMap;
@@ -643,13 +640,6 @@ class ObjectMgr
         Group * GetGroupByGUID(uint32 guid) const;
         void AddGroup(Group* group) { mGroupSet.insert(group); }
         void RemoveGroup(Group* group) { mGroupSet.erase(group); }
-
-        Guild* GetGuildByLeader(uint64 const&guid) const;
-        Guild* GetGuildById(uint32 guildId) const;
-        Guild* GetGuildByName(const std::string& guildname) const;
-        std::string GetGuildNameById(uint32 guildId) const;
-        void AddGuild(Guild* pGuild);
-        void RemoveGuild(uint32 guildId);
 
         ArenaTeam* GetArenaTeamById(uint32 arenateamid) const;
         ArenaTeam* GetArenaTeamByName(const std::string& arenateamname) const;
@@ -860,7 +850,6 @@ class ObjectMgr
             return NULL;
         }
 
-        void LoadGuilds();
         void LoadGuildRewards();
         void LoadArenaTeams();
         void LoadGroups();
@@ -1012,7 +1001,6 @@ class ObjectMgr
         uint32 GenerateArenaTeamId();
         uint32 GenerateAuctionID();
         uint64 GenerateEquipmentSetGuid();
-        uint32 GenerateGuildId();
         uint32 GenerateMailID();
         uint32 GeneratePetNumber();
 
@@ -1284,7 +1272,6 @@ class ObjectMgr
         uint32 m_arenaTeamId;
         uint32 m_auctionid;
         uint64 m_equipmentSetGuid;
-        uint32 m_guildId;
         uint32 m_ItemTextId;
         uint32 m_mailid;
         uint32 m_hiPetNumber;
@@ -1310,7 +1297,6 @@ class ObjectMgr
         typedef std::set<uint32> GameObjectForQuestSet;
 
         GroupSet            mGroupSet;
-        GuildMap            mGuildMap;
         ArenaTeamMap        mArenaTeamMap;
         GuildRewardsVector  mGuildRewards;
 

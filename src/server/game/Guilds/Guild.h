@@ -30,6 +30,26 @@
 
 class Item;
 
+enum sGuildNews
+{
+    GUILD_NEWS_GUILD_ACHIEVENT_EARNED = 1,
+    GUILD_NEWS_MEMBER_ACHIEVEMENT_EARNED,
+    GUILD_NEWS_EPIC_ITEM_LOOTED,
+    GUILD_NEWS_EPIC_ITEM_CRAFTED,
+    GUILD_NEWS_EPIC_ITEM_PURCHASED,
+    GUILD_NEWS_GUILD_LEVEL_REACHED,
+};
+
+struct GuildNews
+{
+    uint32 m_type;
+    uint64 m_timestamp;
+    uint32 m_value1;
+    uint32 m_value2;
+    uint64 m_source_guid;
+    uint32 m_flags;
+};
+
 enum GuildMisc
 {
     GUILD_BANK_MAX_TABS                 = 8,                    // send by client for money log also
@@ -57,6 +77,7 @@ enum GuildMemberData
     GUILD_MEMBER_DATA_ZONEID = 0,
     GUILD_MEMBER_DATA_ACHIEVEMENT_POINTS,
     GUILD_MEMBER_DATA_LEVEL,
+    GUILD_MEMBER_DATA_PROFESSIONS
 };
 
 enum GuildDefaultRanks
@@ -278,7 +299,7 @@ private:
         struct Profession
         {
             uint32 skillID;
-            uint32 title;
+            uint32 rank;
             uint32 level;
         };
 
@@ -295,6 +316,13 @@ private:
         void SetZoneID(uint32 id) { m_zoneId = id; }
         void SetAchievementPoints(uint32 val) { m_achievementPoints = val; }
         void SetLevel(uint8 var) { m_level = var; }
+
+        void SetProfession(uint32 num, uint32 level, uint32 skill, uint32 rank)
+        {
+            professions[num].level = level;
+            professions[num].skillID = skill;
+            professions[num].rank = rank;
+        }
 
         void AddFlag(uint8 var) { m_flags |= var; }
         void RemFlag(uint8 var) { m_flags &= ~var; }
@@ -315,6 +343,7 @@ private:
         uint8 GetFlags() { return m_flags; }
         uint32 GetZoneId() { return m_zoneId; }
         uint32 GetAchievementPoints() { return m_achievementPoints; }
+        Profession professions[2];
 
         bool IsOnline() { return (m_flags & GUILD_MEMBER_FLAG_ONLINE); }
 
@@ -351,7 +380,6 @@ private:
 
         RemainingValue m_bankRemaining[GUILD_BANK_MAX_TABS + 1];
         uint32 m_achievementPoints;
-        Profession professions[2];
     };
 
     // Base class for event entries
@@ -622,6 +650,7 @@ private:
     typedef UNORDERED_MAP<uint32, Member*> Members;
     typedef std::vector<RankInfo> Ranks;
     typedef std::vector<BankTab*> BankTabs;
+    typedef std::list<GuildNews> GuildNewsList;
 
 public:
     static void SendCommandResult(WorldSession* session, GuildCommandType type, GuildCommandError errCode, const std::string& param = "");
@@ -664,6 +693,8 @@ public:
     void HandleMemberLogout(WorldSession* session);
     void HandleDisband(WorldSession* session);
 
+    void SetGuildNews(WorldPacket &data);
+
     void UpdateMemberData(Player* plr, uint8 dataid, uint32 value);
     void OnPlayerStatusChange(Player* plr, uint32 flag, bool state);
     void SendUpdateRoster(WorldSession* session = NULL);
@@ -685,6 +716,7 @@ public:
 
     // Load from DB
     bool LoadFromDB(Field* fields);
+    void LoadGuildNewsFromDB(Field* fields);
     bool LoadRankFromDB(Field* fields);
     bool LoadMemberFromDB(Field* fields);
     bool LoadEventLogFromDB(Field* fields);
@@ -735,6 +767,7 @@ public:
     void LevelUp();
     void ResetTodayXP() { m_today_xp = 0; }
     void GenerateXPCap();
+    void AddGuildNews(uint32 type, uint64 source_guild, int value1, int value2, int flags = 0);
 
 protected:
     uint32 m_id;
@@ -757,6 +790,8 @@ protected:
     Ranks m_ranks;
     Members m_members;
     BankTabs m_bankTabs;
+
+    GuildNewsList m_guild_news;
 
     uint32 m_lastXPSave;
 

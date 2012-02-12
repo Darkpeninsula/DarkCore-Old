@@ -43,6 +43,7 @@
 #include "Map.h"
 #include "InstanceScript.h"
 #include "zlib.h"
+#include "GuildMgr.h"
 
 namespace DarkCore
 {
@@ -729,7 +730,7 @@ void AchievementMgr::SendAchievementEarned(AchievementEntry const* achievement)
         sLog->outDebug(LOG_FILTER_ACHIEVEMENTSYS, "AchievementMgr::SendAchievementEarned(%u)", achievement->ID);
     #endif
 
-    if (Guild* guild = sObjectMgr->GetGuildById(GetPlayer()->GetGuildId()))
+    if (Guild* guild = sGuildMgr->GetGuildById(GetPlayer()->GetGuildId()))
     {
         DarkCore::AchievementChatBuilder say_builder(*GetPlayer(), CHAT_MSG_GUILD_ACHIEVEMENT, LANG_ACHIEVEMENT_EARNED, achievement->ID);
         DarkCore::LocalizedPacketDo<DarkCore::AchievementChatBuilder> say_do(say_builder);

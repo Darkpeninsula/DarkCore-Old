@@ -102,10 +102,10 @@ void GuildMgr::LoadGuilds()
     {
         uint32 oldMSTime = getMSTime();
 
-                                                     //          0          1       2             3              4              5              6
+                                                //           0          1       2             3              4              5              6
         QueryResult result = CharacterDatabase.Query("SELECT g.guildid, g.name, g.leaderguid, g.EmblemStyle, g.EmblemColor, g.BorderStyle, g.BorderColor, "
-                                                     //   7                  8       9       10            11           12
-                                                     "g.BackgroundColor, g.info, g.motd, g.createdate, g.BankMoney, COUNT(gbt.guildid) "
+                                                //    7                  8       9       10            11           12         13         14       15
+                                                     "g.BackgroundColor, g.info, g.motd, g.createdate, g.BankMoney, COUNT(gbt.guildid), xp, level , m_today_xp, m_xp_cap  "
                                                      "FROM guild g LEFT JOIN guild_bank_tab gbt ON g.guildid = gbt.guildid GROUP BY g.guildid ORDER BY g.guildid ASC");
 
         if (!result)
@@ -126,6 +126,12 @@ void GuildMgr::LoadGuilds()
                 {
                     delete guild;
                     continue;
+                }
+                QueryResult guildNews = CharacterDatabase.PQuery("SELECT type, date, value1, value2, source_guid, flags FROM guild_news WHERE guildid = %u ORDER BY date DESC", guild->GetId());
+                if (guildNews)
+                {
+                    Field* fields = guildNews->Fetch();
+                    guild->LoadGuildNewsFromDB(fields);
                 }
                 AddGuild(guild);
 
@@ -188,8 +194,10 @@ void GuildMgr::LoadGuilds()
                                                      "BankResetTimeTab0, BankRemSlotsTab0, BankResetTimeTab1, BankRemSlotsTab1, BankResetTimeTab2, BankRemSlotsTab2, "
                                                      //   13                 14                15                 16                17                 18
                                                      "BankResetTimeTab3, BankRemSlotsTab3, BankResetTimeTab4, BankRemSlotsTab4, BankResetTimeTab5, BankRemSlotsTab5, "
-                                                     //   19      20       21       22      23         24
-                                                     "c.name, c.level, c.class, c.zone, c.account, c.logout_time "
+                                                     //   19                 20                21                 22
+                                                     "BankResetTimeTab6, BankRemSlotsTab6, BankResetTimeTab7, BankRemSlotsTab7, "
+                                                     //   23      24       25       26      27         28               29               30               31               32                33                34
+                                                     "c.name, c.level, c.class, c.zone, c.account, c.logout_time, FirstProffLevel, FirstProffSkill, FirstProffRank, SecondProffLevel, SecondProffSkill, SecondProffRank "
                                                      "FROM guild_member gm LEFT JOIN characters c ON c.guid = gm.guid ORDER BY guildid ASC");
 
         if (!result)
@@ -403,18 +411,19 @@ void GuildMgr::LoadGuilds()
     sLog->outString("Validating data of loaded guilds...");
     {
         uint32 oldMSTime = getMSTime();
+        std::set<Guild*> rm; // temporary storage to avoid modifying GuildStore with RemoveGuild() while iterating
 
         for (GuildContainer::iterator itr = GuildStore.begin(); itr != GuildStore.end(); ++itr)
         {
             Guild* guild = itr->second;
-            if (guild)
-            {
-                if (!guild->Validate())
-                {
-                    RemoveGuild(guild->GetId());
-                    delete guild;
-                }
-            }
+            if (guild && !guild->Validate())
+                rm.insert(guild);
+        }
+        for (std::set<Guild*>::iterator itr = rm.begin(); itr != rm.end(); ++itr)
+        {
+            Guild* guild = *itr;
+            RemoveGuild(guild->GetId());
+            delete guild;
         }
 
         sLog->outString(">> Validated data of loaded guilds in %u ms", GetMSTimeDiffToNow(oldMSTime));

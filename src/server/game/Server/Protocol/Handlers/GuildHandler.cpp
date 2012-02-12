@@ -30,6 +30,7 @@
 #include "Guild.h"
 #include "GossipDef.h"
 #include "SocialMgr.h"
+#include "GuildMgr.h"
 
 // Cataclysm TODO:
 // Proper update of internal events:
@@ -46,7 +47,7 @@
 inline Guild* _GetPlayerGuild(WorldSession* session, bool sendError = false)
 {
     if (uint32 guildId = session->GetPlayer()->GetGuildId())    // If guild id = 0, player is not in guild
-        if (Guild* pGuild = sObjectMgr->GetGuildById(guildId))   // Find guild by id
+        if (Guild* pGuild = sGuildMgr->GetGuildById(guildId))   // Find guild by id
             return pGuild;
     if (sendError)
         Guild::SendCommandResult(session, GUILD_CREATE_S, ERR_GUILD_PLAYER_NOT_IN_GUILD);
@@ -64,7 +65,7 @@ void WorldSession::HandleGuildQueryOpcode(WorldPacket& recvPacket)
     recvPacket >> player;
     // Use received guild id to access guild method (not player's guild id)
     uint32 lowGuildId = GUID_LOPART(guildId);
-    if (Guild *pGuild = sObjectMgr->GetGuildById(lowGuildId))
+    if (Guild* pGuild = sGuildMgr->GetGuildById(lowGuildId))
         pGuild->HandleQuery(this);
     else
         Guild::SendCommandResult(this, GUILD_CREATE_S, ERR_GUILD_PLAYER_NOT_IN_GUILD);
@@ -82,7 +83,7 @@ void WorldSession::HandleGuildCreateOpcode(WorldPacket& recvPacket)
     {
         Guild* pGuild = new Guild();
         if (pGuild->Create(GetPlayer(), name))
-            sObjectMgr->AddGuild(pGuild);
+            sGuildMgr->AddGuild(pGuild);
         else
             delete pGuild;
     }
@@ -125,7 +126,7 @@ void WorldSession::HandleGuildAcceptOpcode(WorldPacket& recvPacket)
     // Player cannot be in guild
     if (!GetPlayer()->GetGuildId())
         // Guild where player was invited must exist
-        if (Guild* pGuild = sObjectMgr->GetGuildById(GetPlayer()->GetGuildIdInvited()))
+        if (Guild* pGuild = sGuildMgr->GetGuildById(GetPlayer()->GetGuildIdInvited()))
             pGuild->HandleAcceptMember(this);
 }
 
@@ -251,7 +252,7 @@ void WorldSession::HandleGuildExperienceOpcode(WorldPacket& recvPacket)
 {
     recvPacket.read_skip<uint64>();
 
-    if (Guild* pGuild = sObjectMgr->GetGuildById(_player->GetGuildId()))
+    if (Guild* pGuild = sGuildMgr->GetGuildById(_player->GetGuildId()))
     {
         WorldPacket data(SMSG_GUILD_XP_UPDATE, 8*5);
         data << uint64(pGuild->GetXPCap());       // max daily xp
@@ -267,7 +268,7 @@ void WorldSession::HandleGuildMaxExperienceOpcode(WorldPacket& recvPacket)
 {
     recvPacket.read_skip<uint64>();
 
-    if (Guild* pGuild = sObjectMgr->GetGuildById(_player->GetGuildId()))
+    if (Guild* pGuild = sGuildMgr->GetGuildById(_player->GetGuildId()))
     {
         WorldPacket data(SMSG_GUILD_MAX_DAILY_XP, 8);
         data << uint64(pGuild->GetXPCap());
@@ -718,4 +719,17 @@ void WorldSession::HandleSetGuildBankTabText(WorldPacket &recv_data)
 
     if (Guild* pGuild = _GetPlayerGuild(this))
         pGuild->SetBankTabText(tabId, text);
+}
+
+void WorldSession::HandleGuildQueryNews(WorldPacket &recv_data)
+{
+    sLog->outDebug(LOG_FILTER_GUILD, "WORLD: Received CMSG_GUILD_QUERY_NEWS");
+
+    // Sending guild news
+    if (Guild* pGuild = _GetPlayerGuild(this))
+    {
+        WorldPacket data(SMSG_GUILD_NEWS_UPDATE, 4);
+        pGuild->SetGuildNews(data);
+        SendPacket(&data);
+    }
 }
