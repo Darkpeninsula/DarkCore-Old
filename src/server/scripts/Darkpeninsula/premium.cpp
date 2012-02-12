@@ -104,13 +104,13 @@ class npc_premium : public CreatureScript
                 
                 if(Type == PREMIUM_TYPE_LEVEL)
                 {
-                    if(int8(player->getLevel() + Count) > sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
+                    int8 player_levels = int8(player->getLevel() + Count);
+                    if(int8(player_levels) > sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
                     {
-                        _Creature->MonsterWhisper(PREMIUM_LANG_ERROR_LEVEL,player->GetGUID());
-                        return 0;
+                        player_levels = sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL);
                     }
                     
-                    player->GiveLevel(player->getLevel() + Count);
+                    player->GiveLevel(player_levels);
                     player->InitTalentForLevel();
                     player->SetUInt32Value(PLAYER_XP,0);
                 }
