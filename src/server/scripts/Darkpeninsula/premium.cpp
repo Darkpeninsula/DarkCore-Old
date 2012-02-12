@@ -223,7 +223,7 @@ class npc_premium : public CreatureScript
         }
 
         player->CLOSE_GOSSIP_MENU();
-        return false;
+        return true;
     }
 };
 
