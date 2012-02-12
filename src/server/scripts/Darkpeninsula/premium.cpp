@@ -105,7 +105,7 @@ class npc_premium : public CreatureScript
                 if(Type == PREMIUM_TYPE_LEVEL)
                 {
                     int8 player_levels = int8(player->getLevel() + Count);
-                    if(int8(player_levels) > sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
+                    if(player_levels > sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
                     {
                         player_levels = sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL);
                     }
