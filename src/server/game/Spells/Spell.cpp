@@ -1232,6 +1232,19 @@ void Spell::DoAllEffectOnTarget(TargetInfo *target)
                     positive = false;
                     break;
                 }
+            if (mask)
+            {
+                for (uint8 effIndex = 0; effIndex < MAX_SPELL_EFFECTS; ++effIndex)
+                    // If at least one effect negative spell is negative hit
+                    if (mask & (1 << effIndex) && !m_spellInfo->IsPositiveEffect(effIndex))
+                    {
+                        positive = false;
+                        break;
+                    }
+            }
+            else
+                // If there is no effect mask determine from spell proto
+                positive = m_spellInfo->_IsPositiveSpell();
         }
         switch(m_spellInfo->DmgClass)
         {
@@ -3927,7 +3940,7 @@ void Spell::finish(bool ok)
             case 30455: // Ice Lance
             case 44572: // Deep Freeze
                 if (m_caster->HasAura(44544)) // Fingers of Frost
-                     m_caster->RemoveAuraFromStack(44544);
+                    m_caster->RemoveAuraFromStack(44544);
                 break;
             case 2061: // Flash heal
                 if (m_caster->HasAura(88688)) // Surge of Light
