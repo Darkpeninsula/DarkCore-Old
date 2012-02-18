@@ -1236,7 +1236,7 @@ void Spell::DoAllEffectOnTarget(TargetInfo *target)
             {
                 for (uint8 effIndex = 0; effIndex < MAX_SPELL_EFFECTS; ++effIndex)
                     // If at least one effect negative spell is negative hit
-                    if (mask & (1 << effIndex) && !m_spellInfo->IsPositiveEffect(effIndex))
+                    if (mask & (1 << effIndex) && !IsPositiveEffect(m_spellInfo->Id, effIndex))
                     {
                         positive = false;
                         break;
@@ -1244,7 +1244,7 @@ void Spell::DoAllEffectOnTarget(TargetInfo *target)
             }
             else
                 // If there is no effect mask determine from spell proto
-                positive = m_spellInfo->_IsPositiveSpell();
+                positive = IsPositiveSpell(m_spellInfo->Id);
         }
         switch(m_spellInfo->DmgClass)
         {
