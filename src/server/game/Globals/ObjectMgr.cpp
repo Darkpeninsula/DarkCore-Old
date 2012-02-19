@@ -3730,6 +3730,7 @@ void ObjectMgr::LoadGroups()
     {
         sLog->outString();
         sLog->outString(">> Loaded 0 group-instance saves");
+        sLog->outString();
         return;
     }
 
@@ -3760,6 +3761,7 @@ void ObjectMgr::LoadGroups()
     }while (result->NextRow());
     sLog->outString();
     sLog->outString(">> Loaded %u group-instance saves", count);
+    sLog->outString();
 }
 
 void ObjectMgr::LoadQuests()
@@ -6788,8 +6790,8 @@ void ObjectMgr::LoadCurrencysLoot()
     QueryResult result = WorldDatabase.PQuery("SELECT entry, type, currencyId, currencyAmount FROM currency_loot");
     if (!result)
     {
-        sLog->outString();
         sLog->outString("Loaded 0 currency loot defination. Table is empty!");
+        sLog->outString();
         return;
     }
 
@@ -6805,14 +6807,14 @@ void ObjectMgr::LoadCurrencysLoot()
 
         if (type < 1)
         {
-            sLog->outString();
             sLog->outString("Currency 'type' can not be < 1 (entry = %u type = %i)", entry, type);
+            sLog->outString();
             continue;
         }
         else if (type > 3)
         {
-            sLog->outString();
             sLog->outString("Currency 'type' can not be > 3 (entry = %u type = %i)", entry, type);
+            sLog->outString();
             continue;
         }
 
@@ -6824,13 +6826,13 @@ void ObjectMgr::LoadCurrencysLoot()
 
     if (count)
     {
-        sLog->outString();
         sLog->outString("Loaded %u currency loot defination", count);
+        sLog->outString();
     }
     else
     {
-        sLog->outString();
         sLog->outString("Loaded 0 currency loot defination. Table is empty!");
+        sLog->outString();
     }
 }
 
