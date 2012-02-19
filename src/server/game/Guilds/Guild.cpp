@@ -3268,7 +3268,6 @@ void Guild::AddGuildNews(uint32 type, uint64 source_guild, int value1, int value
     gNews.m_source_guid = source_guild;
     gNews.m_flags = flags;
 
-    SQLTransaction trans = CharacterDatabase.BeginTransaction();
     PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_ADD_GUILD_NEWS);
     stmt->setUInt32(0, GetId());
     stmt->setUInt32(1, type);
@@ -3277,7 +3276,7 @@ void Guild::AddGuildNews(uint32 type, uint64 source_guild, int value1, int value
     stmt->setUInt32(4, value2);
     stmt->setUInt8 (5, source_guild);
     stmt->setUInt64(6, flags);
-    CharacterDatabase.ExecuteOrAppend(trans, stmt);
+    CharacterDatabase.Execute(stmt);
 
     WorldPacket data(SMSG_GUILD_NEWS_UPDATE, 8*5);
     data << uint32(1);
