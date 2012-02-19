@@ -1572,7 +1572,7 @@ void World::SetInitialWorldSettings()
     sLog->outString("Loading Groups...");
     sObjectMgr->LoadGroups();
 
-    sLog->outString("Loading Currency...");
+    sLog->outString("Loading Currencys...");
     sObjectMgr->LoadCurrencysLoot();
 
     sLog->outString("Loading ReservedNames...");
