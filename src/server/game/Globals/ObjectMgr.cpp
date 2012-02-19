@@ -6787,7 +6787,11 @@ void ObjectMgr::LoadCurrencysLoot()
 {
     QueryResult result = WorldDatabase.PQuery("SELECT entry, type, currencyId, currencyAmount FROM currency_loot");
     if (!result)
+    {
+        sLog->outString();
+        sLog->outString("Loaded 0 currency loot defination. Table is empty!");
         return;
+    }
 
     uint32 count = 0;
     do
@@ -6801,11 +6805,13 @@ void ObjectMgr::LoadCurrencysLoot()
 
         if (type < 1)
         {
+            sLog->outString();
             sLog->outString("Currency 'type' can not be < 1 (entry = %u type = %i)", entry, type);
             continue;
         }
         else if (type > 3)
         {
+            sLog->outString();
             sLog->outString("Currency 'type' can not be > 3 (entry = %u type = %i)", entry, type);
             continue;
         }
@@ -6817,9 +6823,15 @@ void ObjectMgr::LoadCurrencysLoot()
     while (result->NextRow());
 
     if (count)
+    {
+        sLog->outString();
         sLog->outString("Loaded %u currency loot defination", count);
+    }
     else
+    {
+        sLog->outString();
         sLog->outString("Loaded 0 currency loot defination. Table is empty!");
+    }
 }
 
 void ObjectMgr::LoadCorpses()
