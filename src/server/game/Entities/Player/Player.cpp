@@ -8859,7 +8859,7 @@ void Player::SendLoot(uint64 guid, LootType loot_type)
     {
         if (Item *item = GetItemByGuid(guid))
         {
-            objEntry = item->GetTemplate()->ItemId;
+            objEntry = item->GetProto()->ItemId;
             objType = 2;
         }
     }
@@ -8875,7 +8875,7 @@ void Player::SendLoot(uint64 guid, LootType loot_type)
     {
         if (GameObject *gobject = GetMap()->GetGameObject(guid))
         {
-            objEntry = gobject->GetGOInfo()->entry;
+            objEntry = gobject->GetGOInfo()->id;
             objType = 3;
         }
     }

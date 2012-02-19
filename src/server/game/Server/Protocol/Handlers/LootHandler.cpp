@@ -58,7 +58,7 @@ void WorldSession::HandleAutostoreLootItemOpcode(WorldPacket & recv_data)
             return;
         }
 
-        objEntry = go->GetGOInfo()->entry;
+        objEntry = go->GetGOInfo()->id;
         objType = 3;
         loot = &go->loot;
     }
@@ -72,7 +72,7 @@ void WorldSession::HandleAutostoreLootItemOpcode(WorldPacket & recv_data)
             return;
         }
 
-        objEntry = pItem->GetTemplate()->ItemId;
+        objEntry = pItem->GetProto()->ItemId;
         objType = 2;
         loot = &pItem->loot;
     }
@@ -99,7 +99,7 @@ void WorldSession::HandleAutostoreLootItemOpcode(WorldPacket & recv_data)
             return;
         }
 
-        objEntry = creature->GetCreatureInfo()->Entry;
+        objEntry = pCreature->GetCreatureInfo()->Entry;
         objType = 1;
         loot = &pCreature->loot;
     }
