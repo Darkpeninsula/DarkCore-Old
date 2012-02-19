@@ -6790,7 +6790,7 @@ void ObjectMgr::LoadCurrencysLoot()
     QueryResult result = WorldDatabase.PQuery("SELECT entry, type, currencyId, currencyAmount FROM currency_loot");
     if (!result)
     {
-        sLog->outString("Loaded 0 currency loot defination. Table is empty!");
+        sLog->outString("Loaded 0 currency loot definition. Table is empty!");
         sLog->outString();
         return;
     }
@@ -6826,12 +6826,12 @@ void ObjectMgr::LoadCurrencysLoot()
 
     if (count)
     {
-        sLog->outString("Loaded %u currency loot defination", count);
+        sLog->outString("Loaded %u currency loot definition", count);
         sLog->outString();
     }
     else
     {
-        sLog->outString("Loaded 0 currency loot defination. Table is empty!");
+        sLog->outString("Loaded 0 currency loot definition. Table is empty!");
         sLog->outString();
     }
 }
