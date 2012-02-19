@@ -625,6 +625,9 @@ class ObjectMgr
 
         typedef std::map<uint32, uint32> CharacterConversionMap;
 
+        typedef std::list<CurrencyLoot> CurrencysLoot;
+        std::list<CurrencyLoot> GetCurrencyLoot(uint32 entry, uint8 type);
+
         typedef std::vector<GuildRewardsEntry*> GuildRewardsVector;
 
         Player* GetPlayer(const char* name) const { return sObjectAccessor->FindPlayerByName(name);}
@@ -853,6 +856,7 @@ class ObjectMgr
         void LoadGuildRewards();
         void LoadArenaTeams();
         void LoadGroups();
+        void LoadCurrencysLoot();
         void LoadQuests();
         void LoadQuestRelations()
         {
@@ -1325,6 +1329,7 @@ class ObjectMgr
         QuestRelations mGOQuestInvolvedRelations;
         QuestRelations mCreatureQuestRelations;
         QuestRelations mCreatureQuestInvolvedRelations;
+        CurrencysLoot mCurrencysLoot;
 
         //character reserved names
         typedef std::set<std::wstring> ReservedNamesMap;
