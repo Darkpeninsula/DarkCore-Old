@@ -436,7 +436,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                         if (unitTarget->GetGUID() == m_caster->GetGUID() || unitTarget->GetTypeId() != TYPEID_PLAYER)
                             return;
 
-						float radius = GetSpellRadiusForHostile(sSpellRadiusStore.LookupEntry(m_spellInfo->EffectRadiusIndex[0]));
+                        float radius = GetSpellRadiusForHostile(sSpellRadiusStore.LookupEntry(m_spellInfo->EffectRadiusIndex[0]));
                         if (!radius)
                             return;
                         float distance = m_caster->GetDistance2d(unitTarget);
@@ -529,7 +529,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                         if ((*i)->GetSpellProto()->SpellFamilyFlags[0] & 0x4)
                         {
                             uint32 pdamage = uint32(std::max((*i)->GetAmount(), 0));
-							pdamage = m_caster->SpellDamageBonus(unitTarget, (*i)->GetSpellProto(), effIndex, pdamage, DOT, (*i)->GetBase()->GetStackAmount());
+                            pdamage = m_caster->SpellDamageBonus(unitTarget, (*i)->GetSpellProto(), effIndex, pdamage, DOT, (*i)->GetBase()->GetStackAmount());
                             uint32 pct_dir = m_caster->CalculateSpellDamage(unitTarget, m_spellInfo, (effIndex + 1));
                             uint8 baseTotalTicks = uint8(m_caster->CalcSpellDuration((*i)->GetSpellProto()) / (*i)->GetSpellProto()->EffectAmplitude[2]);
                             damage += int32(CalculatePctU(pdamage * baseTotalTicks, pct_dir));
