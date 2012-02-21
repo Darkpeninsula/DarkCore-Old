@@ -18765,8 +18765,8 @@ void Player::SaveToDB()
     GetSession()->SaveTutorialsData(trans);                 // changed only while character in game
     _SaveGlyphs(trans);
     _SaveInstanceTimeRestrictions(trans);
-    _SaveCurrency();
-    _SaveConquestPointsWeekCap();
+    _SaveCurrency(trans);
+    _SaveConquestPointsWeekCap(trans);
 
     // check if stats should only be saved on logout
     // save stats can be out of transaction
@@ -19187,16 +19187,15 @@ void Player::_SaveSpells(SQLTransaction& trans)
     }
 }
 
-void Player::_SaveCurrency()
+void Player::_SaveCurrency(SQLTransaction& trans)
 {
     for (PlayerCurrenciesMap::iterator itr = m_currencies.begin(); itr != m_currencies.end();)
     {
         if (itr->second.state == PLAYERCURRENCY_CHANGED)
-            CharacterDatabase.PExecute("UPDATE character_currency SET `count` = '%u', thisweek = '%u' WHERE guid = '%u' AND currency = '%u'",
+            trans->PAppend("UPDATE character_currency SET `count` = '%u', thisweek = '%u' WHERE guid = '%u' AND currency = '%u'",
             itr->second.totalCount, itr->second.weekCount, GetGUIDLow(), itr->first);
         else if (itr->second.state == PLAYERCURRENCY_NEW)
-            CharacterDatabase.PExecute("INSERT INTO character_currency (guid, currency, `count`, thisweek) VALUES ('%u', '%u', '%u', '%u')",
-            GetGUIDLow(), itr->first, itr->second.totalCount, itr->second.weekCount);
+            trans->PAppend("INSERT INTO character_currency (guid, currency, `count`, thisweek) VALUES ('%u', '%u', '%u', '%u')", GetGUIDLow(), itr->first, itr->second.totalCount, itr->second.weekCount);
 
         if (itr->second.state == PLAYERCURRENCY_REMOVED)
             m_currencies.erase(itr++);
@@ -19208,13 +19207,12 @@ void Player::_SaveCurrency()
     }
 }
 
-void Player::_SaveConquestPointsWeekCap()
+void Player::_SaveConquestPointsWeekCap(SQLTransaction& trans)
 {
-    CharacterDatabase.PExecute("DELETE FROM character_cp_weekcap WHERE guid = '%u'", GetGUIDLow());
+    trans->PAppend("DELETE FROM character_cp_weekcap WHERE guid = '%u'", GetGUIDLow());
     for (uint8 source=0; source < CP_SOURCE_MAX; source++)
     {
-        CharacterDatabase.PExecute("INSERT INTO character_cp_weekcap (guid, source, maxWeekRating, weekCap) VALUES ('%u', '%u', '%u', '%u')",
-            GetGUIDLow(), source, m_maxWeekRating[source], m_conquestPointsWeekCap[source] );
+        trans->PAppend("INSERT INTO character_cp_weekcap (guid, source, maxWeekRating, weekCap) VALUES ('%u', '%u', '%u', '%u')", GetGUIDLow(), source, m_maxWeekRating[source], m_conquestPointsWeekCap[source] );
     }
 }
 
@@ -22296,8 +22294,8 @@ void Player::ResetCurrencyWeekCap()
 
     m_maxWeekRating[CP_SOURCE_ARENA] = 0; // player must win at least 1 arena for week to change m_conquestPointsWeekCap
 
-    _SaveConquestPointsWeekCap();
-    _SaveCurrency();
+    _SaveConquestPointsWeekCap(trans);
+    _SaveCurrency(trans);
     SendCurrencies();
 
     // Arena Teams

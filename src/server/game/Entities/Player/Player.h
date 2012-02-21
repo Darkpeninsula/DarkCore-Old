@@ -2666,8 +2666,8 @@ class Player : public Unit, public GridObject<Player>
         void _SaveGlyphs(SQLTransaction& trans);
         void _SaveTalents(SQLTransaction& trans);
         void _SaveTalentBranchSpecs(SQLTransaction& trans);
-        void _SaveCurrency();
-        void _SaveConquestPointsWeekCap();
+        void _SaveCurrency(SQLTransaction& trans);
+        void _SaveConquestPointsWeekCap(SQLTransaction& trans);
         void _SaveStats(SQLTransaction& trans);
         void _SaveInstanceTimeRestrictions(SQLTransaction& trans);
 
