@@ -332,12 +332,11 @@ void Spell::EffectEnvirinmentalDMG(SpellEffIndex effIndex)
         m_caster->ToPlayer()->EnvironmentalDamage(DAMAGE_FIRE, damage);
 }
 
-void Spell::EffectSchoolDMG(SpellEffIndex /*effIndex*/)
+void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
 {
-}
+    if (effectHandleMode != SPELL_EFFECT_HANDLE_LAUNCH_TARGET)
+        return;
 
-void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
-{
     bool apply_direct_bonus = true;
 
     if (unitTarget && unitTarget->isAlive())
@@ -347,7 +346,7 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
             case SPELLFAMILY_GENERIC:
             {
                 // Meteor like spells (divided damage to targets)
-                if (m_customAttr & SPELL_ATTR0_CU_SHARE_DAMAGE)
+                if (m_spellInfo->AttributesCu & SPELL_ATTR0_CU_SHARE_DAMAGE)
                 {
                     uint32 count = 0;
                     for (std::list<TargetInfo>::iterator ihit= m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
@@ -357,7 +356,7 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                     damage /= count;                    // divide to all targets
                 }
 
-                switch(m_spellInfo->Id)                     // better way to check unknown
+                switch (m_spellInfo->Id)                     // better way to check unknown
                 {
                     case 86150: // Guardian of Ancient Kings
                         if (unitTarget)
@@ -375,7 +374,7 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                             uint8 count = 0;
                             for (std::list<TargetInfo>::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
                                 if (ihit->targetGUID != m_caster->GetGUID())
-                                    if (Player *target = ObjectAccessor::GetPlayer(*m_caster, ihit->targetGUID))
+                                    if (Player* target = ObjectAccessor::GetPlayer(*m_caster, ihit->targetGUID))
                                         if (target->HasAura(m_triggeredByAuraSpell->Id))
                                             ++count;
                             if (count)
@@ -399,6 +398,23 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                     case 28865:
                         damage = (((InstanceMap*)m_caster->GetMap())->GetDifficulty() == REGULAR_DIFFICULTY ? 2750 : 4250);
                         break;
+                    case 51673: // Rocket Blast
+                    {
+                        float distance = m_caster->GetDistance2d(unitTarget);
+                        damage *= exp(-distance/15.0f);
+                        break;
+                    }
+                    // Ancient Fury
+                    case 86704:
+                    {
+                        Aura* ancientpower = m_caster->GetAura(86700);
+
+                        if (!ancientpower)
+                            return;
+
+                        damage = (damage * ancientpower->GetStackAmount()) ;
+                        break;
+                    }
                     // percent from health with min
                     case 25599:                             // Thundercrash
                     {
@@ -423,10 +439,26 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                         if (unitTarget->GetGUID() == m_caster->GetGUID() || unitTarget->GetTypeId() != TYPEID_PLAYER)
                             return;
 
-                        float radius = GetSpellRadiusForHostile(sSpellRadiusStore.LookupEntry(m_spellInfo->EffectRadiusIndex[0]));
-                        if (!radius) return;
+                        float radius = m_spellInfo->Effects[EFFECT_0].CalcRadius(m_caster);
+                        if (!radius)
+                            return;
                         float distance = m_caster->GetDistance2d(unitTarget);
-                        damage = (distance > radius) ? 0 : int32(SpellMgr::CalculateSpellEffectAmount(m_spellInfo, 0) * ((radius - distance)/radius));
+                        damage = (distance > radius) ? 0 : int32(m_spellInfo->Effects[EFFECT_0].CalcValue(m_caster) * ((radius - distance)/radius));
+                        break;
+                    }
+                    // Loken Pulsing Shockwave
+                    case 59837:
+                    case 52942:
+                    {
+                        // don't damage self and only players
+                        if (unitTarget->GetGUID() == m_caster->GetGUID() || unitTarget->GetTypeId() != TYPEID_PLAYER)
+                            return;
+
+                        float radius = m_spellInfo->Effects[EFFECT_0].CalcRadius(m_caster);
+                        if (!radius)
+                            return;
+                        float distance = m_caster->GetDistance2d(unitTarget);
+                        damage = (distance > radius) ? 0 : int32(m_spellInfo->Effects[EFFECT_0].CalcValue(m_caster) * distance);
                         break;
                     }
                     // TODO: add spell specific target requirement hook for spells
@@ -442,9 +474,11 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                         damage = unitTarget->CountPctFromMaxHealth(50);
                         break;
                     }
-
                     case 29142: // Eyesore Blaster
                     case 35139: // Throw Boom's Doom
+                    case 46198: // Cold Slap
+                    case 46588: // Ice Spear
+                    case 42393: // Brewfest - Attack Keg
                     case 55269: // Deathly Stare
                     case 56578: // Rapid-Fire Harpoon
                     case 62775: // Tympanic Tantrum
@@ -456,7 +490,7 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                     case 81008:
                     case 92631:
                     {
-                        //avoid damage when players jumps
+                        // avoid damage when players jumps
                         if (unitTarget->GetUnitMovementFlags() == MOVEMENTFLAG_JUMPING || unitTarget->GetTypeId() != TYPEID_PLAYER)
                             return;
                         break;
@@ -468,106 +502,6 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                         damage = (m_caster->getLevel() - 60) * 4 + 60;
                         break;
                     }
-
-                    // Loken Pulsing Shockwave
-                    case 59837:
-                    case 52942:
-                    {
-                        // don't damage self and only players
-                        if (unitTarget->GetGUID() == m_caster->GetGUID() || unitTarget->GetTypeId() != TYPEID_PLAYER)
-                            return;
-
-                        float radius = GetSpellRadiusForHostile(sSpellRadiusStore.LookupEntry(m_spellInfo->EffectRadiusIndex[0]));
-                        if (!radius)
-                            return;
-                        float distance = m_caster->GetDistance2d(unitTarget);
-                        damage = (distance > radius) ? 0 : int32(SpellMgr::CalculateSpellEffectAmount(m_spellInfo, 0) * distance);
-                        break;
-                    }
-                    // Lightning Nova
-                    case 65279:
-                    {
-                        // Guessed: exponential diminution until max range of spell (100yd)
-                        float radius = GetSpellRadiusForHostile(sSpellRadiusStore.LookupEntry(m_spellInfo->EffectRadiusIndex[0]));
-                        if (!radius)
-                            return;
-                        float distance = m_caster->GetDistance2d(unitTarget);
-                        if (distance > radius)
-                            damage = 0;
-                        else
-                            damage *= pow(1.0f - distance / radius, 2);
-                        break;
-                    }
-                    // Rocket Barrage, Goblin racial spell
-                    case 69041:
-                    {
-                        damage = uint32(1 + (0.25f * m_caster->GetTotalAttackPowerValue(BASE_ATTACK)) +
-                            (0.429f * m_caster->SpellBaseDamageBonus(SPELL_SCHOOL_MASK_FIRE)) +
-                            (m_caster->getLevel() * 2) + (m_caster->GetStat(STAT_INTELLECT) * 0.50193f));
-                    }
-                }
-                break;
-            }
-            case SPELLFAMILY_WARRIOR:
-            {
-               // Bloodthirst
-               if (m_spellInfo->SpellFamilyFlags[1] & 0x400)
-                   damage = uint32(damage * (m_caster->GetTotalAttackPowerValue(BASE_ATTACK)) / 100);
-               // Victory Rush
-               else if (m_spellInfo->SpellFamilyFlags[1] & 0x100)
-               {
-                   damage = uint32(damage * m_caster->GetTotalAttackPowerValue(BASE_ATTACK) / 100);
-                   m_caster->RemoveAurasDueToSpell(32216); // Victorious
-               }
-
-               // Cleave
-               else if (m_spellInfo->Id == 845)
-                   damage = uint32(6+ m_caster->GetTotalAttackPowerValue(BASE_ATTACK)* 0.45);
-               // Intercept
-               else if (m_spellInfo->Id == 20253)
-                   damage = uint32(1 + m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * 0.12);
-                else if (m_spellInfo->Id ==5308) // Execute
-                {
-                    float ap = m_caster->GetTotalAttackPowerValue(BASE_ATTACK);
-                    damage = uint32 (10 + ap * 0.437 * 100 / 100);
-                    uint32 power = m_caster->GetPower(POWER_RAGE);
-                    if(power > 0)
-                    {
-                        uint32 mod = power > 20 ? 20 : power;
-                        uint32 bonus_rage = 0;
-
-                        if(m_caster->HasAura(29723))
-                            bonus_rage = 5;
-                        if(m_caster->HasAura(29725))
-                            bonus_rage = 10;
-
-                        damage += uint32 ((ap * 0.874 * 100 / 100 - 1) * mod / 100.0f);
-                        m_caster->SetPower(POWER_RAGE, (power - mod) + bonus_rage);
-                    }
-                }
-                else if (m_spellInfo->Id == 78) // Heroic Strike
-                    damage = uint32(8 + (m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * 60) / 100);
-                else if (m_spellInfo->Id == 20253)
-                    damage = uint32(1 + m_caster->GetTotalAttackPowerValue(BASE_ATTACK) * 0.12);
-                else if (m_spellInfo->Id == 46968) // Shockwave
-                {
-                    int32 pct = m_caster->CalculateSpellDamage(unitTarget, m_spellInfo, 2);
-                    if (pct > 0)
-                        damage += int32(CalculatePctN(m_caster->GetTotalAttackPowerValue(BASE_ATTACK), pct));
-                    break;
-                }
-                else if (m_spellInfo->Id == 6343)
-                {
-                    uint32 trig_spell;
-                    if (m_caster->HasAura(80979))
-                        trig_spell = 87095;
-                    else if (m_caster->HasAura(80980))
-                        trig_spell = 87096;
-                    else
-                        break;
-
-                    if(urand(0,1))
-                        m_caster->CastSpell(m_caster, trig_spell, true);
                 }
                 break;
             }
@@ -584,200 +518,245 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                             damage += damage/4;
                     }
                 }
-                // Conflagrate - consumes Immolate
+                // Conflagrate - consumes Immolate or Shadowflame
                 else if (m_spellInfo->TargetAuraState == AURA_STATE_CONFLAGRATE)
                 {
-                    AuraEffect const* aura = NULL;                // found req. aura for damage calculation
-
                     Unit::AuraEffectList const &mPeriodic = unitTarget->GetAuraEffectsByType(SPELL_AURA_PERIODIC_DAMAGE);
                     for (Unit::AuraEffectList::const_iterator i = mPeriodic.begin(); i != mPeriodic.end(); ++i)
                     {
                         // for caster applied auras only
-                        if ((*i)->GetSpellProto()->SpellFamilyName != SPELLFAMILY_WARLOCK ||
+                        if ((*i)->GetSpellInfo()->SpellFamilyName != SPELLFAMILY_WARLOCK ||
                             (*i)->GetCasterGUID() != m_caster->GetGUID())
                             continue;
 
                         // Immolate
-                        if ((*i)->GetSpellProto()->SpellFamilyFlags[0] & 0x4)
+                        if ((*i)->GetSpellInfo()->SpellFamilyFlags[0] & 0x4)
                         {
-                            aura = *i;                      // it selected always if exist
+                            uint32 pdamage = uint32(std::max((*i)->GetAmount(), 0));
+                            pdamage = m_caster->SpellDamageBonus(unitTarget, (*i)->GetSpellInfo(), pdamage, DOT, (*i)->GetBase()->GetStackAmount());
+                            uint32 pct_dir = m_caster->CalculateSpellDamage(unitTarget, m_spellInfo, (effIndex + 1));
+                            uint8 baseTotalTicks = uint8(m_caster->CalcSpellDuration((*i)->GetSpellInfo()) / (*i)->GetSpellInfo()->Effects[EFFECT_2].Amplitude);
+                            damage += int32(CalculatePctU(pdamage * baseTotalTicks, pct_dir));
+
+                            uint32 pct_dot = m_caster->CalculateSpellDamage(unitTarget, m_spellInfo, (effIndex + 2)) / 3;
+                            m_spellValue->EffectBasePoints[1] = m_spellInfo->Effects[EFFECT_1].CalcBaseValue(int32(CalculatePctU(pdamage * baseTotalTicks, pct_dot)));
+
+                            apply_direct_bonus = false;
                             break;
-                        }
-                    }
-
-                    // found Immolate
-                    if (aura)
-                    {
-                        uint32 pdamage = aura->GetAmount() > 0 ? aura->GetAmount() : 0;
-                        pdamage = m_caster->SpellDamageBonus(unitTarget, aura->GetSpellProto(), effIndex, pdamage, DOT, aura->GetBase()->GetStackAmount());
-                        uint32 pct_dir = m_caster->CalculateSpellDamage(unitTarget, m_spellInfo, (effIndex + 1));
-                        uint8 baseTotalTicks = uint8(m_caster->CalcSpellDuration(aura->GetSpellProto()) / aura->GetSpellProto()->EffectAmplitude[2]);
-                        damage += pdamage * baseTotalTicks * pct_dir / 100;
-
-                        uint32 pct_dot = m_caster->CalculateSpellDamage(unitTarget, m_spellInfo, (effIndex + 2)) / 3;
-                        m_spellValue->EffectBasePoints[1] = SpellMgr::CalculateSpellEffectBaseAmount(pdamage * baseTotalTicks * pct_dot / 100, m_spellInfo, 1);
-
-                        apply_direct_bonus = false;
-                        break;
-                    }
-                }
-                // Shadow Bite
-                else if (m_spellInfo->SpellFamilyFlags[1] & 0x400000)
-                {
-                    if (m_caster->GetTypeId() == TYPEID_UNIT && m_caster->ToCreature()->isPet())
-                    {
-                        if (Player* owner = m_caster->GetOwner()->ToPlayer())
-                        {
-                            if (AuraEffect* aurEff = owner->GetAuraEffect(SPELL_AURA_ADD_FLAT_MODIFIER, SPELLFAMILY_WARLOCK, 214, 0))
-                            {
-                                int32 bp0 = aurEff->GetId() == 54037 ? 4 : 8;
-                                m_caster->CastCustomSpell(m_caster, 54425, &bp0, NULL, NULL, true);
-                            }
                         }
                     }
                 }
                 break;
             }
-            case SPELLFAMILY_PRIEST:
+           case SPELLFAMILY_PRIEST:
             {
-              // Evangelism
-                if (m_caster->HasAura(81659)) // Rank 1
+                switch (m_spellInfo->Id)
                 {
-                    if (m_spellInfo->Id == 585)
-                        m_caster->CastSpell(m_caster, 81660, true);
-                }
-                else
-
-                if (m_caster->HasAura(81662)) // Rank 2
-                {
-                    if (m_spellInfo->Id == 585)
-                        m_caster->CastSpell(m_caster, 81661, true);
+                    case 73413:  // inner will
+                        m_caster->RemoveAurasDueToSpell(588);
+                        break;
+                    case 588:    // inner fire
+                        m_caster->RemoveAurasDueToSpell(73413);
+                         break;
                 }
 
-                // Chakra
-                if (m_caster->HasAura(14751))
+                if (m_spellInfo->Id == 589 || m_spellInfo->Id == 15407)  // Shadow Word: Pain | mind flay
                 {
-                    switch(m_spellInfo->Id)
+                    if (m_caster->HasSpell(95740))   // Shadow Orbs
                     {
-                        // Smite
-                        case 585:
-                            m_caster->CastSpell(m_caster, 81209, true); // Chakra: Chastise
-                            break;
-                        // Mind Spike
-                        case 73510:
-                            m_caster->CastSpell(m_caster, 81209, true); // Chakra: Chastise
-                            break;
-                        default:
-                            break;
+                        int chance = 10;
+
+                        if (m_caster->HasAura(33191)) // Harnessed Shadows rank1
+                            chance += 4;
+                        else if (m_caster->HasAura(78228))  // Harnessed Shadows rank2
+                            chance += 8;
+
+                        if (roll_chance_i(chance))
+                            m_caster->CastSpell(m_caster, 77487, true);
                     }
                 }
-                // Shadow Word: Death - deals damage equal to damage done to caster
-                if ((m_spellInfo->SpellFamilyFlags[1] & 0x2))
+                // Evangelism: Rank 1
+                if (Aura* evan1 = m_caster->GetAura(81659))
                 {
-                    int32 back_damage = m_caster->SpellDamageBonus(unitTarget, m_spellInfo, effIndex, (uint32)damage, SPELL_DIRECT_DAMAGE);
-                    // Pain and Suffering reduces damage
-                    if (AuraEffect * aurEff = m_caster->GetDummyAuraEffect(SPELLFAMILY_PRIEST, 2874, 0))
-                        back_damage -= aurEff->GetAmount() * back_damage / 100;
-
-                    if (back_damage < int32(unitTarget->GetHealth()))
-                        m_caster->CastCustomSpell(m_caster, 32409, &back_damage, 0, 0, true);
+                    m_caster->CastSpell(m_caster, 81660, true);
+                    // Trigger to activate archangel
+                    m_caster->CastSpell(m_caster, 87154, true);
+                    m_caster->RemoveAurasDueToSpell(87118);
+                    m_caster->RemoveAurasDueToSpell(87117);
                 }
-                // Mind Blast - applies Mind Trauma if:
-                else if (m_spellInfo->Id == 8092)
+                // Evangelism: Rank 2
+                if (Aura* evan2 = m_caster->GetAura(81662))
                 {
-                    // We are in Shadow Form
-                    if (m_caster->GetShapeshiftForm() == FORM_SHADOW)
-                        // We have Improved Mind Blast
-                        if (AuraEffect * aurEff = m_caster->GetDummyAuraEffect(SPELLFAMILY_PRIEST, 95, 0))
-                            // Chance has been successfully rolled
-                            if (roll_chance_i(aurEff->GetAmount()))
-                                m_caster->CastSpell(unitTarget, 48301, true);
-
-                    //Mind Melt Aura remove
-                    m_caster->RemoveAurasDueToSpell(87160);
-                    m_caster->RemoveAurasDueToSpell(81292);
+                    m_caster->CastSpell(m_caster, 81661, true);
+                    // Trigger to activate archangel
+                    m_caster->CastSpell(m_caster, 87154, true);
+                    m_caster->RemoveAurasDueToSpell(87118);
+                    m_caster->RemoveAurasDueToSpell(87117);
                 }
-                // Improved Mind Blast (Mind Blast in shadow form bonus)
-                else if (m_caster->GetShapeshiftForm() == FORM_SHADOW && (m_spellInfo->SpellFamilyFlags[0] & 0x00002000))
+                if (m_caster->HasAura(14751)) // Chakra
                 {
-                    Unit::AuraEffectList const& ImprMindBlast = m_caster->GetAuraEffectsByType(SPELL_AURA_ADD_FLAT_MODIFIER);
-                    for (Unit::AuraEffectList::const_iterator i = ImprMindBlast.begin(); i != ImprMindBlast.end(); ++i)
-                    {
-                        if ((*i)->GetSpellProto()->SpellFamilyName == SPELLFAMILY_PRIEST &&
-                            ((*i)->GetSpellProto()->SpellIconID == 95))
-                        {
-                            int chance = SpellMgr::CalculateSpellEffectAmount((*i)->GetSpellProto(), 1, m_caster);
-                            if (roll_chance_i(chance))
-                                // Mind Trauma
-                                m_caster->CastSpell(unitTarget, 48301, true, 0);
-                            break;
-                        }
-                    }
+                    m_caster->CastSpell(m_caster, 81209, true);
+                    m_caster->RemoveAurasDueToSpell(14751);
                 }
                 break;
             }
             case SPELLFAMILY_DRUID:
             {
-                // Ferocious Bite
-                if (m_caster->GetTypeId() == TYPEID_PLAYER && (m_spellInfo->SpellFamilyFlags[0] & 0x000800000) && m_spellInfo->SpellVisual[0] == 6587)
-                {
-                    // converts each extra point of energy into ($f1+$AP/410) additional damage
-                    float ap = m_caster->GetTotalAttackPowerValue(BASE_ATTACK);
-                    float multiple = ap / 410 + m_spellInfo->EffectDamageMultiplier[effIndex];
-                    int32 energy = -(m_caster->ModifyPower(POWER_ENERGY, -30));
-                    damage += int32(energy * multiple);
-                    damage += int32(m_caster->ToPlayer()->GetComboPoints() * ap * 7 / 100);
-                }
-                // Starfire
-                else if (m_spellInfo->SpellFamilyFlags[0] & 0x00000004)
-                {
-                    if (m_caster->GetTypeId() == TYPEID_PLAYER)
-                    {
-                        if (m_caster->ToPlayer()->GetTalentBranchSpec(m_caster->ToPlayer()->GetActiveSpec()) == BS_DRUID_BALANCE)
-                        {
-                            if (m_caster->HasAura(48517))
-                            {
-                                m_caster->RemoveAurasDueToSpell(48517);
-                                m_caster->SetEclipsePower(0);
-                            }
-                            if (m_caster->GetEclipsePower() >= -20)
-                                if (m_caster->HasAura(48518))
-                                        m_caster->RemoveAurasDueToSpell(48518);
-
-                            m_caster->SetEclipsePower(int32(m_caster->GetEclipsePower() + 20));
-                        }
-                    }
-                }
                 // Wrath
-                else if (m_spellInfo->SpellFamilyFlags[0] & 0x00000001)
+                if (m_spellInfo->Id == 5176)
                 {
-                    if (m_caster->GetTypeId() == TYPEID_PLAYER)
-                    {
-                        if (m_caster->ToPlayer()->GetTalentBranchSpec(m_caster->ToPlayer()->GetActiveSpec()) == BS_DRUID_BALANCE)
-                        {
-                            if (m_caster->HasAura(48518))
-                            {
-                                m_caster->RemoveAurasDueToSpell(48518);
-                                m_caster->SetEclipsePower(0);
-                            }
-                            if (m_caster->GetEclipsePower() <= 13)
-                                if (m_caster->HasAura(48517))
-                                        m_caster->RemoveAurasDueToSpell(48517);
-
-                            m_caster->SetEclipsePower(int32(m_caster->GetEclipsePower() - 13));
-                        }
-                    }
                     // Improved Insect Swarm
                     if (AuraEffect const * aurEff = m_caster->GetDummyAuraEffect(SPELLFAMILY_DRUID, 1771, 0))
                         if (unitTarget->GetAuraEffect(SPELL_AURA_PERIODIC_DAMAGE, SPELLFAMILY_DRUID, 0x00200000, 0, 0))
-                            damage = int32(damage*(100.0f+aurEff->GetAmount())/100.0f);
+                            AddPctN(damage, aurEff->GetAmount());
+
+                    if (m_caster->HasAura(16913))
+                    {
+                        int32 eclipse = 13;
+                        int mana = 0;
+
+                        if (m_caster->HasAura(81061) && roll_chance_i(12) || m_caster->HasAura(81062) && roll_chance_i(24)) // Euphoria
+                        {
+                            if (!m_caster->HasAura(48518) && !m_caster->HasAura(48517))  // Eclipse (lunar | solar)
+                                eclipse = 26;
+                            else
+                                eclipse = 13;
+
+                            m_caster->SetEclipsePower(int32(m_caster->GetEclipsePower() - eclipse));
+                            //m_caster->CastCustomSpell(m_caster, 89265, &eclipse, 0, 0, true); // Eclipse Energy (http://www.wowhead.com/spell=89265)
+                        }
+                        else // Normal Eclipse gain
+                            m_caster->SetEclipsePower(int32(m_caster->GetEclipsePower() - eclipse));
+                            //m_caster->CastCustomSpell(m_caster, 89265, &eclipse, 0, 0, true); // Eclipse Energy (http://www.wowhead.com/spell=89265)
+
+                        if (m_caster->GetEclipsePower() == -100)
+                        {
+                            m_caster->RemoveAurasDueToSpell(93432); // Nature's Grace CD remove.
+
+                            if (m_caster->HasAura(81061)) // Euphoria Rank 1
+                            {
+                                mana = 8;
+                                m_caster->CastCustomSpell(m_caster, 81070, &mana, 0, 0, true); // Euphoria (http://www.wowhead.com/spell=81070)
+                            }
+
+                            if (m_caster->HasAura(81062)) // Euphoria Rank 2
+                            {
+                                mana = 16;
+                                m_caster->CastCustomSpell(m_caster, 81070, &mana, 0, 0, true); // Euphoria (http://www.wowhead.com/spell=81070)
+                            }
+
+                            m_caster->CastSpell(m_caster, 48518, true, 0); // Cast Eclipse
+                        }
+
+                        // ECLIPSE LUNAR REMOVE
+                        if (m_caster->GetEclipsePower() > 0)
+                        {
+                            m_caster->RemoveAurasDueToSpell(48518); // Eclipse (Lunar)
+                        }
+
+                        if (m_caster->GetEclipsePower() < 0)
+                        {
+                            m_caster->RemoveAurasDueToSpell(48517); // Eclipse (Solar)
+                            m_caster->RemoveAurasDueToSpell(94338); // Eclipse (Solar) (Aura 332?)
+                        }
+                    }
                 }
-                else if (m_spellInfo->Id == 8921) // Moonfire
+                // Starfire
+                else if (m_spellInfo->Id == 2912)
                 {
-                    if (m_caster->HasAura(78784)) // Blessing of the Grove rank 1
-                        damage = int32 (damage * 0.03f);
-                    if (m_caster->HasAura(78785)) // Blessing of the Grove rank 2
-                        damage = int32 (damage * 0.06f);
+                    if (m_caster->HasAura(16913))
+                    {
+                        int32 eclipse = 20;
+                        int mana = 0;
+                        if (m_caster->HasAura(81061) && roll_chance_i(12) || m_caster->HasAura(81062) && roll_chance_i(24)) // Euphoria
+                        {
+                            if (!m_caster->HasAura(48518) && !m_caster->HasAura(48517)) // Eclipse (lunar | solar)
+                                eclipse = 40;
+                            else
+                                eclipse = 20;
+
+                            m_caster->SetEclipsePower(int32(m_caster->GetEclipsePower() + eclipse));
+                            //m_caster->CastCustomSpell(m_caster, 89265, &eclipse, 0, 0, true); // Eclipse Energy (http://www.wowhead.com/spell=89265)
+                        }
+                        else  // Normal Eclipse gain
+                            m_caster->SetEclipsePower(int32(m_caster->GetEclipsePower() + eclipse));
+                            //m_caster->CastCustomSpell(m_caster, 89265, &eclipse, 0, 0, true); // Eclipse Energy (http://www.wowhead.com/spell=89265)
+
+                        if (m_caster->GetEclipsePower() == 100)
+                        {
+                            m_caster->RemoveAurasDueToSpell(93432); // Nature's Grace CD remove.
+
+                            if (m_caster->HasAura(81061)) // Euphoria Rank 1
+                            {
+                                mana = 8;
+                                m_caster->CastCustomSpell(m_caster, 81070, &mana, 0, 0, true); // Euphoria (http://www.wowhead.com/spell=81070)
+                            }
+
+                            if (m_caster->HasAura(81062)) // Euphoria Rank 2
+                            {
+                                mana = 16;
+                                m_caster->CastCustomSpell(m_caster, 81070, &mana, 0, 0, true); // Euphoria (http://www.wowhead.com/spell=81070)
+                            }
+
+                            if (m_caster->HasAura(93401)) // Sunfire Rank 1
+                                m_caster->CastSpell(m_caster, 94338, true, 0); // Eclipse (Solar)
+
+                            m_caster->CastSpell(m_caster, 48517, true, 0); // Cast Eclipse (http://www.wowhead.com/spell=48517)
+                        }
+
+                        // ECLIPSE REMOVE
+                        if (m_caster->GetEclipsePower() > 0)
+                        {
+                            m_caster->RemoveAurasDueToSpell(48518); // Eclipse (Lunar)
+                        }
+
+                        if (m_caster->GetEclipsePower() < 0)
+                        {
+                            m_caster->RemoveAurasDueToSpell(48517); // Eclipse (Solar)
+                            m_caster->RemoveAurasDueToSpell(94338); // Eclipse (Solar) (Aura 332?)
+                        }
+                    }
+                }
+                // Starsurge
+                else if (m_spellInfo->Id == 78674) // Starsurge (http://www.wowhead.com/spell=78674)
+                {
+                    if (m_caster->HasAura(16913)) // Moonfury
+                    {
+                        int32 eclipse = 0;
+                        if (m_caster->GetPower(POWER_ECLIPSE) < 0)
+                            eclipse = -15;
+                        else if (m_caster->GetPower(POWER_ECLIPSE) > 0)
+                            eclipse = 15;
+
+                        m_caster->SetEclipsePower(int32(m_caster->GetEclipsePower() + eclipse));
+                        //m_caster->CastCustomSpell(m_caster, 86605, &eclipse, 0, 0, true); // Starsurge
+
+                        if (m_caster->GetEclipsePower() == 100)
+                        {
+                            if (m_caster->HasAura(93401))  // Sunfire Rank 1
+                                m_caster->CastSpell(m_caster, 94338, true, 0);
+
+                            m_caster->CastSpell(m_caster, 48517, true, 0); // Eclipse (Solar)
+                            m_caster->RemoveAurasDueToSpell(93432); // Nature's Grace CD remove.
+                        }
+
+                        if (m_caster->GetEclipsePower() == -100)
+                        {
+                            m_caster->CastSpell(m_caster, 48518, true, 0); // Eclipse (Lunar)
+                            m_caster->RemoveAurasDueToSpell(93432); // Nature's Grace CD remove.
+                        }
+
+                        if (m_caster->GetEclipsePower() > 0)
+                        {
+                            m_caster->RemoveAurasDueToSpell(48518); // Eclipse (Lunar)
+                        }
+
+                        if (m_caster->GetEclipsePower() < 0)
+                        {
+                            m_caster->RemoveAurasDueToSpell(48517); // Eclipse (Solar)
+                            m_caster->RemoveAurasDueToSpell(94338); // Eclipse (Solar) (Aura 332?)
+                        }
+                    }
                 }
                 break;
             }
@@ -790,7 +769,7 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                     if (uint32 combo = m_caster->ToPlayer()->GetComboPoints())
                     {
                         // Lookup for Deadly poison (only attacker applied)
-                        if (AuraEffect const * aurEff = unitTarget->GetAuraEffect(SPELL_AURA_PERIODIC_DAMAGE, SPELLFAMILY_ROGUE, 0x10000, 0, 0, m_caster->GetGUID()))
+                        if (AuraEffect const* aurEff = unitTarget->GetAuraEffect(SPELL_AURA_PERIODIC_DAMAGE, SPELLFAMILY_ROGUE, 0x10000, 0, 0, m_caster->GetGUID()))
                         {
                             // count consumed deadly poison doses at target
                             bool needConsume = true;
@@ -802,9 +781,9 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                             Unit::AuraEffectList const& auraList = m_caster->ToPlayer()->GetAuraEffectsByType(SPELL_AURA_MOD_AURA_DURATION_BY_DISPEL_NOT_STACK);
                             for (Unit::AuraEffectList::const_iterator iter = auraList.begin(); iter != auraList.end(); ++iter)
                             {
-                                if ((*iter)->GetSpellProto()->SpellFamilyName == SPELLFAMILY_ROGUE && (*iter)->GetSpellProto()->SpellIconID == 1960)
+                                if ((*iter)->GetSpellInfo()->SpellFamilyName == SPELLFAMILY_ROGUE && (*iter)->GetSpellInfo()->SpellIconID == 1960)
                                 {
-                                    uint32 chance = SpellMgr::CalculateSpellEffectAmount((*iter)->GetSpellProto(), 2, m_caster);
+                                    uint32 chance = (*iter)->GetSpellInfo()->Effects[EFFECT_2].CalcValue(m_caster);
 
                                     if (chance && roll_chance_i(chance))
                                         needConsume = false;
@@ -840,26 +819,19 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                 break;
             }
             case SPELLFAMILY_HUNTER:
-            {   // Rapid Recuperation
-                if (m_caster->HasAura(3045))
-                      if (m_caster->HasAura(53228))                // Rank 1
-                          m_caster->CastSpell(m_caster, 53230, true);
-                    else
-                      if (m_caster->HasAura(53232))                // Rank 2
-                          m_caster->CastSpell(m_caster, 54227, true);
-
-                //Gore
-                if (m_spellInfo->SpellIconID == 1578)
                 {
-                    if (m_caster->HasAura(57627))           // Charge 6 sec post-affect
-                        damage *= 2;
+                    // Rapid Recuperation
+                    if (m_caster->HasAura(3045))
+                        if (m_caster->HasAura(53228))                // Rank 1
+                            m_caster->CastSpell(m_caster, 53230, true);
+                        else
+                            if (m_caster->HasAura(53232))                // Rank 2
+                                m_caster->CastSpell(m_caster, 54227, true);
                 }
-                break;
-            }
             case SPELLFAMILY_PALADIN:
             {
                 // Hammer of the Righteous
-                if (m_spellInfo->SpellFamilyFlags[1] & 0x00040000)
+                if (m_spellInfo->SpellFamilyFlags[1]&0x00040000)
                 {
                     // Add main hand dps * effect[2] amount
                     float average = (m_caster->GetFloatValue(UNIT_FIELD_MINDAMAGE) + m_caster->GetFloatValue(UNIT_FIELD_MAXDAMAGE)) / 2;
@@ -867,42 +839,12 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                     damage += count * int32(average * IN_MILLISECONDS) / m_caster->GetAttackTime(BASE_ATTACK);
                     break;
                 }
-
-                //Shield of  Righteous
-                if (m_spellInfo->Id == 53600)
-                {
-                    switch(m_caster->GetPower(POWER_HOLY_POWER))
-                    {
-                        case 0:
-                            damage = int32(damage * 1.16f);
-                            break;
-                        case 1:
-                            damage = int32((damage * 1.16f) * 3);
-                            break;
-                        case 2:
-                            damage = int32((damage * 1.16f) * 6);
-                            break;
-                    }
-                }
-
-             break;
+                break;
             }
             case SPELLFAMILY_DEATHKNIGHT:
             {
-                // Ebon Plaguebringer
-                  if (m_caster->HasAura(51099)) // Rank 1
-                  {
-                      if (m_spellInfo->Id == 45462 || m_spellInfo->Id == 45477 || m_spellInfo->Id == 45524)
-                      m_caster->CastSpell(unitTarget, 65142, true);
-                  }
-                  else if (m_caster->HasAura(51160)) // Rank 2
-                  {
-                      if (m_spellInfo->Id == 45462 || m_spellInfo->Id == 45477 || m_spellInfo->Id == 45524)
-                      m_caster->CastSpell(unitTarget, 65142, true);
-                  }
-
                 // Blood Boil - bonus for diseased targets
-                else if (m_spellInfo->SpellFamilyFlags[0] & 0x00040000)
+                if (m_spellInfo->SpellFamilyFlags[0] & 0x00040000)
                 {
                     if (unitTarget->GetAuraEffect(SPELL_AURA_PERIODIC_DAMAGE, SPELLFAMILY_DEATHKNIGHT, 0, 0, 0x00000002, m_caster->GetGUID()))
                     {
@@ -912,19 +854,18 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                 }
                 break;
             }
-
             case SPELLFAMILY_MAGE:
             {
                 // Deep Freeze should deal damage to permanently stun-immune targets.
                 if (m_spellInfo->Id == 71757)
-                    if (unitTarget->GetTypeId() != TYPEID_UNIT || !(unitTarget->IsImmunedToSpellEffect(sSpellStore.LookupEntry(24932), 0)))
+                    if (unitTarget->GetTypeId() != TYPEID_UNIT || !(unitTarget->IsImmunedToSpellEffect(sSpellMgr->GetSpellInfo(44572), 0)))
                         return;
                 break;
             }
         }
 
         if (m_originalCaster && damage > 0 && apply_direct_bonus)
-            damage = m_originalCaster->SpellDamageBonus(unitTarget, m_spellInfo, effIndex, (uint32)damage, SPELL_DIRECT_DAMAGE);
+            damage = m_originalCaster->SpellDamageBonus(unitTarget, m_spellInfo, (uint32)damage, SPELL_DIRECT_DAMAGE);
 
         m_damage += damage;
     }
