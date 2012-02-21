@@ -334,9 +334,6 @@ void Spell::EffectEnvirinmentalDMG(SpellEffIndex effIndex)
 
 void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
 {
-    if (effectHandleMode != SPELL_EFFECT_HANDLE_LAUNCH_TARGET)
-        return;
-
     bool apply_direct_bonus = true;
 
     if (unitTarget && unitTarget->isAlive())
@@ -346,7 +343,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
             case SPELLFAMILY_GENERIC:
             {
                 // Meteor like spells (divided damage to targets)
-                if (m_spellInfo->AttributesCu & SPELL_ATTR0_CU_SHARE_DAMAGE)
+                if (m_customAttr & SPELL_ATTR0_CU_SHARE_DAMAGE)
                 {
                     uint32 count = 0;
                     for (std::list<TargetInfo>::iterator ihit= m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
@@ -439,11 +436,11 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                         if (unitTarget->GetGUID() == m_caster->GetGUID() || unitTarget->GetTypeId() != TYPEID_PLAYER)
                             return;
 
-                        float radius = m_spellInfo->Effects[EFFECT_0].CalcRadius(m_caster);
+						float radius = GetSpellRadiusForHostile(sSpellRadiusStore.LookupEntry(m_spellInfo->EffectRadiusIndex[0]));
                         if (!radius)
                             return;
                         float distance = m_caster->GetDistance2d(unitTarget);
-                        damage = (distance > radius) ? 0 : int32(m_spellInfo->Effects[EFFECT_0].CalcValue(m_caster) * ((radius - distance)/radius));
+                        damage = (distance > radius) ? 0 : int32(SpellMgr::CalculateSpellEffectAmount(m_spellInfo, 0) * ((radius - distance)/radius));
                         break;
                     }
                     // Loken Pulsing Shockwave
@@ -454,11 +451,11 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                         if (unitTarget->GetGUID() == m_caster->GetGUID() || unitTarget->GetTypeId() != TYPEID_PLAYER)
                             return;
 
-                        float radius = m_spellInfo->Effects[EFFECT_0].CalcRadius(m_caster);
+                        float radius = GetSpellRadiusForHostile(sSpellRadiusStore.LookupEntry(m_spellInfo->EffectRadiusIndex[0]));
                         if (!radius)
                             return;
                         float distance = m_caster->GetDistance2d(unitTarget);
-                        damage = (distance > radius) ? 0 : int32(m_spellInfo->Effects[EFFECT_0].CalcValue(m_caster) * distance);
+                        damage = (distance > radius) ? 0 : int32(SpellMgr::CalculateSpellEffectAmount(m_spellInfo, 0) * distance);
                         break;
                     }
                     // TODO: add spell specific target requirement hook for spells
@@ -783,7 +780,7 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                             {
                                 if ((*iter)->GetSpellInfo()->SpellFamilyName == SPELLFAMILY_ROGUE && (*iter)->GetSpellInfo()->SpellIconID == 1960)
                                 {
-                                    uint32 chance = (*iter)->GetSpellInfo()->Effects[EFFECT_2].CalcValue(m_caster);
+                                    uint32 chance = SpellMgr::CalculateSpellEffectAmount((*iter)->GetSpellProto(), 2, m_caster);
 
                                     if (chance && roll_chance_i(chance))
                                         needConsume = false;
