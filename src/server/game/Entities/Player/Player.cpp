@@ -19192,8 +19192,7 @@ void Player::_SaveCurrency(SQLTransaction& trans)
     for (PlayerCurrenciesMap::iterator itr = m_currencies.begin(); itr != m_currencies.end();)
     {
         if (itr->second.state == PLAYERCURRENCY_CHANGED)
-            trans->PAppend("UPDATE character_currency SET `count` = '%u', thisweek = '%u' WHERE guid = '%u' AND currency = '%u'",
-            itr->second.totalCount, itr->second.weekCount, GetGUIDLow(), itr->first);
+            trans->PAppend("UPDATE character_currency SET `count` = '%u', thisweek = '%u' WHERE guid = '%u' AND currency = '%u'", itr->second.totalCount, itr->second.weekCount, GetGUIDLow(), itr->first);
         else if (itr->second.state == PLAYERCURRENCY_NEW)
             trans->PAppend("INSERT INTO character_currency (guid, currency, `count`, thisweek) VALUES ('%u', '%u', '%u', '%u')", GetGUIDLow(), itr->first, itr->second.totalCount, itr->second.weekCount);
 
