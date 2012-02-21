@@ -333,6 +333,10 @@ void Spell::EffectEnvirinmentalDMG(SpellEffIndex effIndex)
 }
 
 void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
+{ 	
+}
+
+void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
 {
     bool apply_direct_bonus = true;
 
