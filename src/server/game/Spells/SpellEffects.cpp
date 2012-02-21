@@ -522,21 +522,20 @@ void Spell::EffectSchoolDMG(SpellEffIndex effIndex)
                     for (Unit::AuraEffectList::const_iterator i = mPeriodic.begin(); i != mPeriodic.end(); ++i)
                     {
                         // for caster applied auras only
-                        if ((*i)->GetSpellInfo()->SpellFamilyName != SPELLFAMILY_WARLOCK ||
-                            (*i)->GetCasterGUID() != m_caster->GetGUID())
+                        if ((*i)->GetSpellProto()->SpellFamilyName != SPELLFAMILY_WARLOCK || (*i)->GetCasterGUID() != m_caster->GetGUID())
                             continue;
 
                         // Immolate
-                        if ((*i)->GetSpellInfo()->SpellFamilyFlags[0] & 0x4)
+                        if ((*i)->GetSpellProto()->SpellFamilyFlags[0] & 0x4)
                         {
                             uint32 pdamage = uint32(std::max((*i)->GetAmount(), 0));
-                            pdamage = m_caster->SpellDamageBonus(unitTarget, (*i)->GetSpellInfo(), pdamage, DOT, (*i)->GetBase()->GetStackAmount());
+                            pdamage = m_caster->SpellDamageBonus(unitTarget, (*i)->GetSpellProto(), pdamage, DOT, (*i)->GetBase()->GetStackAmount());
                             uint32 pct_dir = m_caster->CalculateSpellDamage(unitTarget, m_spellInfo, (effIndex + 1));
-                            uint8 baseTotalTicks = uint8(m_caster->CalcSpellDuration((*i)->GetSpellInfo()) / (*i)->GetSpellInfo()->Effects[EFFECT_2].Amplitude);
+                            uint8 baseTotalTicks = uint8(m_caster->CalcSpellDuration((*i)->GetSpellProto()) / (*i)->GetSpellProto()->Effects[EFFECT_2].Amplitude);
                             damage += int32(CalculatePctU(pdamage * baseTotalTicks, pct_dir));
 
                             uint32 pct_dot = m_caster->CalculateSpellDamage(unitTarget, m_spellInfo, (effIndex + 2)) / 3;
-                            m_spellValue->EffectBasePoints[1] = m_spellInfo->Effects[EFFECT_1].CalcBaseValue(int32(CalculatePctU(pdamage * baseTotalTicks, pct_dot)));
+                            m_spellValue->EffectBasePoints[1] = SpellMgr::CalculateSpellEffectBaseAmount(pdamage * baseTotalTicks * pct_dot / 100, m_spellInfo, 1);
 
                             apply_direct_bonus = false;
                             break;
